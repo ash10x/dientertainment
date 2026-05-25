@@ -2,6 +2,7 @@ const services = [
   {
     number: "01",
     title: "Digital Marketing",
+    href: "/services/digital-marketing",
     description:
       "Strategic campaigns that dominate attention. From paid media to organic growth, we engineer the digital presence your brand deserves — then scale it.",
     tags: ["Social Media", "SEO", "Paid Ads", "Analytics"],
@@ -9,6 +10,7 @@ const services = [
   {
     number: "02",
     title: "News & Media",
+    href: "/services/news-media",
     description:
       "Editorial content that shapes narratives. We create, distribute, and amplify stories that position your brand as the undisputed voice of your industry.",
     tags: ["Press Releases", "Editorial", "PR", "Syndication"],
@@ -16,6 +18,7 @@ const services = [
   {
     number: "03",
     title: "Photo Production",
+    href: "/services/photo-production",
     description:
       "Visual identity that commands respect. High-end photography that captures the essence of your brand and stops the scroll — every single time.",
     tags: ["Brand Photography", "Product Shoots", "Lifestyle", "Editorial"],
@@ -23,6 +26,7 @@ const services = [
   {
     number: "04",
     title: "Video Production",
+    href: "/services/video-production",
     description:
       "Cinematic storytelling at its finest. From concept to final cut, we produce video content that doesn't just entertain — it converts and stays with you.",
     tags: ["Brand Films", "Commercials", "Social Content", "Reels"],
@@ -59,9 +63,10 @@ export default function Services() {
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/[0.06]">
           {services.map((s) => (
-            <div
+            <a
               key={s.number}
-              className="service-card bg-[#0A0A0A] p-8 lg:p-12 group cursor-default"
+              href={s.href}
+              className="service-card bg-[#0A0A0A] p-8 lg:p-12 group block"
             >
               {/* Top row */}
               <div className="flex items-start justify-between mb-6">
@@ -97,7 +102,7 @@ export default function Services() {
                   </span>
                 ))}
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>

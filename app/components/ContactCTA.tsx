@@ -44,13 +44,13 @@ export default function ContactCTA() {
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <a
-              href="mailto:hello@dientertainment.com"
+              href="/contact"
               className="bg-[#0A0A0A] text-[#F5F5F5] text-[11px] tracking-[0.22em] uppercase px-9 py-4 hover:bg-[#1A1A1A] transition-colors duration-300 flex items-center gap-2"
             >
-              Email Us <span className="text-sm">→</span>
+              Start a Project <span className="text-sm">→</span>
             </a>
             <a
-              href="tel:+1234567890"
+              href="tel:+12345678900"
               className="border border-white/35 text-white text-[11px] tracking-[0.22em] uppercase px-9 py-4 hover:border-white hover:bg-white/10 transition-all duration-300"
             >
               Call Us
