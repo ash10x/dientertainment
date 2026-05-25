@@ -64,7 +64,7 @@ export default function Work() {
             </h2>
           </div>
           <a
-            href="#"
+            href="/work"
             className="hidden md:flex items-center gap-2 text-[11px] tracking-[0.22em] uppercase text-[#F5F5F5]/40 hover:text-[#F5F5F5] transition-colors duration-200 shrink-0 pb-2"
           >
             All Projects <span>→</span>
@@ -174,6 +174,19 @@ export default function Work() {
               </span>
             </div>
           </div>
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-10 pt-10 border-t border-white/6">
+          <p className="text-brand-white/30 text-[10px] tracking-[0.25em] uppercase">
+            Showing 4 of 10+ projects
+          </p>
+          <a
+            href="/work"
+            className="flex items-center gap-2 border border-white/20 text-brand-white text-[11px] tracking-[0.22em] uppercase px-8 py-4 hover:border-red hover:text-red transition-all duration-300"
+          >
+            View All Work <span className="text-sm">→</span>
+          </a>
         </div>
       </div>
     </section>
