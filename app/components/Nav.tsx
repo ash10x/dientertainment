@@ -18,7 +18,7 @@ export default function Nav() {
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
           <a
-            href="/#work"
+            href="/work"
             className="nav-link text-[11px] tracking-[0.25em] uppercase text-[#F5F5F5]/60 hover:text-[#F5F5F5] transition-colors duration-200"
           >
             Work
@@ -26,15 +26,14 @@ export default function Nav() {
 
           {/* Services with dropdown — CSS-only hover, no JS needed */}
           <div className="relative group/svc">
-            <a
-              href="/#services"
-              className="nav-link text-[11px] tracking-[0.25em] uppercase text-[#F5F5F5]/60 hover:text-[#F5F5F5] transition-colors duration-200 flex items-center gap-1.5"
+            <button
+              className="nav-link text-[11px] tracking-[0.25em] uppercase text-[#F5F5F5]/60 hover:text-[#F5F5F5] transition-colors duration-200 flex items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0"
             >
               Services
               <span className="inline-block text-[8px] transition-transform duration-200 group-hover/svc:rotate-180">
                 ▾
               </span>
-            </a>
+            </button>
 
             {/*
               pt-4 maintains the hover target between the link and the panel
