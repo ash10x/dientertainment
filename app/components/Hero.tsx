@@ -27,7 +27,7 @@ export default function Hero() {
         <div className="flex items-center gap-4 mb-10">
           <div className="w-8 h-px bg-[#E50019]" />
           <span className="text-[#E50019] text-[10px] tracking-[0.35em] uppercase">
-            News · Media · Digital Marketing
+            AI Videos · AI Commercials · AI Branding
           </span>
         </div>
 
@@ -35,31 +35,35 @@ export default function Hero() {
         <h1 className="font-display uppercase leading-[0.88] tracking-tight">
           <span
             className="block text-[#F5F5F5]"
-            style={{ fontSize: "clamp(48px, 7.5vw, 110px)" }}
+            style={{ fontSize: "clamp(38px, 6vw, 90px)" }}
           >
-            CONTENT
+            WE CREATE AI CONTENT
           </span>
           <span
             className="block text-[#F5F5F5]"
-            style={{ fontSize: "clamp(48px, 7.5vw, 110px)" }}
+            style={{ fontSize: "clamp(38px, 6vw, 90px)" }}
           >
-            THAT
+            THAT MAKES BRANDS
           </span>
           <span
             className="block"
-            style={{ fontSize: "clamp(48px, 7.5vw, 110px)" }}
+            style={{ fontSize: "clamp(38px, 6vw, 90px)" }}
           >
-            <span className="text-[#E50019]">MOVES</span>
-            <span className="text-[#F5F5F5]"> CULTURE.</span>
+            <span className="text-[#F5F5F5]">LOOK </span>
+            <span className="text-[#E50019]">MILLION DOLLAR.</span>
           </span>
         </h1>
 
         {/* Bottom row — descriptor + CTAs */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mt-12 lg:mt-16">
-          <p className="text-[#F5F5F5]/50 text-base md:text-lg leading-relaxed max-w-sm">
-            High-impact content for brands that refuse to be ignored. We create
-            the stories that build empires.
-          </p>
+          <div>
+            <p className="text-brand-white/70 text-base md:text-lg leading-relaxed">
+              AI Videos. AI Commercials. AI Reels. AI Branding.
+            </p>
+            <p className="text-brand-white/40 text-base md:text-lg leading-relaxed">
+              Luxury marketing powered by artificial intelligence.
+            </p>
+          </div>
 
           <div className="flex items-center gap-4 flex-wrap">
             <a

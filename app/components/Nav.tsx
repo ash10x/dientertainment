@@ -7,6 +7,9 @@ const serviceDropdown = [
   { label: "News & Media", href: "/services/news-media" },
   { label: "Photo Production", href: "/services/photo-production" },
   { label: "Video Production", href: "/services/video-production" },
+  { label: "AI Video Creation", href: "/services/ai-video-creation" },
+  { label: "AI Image Generation", href: "/services/ai-image-generation" },
+  { label: "Script Writing", href: "/services/script-writing" },
 ];
 
 export default function Nav() {
@@ -19,13 +22,27 @@ export default function Nav() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-brand-black/90 backdrop-blur-md border-b border-white/6">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
         {/* Logo */}
-        <a href="/" className="flex items-baseline gap-0 shrink-0" onClick={close}>
-          <span className="font-display text-[1.6rem] leading-none text-red">di</span>
-          <span className="font-display text-[1.6rem] leading-none text-brand-white tracking-widest">ENTERTAINMENT</span>
+        <a
+          href="/"
+          className="flex items-baseline gap-0 shrink-0"
+          onClick={close}
+        >
+          <span className="font-display text-[1.6rem] leading-none text-red">
+            di
+          </span>
+          <span className="font-display text-[1.6rem] leading-none text-brand-white tracking-widest">
+            ENTERTAINMENT
+          </span>
         </a>
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
+          <a
+            href="/"
+            className="nav-link text-[11px] tracking-[0.25em] uppercase text-brand-white/60 hover:text-brand-white transition-colors duration-200"
+          >
+            Home
+          </a>
           <a
             href="/work"
             className="nav-link text-[11px] tracking-[0.25em] uppercase text-brand-white/60 hover:text-brand-white transition-colors duration-200"
@@ -35,9 +52,7 @@ export default function Nav() {
 
           {/* Services with dropdown — CSS-only hover */}
           <div className="relative group/svc">
-            <button
-              className="nav-link text-[11px] tracking-[0.25em] uppercase text-brand-white/60 hover:text-brand-white transition-colors duration-200 flex items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0"
-            >
+            <button className="nav-link text-[11px] tracking-[0.25em] uppercase text-brand-white/60 hover:text-brand-white transition-colors duration-200 flex items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
               Services
               <span className="inline-block text-[8px] transition-transform duration-200 group-hover/svc:rotate-180">
                 ▾
@@ -66,13 +81,19 @@ export default function Nav() {
           </div>
 
           <a
-            href="/#about"
+            href="/about"
             className="nav-link text-[11px] tracking-[0.25em] uppercase text-brand-white/60 hover:text-brand-white transition-colors duration-200"
           >
             About
           </a>
           <a
-            href="/#contact"
+            href="/testimonials"
+            className="nav-link text-[11px] tracking-[0.25em] uppercase text-brand-white/60 hover:text-brand-white transition-colors duration-200"
+          >
+            Testimonials
+          </a>
+          <a
+            href="/contact"
             className="nav-link text-[11px] tracking-[0.25em] uppercase text-brand-white/60 hover:text-brand-white transition-colors duration-200"
           >
             Contact
@@ -97,7 +118,11 @@ export default function Nav() {
         >
           <span
             className="block w-6 h-px bg-brand-white transition-transform duration-200 origin-center"
-            style={mobileOpen ? { transform: "rotate(45deg) translateY(7px)" } : undefined}
+            style={
+              mobileOpen
+                ? { transform: "rotate(45deg) translateY(7px)" }
+                : undefined
+            }
           />
           <span
             className="block w-4 h-px bg-brand-white transition-opacity duration-200"
@@ -105,7 +130,11 @@ export default function Nav() {
           />
           <span
             className="block w-6 h-px bg-brand-white transition-transform duration-200 origin-center"
-            style={mobileOpen ? { transform: "rotate(-45deg) translateY(-7px)" } : undefined}
+            style={
+              mobileOpen
+                ? { transform: "rotate(-45deg) translateY(-7px)" }
+                : undefined
+            }
           />
         </button>
       </div>
@@ -132,7 +161,9 @@ export default function Nav() {
               className="w-full flex items-center justify-between text-[11px] tracking-[0.25em] uppercase text-brand-white/60 hover:text-brand-white py-3 border-b border-white/6 transition-colors duration-200 bg-transparent"
             >
               Services
-              <span className={`text-[8px] transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}>
+              <span
+                className={`text-[8px] transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
+              >
                 ▾
               </span>
             </button>

@@ -21,7 +21,12 @@ export type ServiceData = {
   deliverables: Deliverable[];
   process: ProcessStep[];
   ctaHeadline: string;
+  packagesVariant?: "ai" | "photo" | "marketing";
 };
+
+import Packages from "./Packages";
+import PhotoPackages from "./PhotoPackages";
+import MarketingPackages from "./MarketingPackages";
 
 export default function ServicePage({
   number,
@@ -34,6 +39,7 @@ export default function ServicePage({
   deliverables,
   process,
   ctaHeadline,
+  packagesVariant,
 }: ServiceData) {
   return (
     <>
@@ -214,6 +220,11 @@ export default function ServicePage({
           </div>
         </div>
       </section>
+
+      {/* ─── PACKAGES ─── */}
+      {packagesVariant === "ai" && <Packages service={slug} />}
+      {packagesVariant === "photo" && <PhotoPackages />}
+      {packagesVariant === "marketing" && <MarketingPackages />}
 
       {/* ─── CTA ─── */}
       <section className="bg-[#E50019] py-20 lg:py-28 relative overflow-hidden">

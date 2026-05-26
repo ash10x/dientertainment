@@ -7,42 +7,54 @@ const serviceOptions = [
   { value: "news-media", label: "News & Media" },
   { value: "photo-production", label: "Photo Production" },
   { value: "video-production", label: "Video Production" },
+  { value: "ai-video-creation", label: "AI Video Creation" },
+  { value: "ai-image-generation", label: "AI Image Generation" },
+  { value: "script-writing", label: "Script Writing" },
   { value: "general", label: "General Inquiry" },
 ];
 
 const budgetOptions = [
-  { value: "under-5k", label: "Under $5,000" },
+  { value: "under-500", label: "Under $500" },
+  { value: "500-1k", label: "$500 – $1,000" },
+  { value: "1k-5k", label: "$1,000 – $5,000" },
   { value: "5k-15k", label: "$5,000 – $15,000" },
-  { value: "15k-50k", label: "$15,000 – $50,000" },
-  { value: "50k-plus", label: "$50,000+" },
+  { value: "15k-plus", label: "$15,000+" },
 ];
 
 const inputClass =
-  "w-full bg-transparent border-b border-white/[0.14] focus:border-[#E50019] text-[#F5F5F5] text-sm py-3 outline-none placeholder:text-[#F5F5F5]/20 transition-colors duration-200 caret-[#E50019]";
+  "w-full bg-transparent border-b border-white/14 focus:border-red text-brand-white text-sm py-3 outline-none placeholder:text-brand-white/20 transition-colors duration-200 caret-red";
 
 const labelClass =
-  "block text-[#F5F5F5]/35 text-[9px] tracking-[0.3em] uppercase mb-2";
+  "block text-brand-white/35 text-[9px] tracking-[0.3em] uppercase mb-2";
 
 export default function ContactForm({
   initialService = "",
+  initialPackage = "",
+  initialPrice = "",
+  initialDeposit = "",
 }: {
   initialService?: string;
+  initialPackage?: string;
+  initialPrice?: string;
+  initialDeposit?: string;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [instagram, setInstagram] = useState("");
   const [company, setCompany] = useState("");
   const [service, setService] = useState(initialService);
   const [budget, setBudget] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "sent">("idle");
 
+  const hasPackage = Boolean(initialPackage);
   const selectedServiceLabel =
     serviceOptions.find((s) => s.value === service)?.label ?? "";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus("submitting");
-    // Simulate async submission — wire to Resend / your backend here
     await new Promise((r) => setTimeout(r, 1200));
     setStatus("sent");
   }
@@ -51,26 +63,28 @@ export default function ContactForm({
     return (
       <div className="flex flex-col py-16">
         <div
-          className="font-display text-[#E50019] leading-none mb-6"
+          className="font-display text-red leading-none mb-6"
           style={{ fontSize: "clamp(56px, 6vw, 80px)" }}
         >
           ✓
         </div>
         <h3
-          className="font-display uppercase text-[#F5F5F5] mb-4"
+          className="font-display uppercase text-brand-white mb-4"
           style={{ fontSize: "clamp(28px, 3vw, 40px)" }}
         >
           Message Received.
         </h3>
-        <p className="text-[#F5F5F5]/45 text-sm leading-relaxed max-w-sm">
-          {selectedServiceLabel
+        <p className="text-brand-white/45 text-sm leading-relaxed max-w-sm">
+          {hasPackage
+            ? `We received your booking request for the ${initialPackage}. `
+            : selectedServiceLabel
             ? `We received your inquiry about ${selectedServiceLabel}. `
             : "We received your message. "}
           Our team will review your brief and be in touch within 24 hours.
         </p>
         <a
           href="/"
-          className="mt-8 inline-flex items-center gap-2 text-[#E50019] text-[11px] tracking-[0.25em] uppercase hover:gap-4 transition-all duration-300"
+          className="mt-8 inline-flex items-center gap-2 text-red text-[11px] tracking-[0.25em] uppercase hover:gap-4 transition-all duration-300"
         >
           Back to Home <span>→</span>
         </a>
@@ -79,12 +93,47 @@ export default function ContactForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
-      {/* Row 1: Name + Email */}
+    <form onSubmit={handleSubmit} noValidate className="space-y-8">
+
+      {/* ── Package Banner ── */}
+      {hasPackage && (
+        <div className="border border-red/30 bg-red/5 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="text-red text-[9px] tracking-[0.35em] uppercase mb-1">
+              Selected Package
+            </div>
+            <div className="text-brand-white font-medium text-sm">
+              {initialPackage}
+            </div>
+            {initialDeposit && (
+              <div className="text-brand-white/40 text-[10px] tracking-widest mt-1">
+                Deposit required: <span className="text-red/80">{initialDeposit}</span>
+              </div>
+            )}
+          </div>
+          <div className="shrink-0 text-right">
+            <div
+              className="font-display text-brand-white leading-none"
+              style={{ fontSize: "clamp(28px, 3vw, 40px)" }}
+            >
+              {initialPrice}
+            </div>
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); window.history.back(); }}
+              className="text-brand-white/30 text-[9px] tracking-[0.2em] uppercase hover:text-red transition-colors duration-200 mt-1 inline-block"
+            >
+              ← Change package
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Row 1 — Name + Email */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8">
         <div>
           <label className={labelClass}>
-            Full Name <span className="text-[#E50019]">*</span>
+            Full Name <span className="text-red">*</span>
           </label>
           <input
             type="text"
@@ -97,7 +146,7 @@ export default function ContactForm({
         </div>
         <div>
           <label className={labelClass}>
-            Email Address <span className="text-[#E50019]">*</span>
+            Email Address <span className="text-red">*</span>
           </label>
           <input
             type="email"
@@ -109,96 +158,121 @@ export default function ContactForm({
           />
         </div>
 
-        {/* Row 2: Company + Service */}
+        {/* Row 2 — Phone + Instagram */}
         <div>
-          <label className={labelClass}>Company</label>
+          <label className={labelClass}>
+            Phone Number <span className="text-red">*</span>
+          </label>
+          <input
+            type="tel"
+            required
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="+1 (305) 000-0000"
+            className={inputClass}
+          />
+        </div>
+        <div>
+          <label className={labelClass}>Instagram / Social Handle</label>
+          <input
+            type="text"
+            value={instagram}
+            onChange={(e) => setInstagram(e.target.value)}
+            placeholder="@yourbrand"
+            className={inputClass}
+          />
+        </div>
+
+        {/* Row 3 — Company + Service */}
+        <div>
+          <label className={labelClass}>Company / Brand Name</label>
           <input
             type="text"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
-            placeholder="Your Company"
+            placeholder="Your Brand"
             className={inputClass}
           />
         </div>
         <div>
           <label className={labelClass}>
-            Service Interest <span className="text-[#E50019]">*</span>
+            Service Interest <span className="text-red">*</span>
           </label>
           <div className="relative">
             <select
               required
               value={service}
               onChange={(e) => setService(e.target.value)}
-              className="w-full bg-[#0A0A0A] border-b border-white/[0.14] focus:border-[#E50019] text-sm py-3 outline-none appearance-none transition-colors duration-200 cursor-pointer"
+              className="w-full bg-brand-black border-b border-white/14 focus:border-red text-sm py-3 outline-none appearance-none transition-colors duration-200 cursor-pointer"
               style={{ color: service ? "#F5F5F5" : "rgba(245,245,245,0.2)" }}
             >
-              <option value="" disabled>
-                Select a service...
-              </option>
+              <option value="" disabled>Select a service...</option>
               {serviceOptions.map((opt) => (
-                <option
-                  key={opt.value}
-                  value={opt.value}
-                  className="bg-[#111111] text-[#F5F5F5]"
-                >
+                <option key={opt.value} value={opt.value} className="bg-[#111111] text-brand-white">
                   {opt.label}
                 </option>
               ))}
             </select>
-            <span className="absolute right-0 top-1/2 -translate-y-1/2 text-[#E50019] text-[10px] pointer-events-none">
-              ▾
-            </span>
+            <span className="absolute right-0 top-1/2 -translate-y-1/2 text-red text-[10px] pointer-events-none">▾</span>
           </div>
         </div>
       </div>
 
-      {/* Row 3: Budget */}
-      <div className="mt-8">
-        <label className={labelClass}>Budget Range</label>
-        <div className="relative">
-          <select
-            value={budget}
-            onChange={(e) => setBudget(e.target.value)}
-            className="w-full bg-[#0A0A0A] border-b border-white/[0.14] focus:border-[#E50019] text-sm py-3 outline-none appearance-none transition-colors duration-200 cursor-pointer"
-            style={{ color: budget ? "#F5F5F5" : "rgba(245,245,245,0.2)" }}
-          >
-            <option value="">Select budget range...</option>
-            {budgetOptions.map((opt) => (
-              <option
-                key={opt.value}
-                value={opt.value}
-                className="bg-[#111111] text-[#F5F5F5]"
-              >
-                {opt.label}
-              </option>
-            ))}
-          </select>
-          <span className="absolute right-0 top-1/2 -translate-y-1/2 text-[#E50019] text-[10px] pointer-events-none">
-            ▾
-          </span>
+      {/* Budget — hidden when a package is pre-selected */}
+      {!hasPackage && (
+        <div>
+          <label className={labelClass}>Budget Range</label>
+          <div className="relative">
+            <select
+              value={budget}
+              onChange={(e) => setBudget(e.target.value)}
+              className="w-full bg-brand-black border-b border-white/14 focus:border-red text-sm py-3 outline-none appearance-none transition-colors duration-200 cursor-pointer"
+              style={{ color: budget ? "#F5F5F5" : "rgba(245,245,245,0.2)" }}
+            >
+              <option value="">Select budget range...</option>
+              {budgetOptions.map((opt) => (
+                <option key={opt.value} value={opt.value} className="bg-[#111111] text-brand-white">
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            <span className="absolute right-0 top-1/2 -translate-y-1/2 text-red text-[10px] pointer-events-none">▾</span>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Row 4: Message */}
-      <div className="mt-8">
+      {/* Message */}
+      <div>
         <label className={labelClass}>
-          Tell Us About Your Project <span className="text-[#E50019]">*</span>
+          {hasPackage ? "Anything we should know?" : "Tell Us About Your Project"}{" "}
+          <span className="text-red">*</span>
         </label>
         <textarea
           required
           rows={5}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Describe your goals, timeline, and anything else we should know..."
+          placeholder={
+            hasPackage
+              ? "Share your vision, preferred dates, locations, or any special requirements..."
+              : "Describe your goals, timeline, and anything else we should know..."
+          }
           className={`${inputClass} resize-none`}
         />
       </div>
+
+      {/* Payment note for packages */}
+      {hasPackage && (
+        <p className="text-brand-white/25 text-[10px] tracking-[0.2em] uppercase">
+          Payment via PayPal · Cash App · Zelle · All Electronic Payments
+        </p>
+      )}
 
       {/* Submit */}
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="mt-10 flex items-center gap-3 bg-[#E50019] text-[#F5F5F5] text-[11px] tracking-[0.22em] uppercase px-10 py-4 hover:bg-[#FF0022] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300"
+        className="flex items-center gap-3 bg-red text-brand-white text-[11px] tracking-[0.22em] uppercase px-10 py-4 hover:bg-[#FF0022] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300"
       >
         {status === "submitting" ? (
           <>
@@ -210,7 +284,8 @@ export default function ContactForm({
           </>
         ) : (
           <>
-            Send Message <span className="text-sm">→</span>
+            {hasPackage ? "Book Package" : "Send Message"}{" "}
+            <span className="text-sm">→</span>
           </>
         )}
       </button>

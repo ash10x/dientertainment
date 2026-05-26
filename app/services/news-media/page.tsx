@@ -85,6 +85,7 @@ const data: ServiceData = {
     },
   ],
   ctaHeadline: "Let's build your\nmedia presence.",
+  packagesVariant: "marketing",
 };
 
 export default function NewsMediaPage() {

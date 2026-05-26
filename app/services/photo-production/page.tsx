@@ -85,6 +85,7 @@ const data: ServiceData = {
     },
   ],
   ctaHeadline: "Let's shoot your\nbrand story.",
+  packagesVariant: "photo",
 };
 
 export default function PhotoProductionPage() {

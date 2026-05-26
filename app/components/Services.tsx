@@ -31,6 +31,30 @@ const services = [
       "Cinematic storytelling at its finest. From concept to final cut, we produce video content that doesn't just entertain — it converts and stays with you.",
     tags: ["Brand Films", "Commercials", "Social Content", "Reels"],
   },
+  {
+    number: "05",
+    title: "AI Video Creation",
+    href: "/services/ai-video-creation",
+    description:
+      "Studio-quality video at a fraction of the cost and timeline. AI-generated commercials, product ads, cinematic reels, and digital influencers built to convert.",
+    tags: ["AI Commercials", "Product Ads", "Cinematic Reels", "AI Influencers"],
+  },
+  {
+    number: "06",
+    title: "AI Image Generation",
+    href: "/services/ai-image-generation",
+    description:
+      "Photorealistic, campaign-ready visuals produced by AI — luxury product photos, billboards, lifestyle ads, and Instagram graphics with zero studio required.",
+    tags: ["Product Photos", "Billboards", "Lifestyle Ads", "Social Graphics"],
+  },
+  {
+    number: "07",
+    title: "Script Writing",
+    href: "/services/script-writing",
+    description:
+      "Words that stop the scroll and move people to act. Viral hooks, ad scripts, captions, and brand storytelling engineered for the way modern audiences consume content.",
+    tags: ["Viral Hooks", "Ad Scripts", "Captions", "Storytelling"],
+  },
 ];
 
 export default function Services() {

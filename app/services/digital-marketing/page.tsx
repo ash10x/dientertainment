@@ -85,6 +85,7 @@ const data: ServiceData = {
     },
   ],
   ctaHeadline: "Let's dominate\nyour market.",
+  packagesVariant: "marketing",
 };
 
 export default function DigitalMarketingPage() {
