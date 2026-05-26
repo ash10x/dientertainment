@@ -27,7 +27,7 @@ export default function Hero() {
         <div className="flex items-center gap-4 mb-10">
           <div className="w-8 h-px bg-[#E50019]" />
           <span className="text-[#E50019] text-[10px] tracking-[0.35em] uppercase">
-            AI Videos · AI Commercials · AI Branding
+            Digital Marketing · News & Media · AI Branding
           </span>
         </div>
 
