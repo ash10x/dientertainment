@@ -85,6 +85,7 @@ const data: ServiceData = {
     },
   ],
   ctaHeadline: "Let's produce\nyour vision.",
+  packagesVariant: "video",
 };
 
 export default function VideoProductionPage() {

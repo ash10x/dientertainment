@@ -1,6 +1,8 @@
 import { db } from "./db";
-import { workProjects, testimonials, siteStats } from "./schema";
+import { workProjects, testimonials, siteStats, packages } from "./schema";
 import { eq, asc } from "drizzle-orm";
+
+export type PackageRow = typeof packages.$inferSelect;
 
 export async function getWorkProjects() {
   return db
@@ -39,4 +41,12 @@ export async function getStatsByPage(page: string) {
     .from(siteStats)
     .where(eq(siteStats.page, page))
     .orderBy(asc(siteStats.sortOrder));
+}
+
+export async function getPackagesByService(serviceSlug: string) {
+  return db
+    .select()
+    .from(packages)
+    .where(eq(packages.serviceSlug, serviceSlug))
+    .orderBy(asc(packages.sortOrder));
 }

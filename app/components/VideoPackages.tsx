@@ -1,6 +1,6 @@
 import type { PackageRow } from "@/lib/queries";
 
-export default function PhotoPackages({ packages }: { packages: PackageRow[] }) {
+export default function VideoPackages({ packages }: { packages: PackageRow[] }) {
   return (
     <section className="bg-brand-black py-24 lg:py-32 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -17,12 +17,12 @@ export default function PhotoPackages({ packages }: { packages: PackageRow[] }) 
           >
             Choose your
             <br />
-            <span className="text-red">V.I.P level.</span>
+            <span className="text-red">production level.</span>
           </h2>
           <p className="text-brand-white/35 text-sm leading-relaxed max-w-xs md:text-right">
-            Turnaround time for all edits: <span className="text-brand-white/60">1–3 business days.</span>
+            Deposit required to book.
             <br />
-            Deposit required to book. Any shoot outside Miami-Dade, Palm Beach &amp; Broward County subject to additional fees.
+            Turnaround: <span className="text-brand-white/60">5–10 business days</span> after shoot.
           </p>
         </div>
 
@@ -87,7 +87,7 @@ export default function PhotoPackages({ packages }: { packages: PackageRow[] }) 
                     )}
                   </div>
                   <a
-                    href={`/contact?service=photo-production&package=${encodeURIComponent(pkg.name)}&price=${encodeURIComponent(pkg.price)}${pkg.deposit ? `&deposit=${encodeURIComponent(pkg.deposit)}` : ""}`}
+                    href={`/contact?service=video-production&package=${encodeURIComponent(pkg.name)}&price=${encodeURIComponent(pkg.price)}${pkg.deposit ? `&deposit=${encodeURIComponent(pkg.deposit)}` : ""}`}
                     className={`flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase px-6 py-3 transition-colors duration-200 whitespace-nowrap ${
                       pkg.highlight
                         ? "bg-red text-brand-white hover:bg-[#FF0022]"

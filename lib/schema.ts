@@ -54,3 +54,17 @@ export const contactSubmissions = pgTable("contact_submissions", {
   message: text("message").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+export const packages = pgTable("packages", {
+  id: serial("id").primaryKey(),
+  serviceSlug: text("service_slug").notNull(),
+  name: text("name").notNull(),
+  price: text("price").notNull(),
+  deposit: text("deposit"),
+  description: text("description"),
+  duration: text("duration"),
+  includes: text("includes").array().notNull(),
+  bestFor: text("best_for").array(),
+  highlight: boolean("highlight").notNull().default(false),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
