@@ -185,14 +185,21 @@ export default function Nav() {
           </div>
 
           <a
-            href="/#about"
+            href="/about"
             onClick={close}
             className="text-[11px] tracking-[0.25em] uppercase text-brand-white/60 hover:text-brand-white py-3 border-b border-white/6 transition-colors duration-200"
           >
             About
           </a>
           <a
-            href="/#contact"
+            href="/testimonials"
+            onClick={close}
+            className="text-[11px] tracking-[0.25em] uppercase text-brand-white/60 hover:text-brand-white py-3 border-b border-white/6 transition-colors duration-200"
+          >
+            Testimonials
+          </a>
+          <a
+            href="/contact"
             onClick={close}
             className="text-[11px] tracking-[0.25em] uppercase text-brand-white/60 hover:text-brand-white py-3 border-b border-white/6 transition-colors duration-200"
           >
