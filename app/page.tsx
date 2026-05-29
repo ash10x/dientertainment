@@ -1,4 +1,3 @@
-import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import MarqueeStrip from "./components/MarqueeStrip";
 import Services from "./components/Services";
@@ -16,7 +15,6 @@ export default async function Home() {
 
   return (
     <main className="bg-brand-black">
-      <Nav />
       <Hero />
       <MarqueeStrip />
       <Services />
