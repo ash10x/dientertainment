@@ -4,11 +4,26 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import AdminSidebar from "./AdminSidebar";
 
+interface AdminUser {
+  name: string;
+  email: string;
+  role: string;
+}
+
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<AdminUser | null>(null);
   const pathname = usePathname();
 
   useEffect(() => { setOpen(false); }, [pathname]);
+
+  // Re-fetch on every route change (including browser back/forward navigation)
+  useEffect(() => {
+    fetch("/api/admin/auth/me")
+      .then((r) => r.json())
+      .then((d) => setUser(d.user ?? null))
+      .catch(() => setUser(null));
+  }, [pathname]);
 
   return (
     <div className="flex min-h-screen bg-[#0A0A0A] text-[#F5F5F5]">
@@ -44,7 +59,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           open ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
-        <AdminSidebar onClose={() => setOpen(false)} />
+        <AdminSidebar user={user} onClose={() => setOpen(false)} />
       </div>
 
       {/* Main content — offset by mobile header height */}

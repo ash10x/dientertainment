@@ -46,7 +46,8 @@ export default function ContactForm({
   const [service, setService] = useState(initialService);
   const [budget, setBudget] = useState("");
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<"idle" | "submitting" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "sent" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const hasPackage = Boolean(initialPackage);
   const selectedServiceLabel =
@@ -55,8 +56,36 @@ export default function ContactForm({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus("submitting");
-    await new Promise((r) => setTimeout(r, 1200));
-    setStatus("sent");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: name,
+          email,
+          phone,
+          socialHandle: instagram || null,
+          companyName: company || null,
+          service,
+          budget: budget || null,
+          packageName: initialPackage || null,
+          packagePrice: initialPrice || null,
+          packageDeposit: initialDeposit || null,
+          message,
+        }),
+      });
+      if (res.ok) {
+        setStatus("sent");
+      } else {
+        const data = await res.json();
+        setErrorMsg(data.error ?? "Something went wrong. Please try again.");
+        setStatus("error");
+      }
+    } catch {
+      setErrorMsg("Network error. Please check your connection and try again.");
+      setStatus("error");
+    }
   }
 
   if (status === "sent") {
@@ -266,6 +295,11 @@ export default function ContactForm({
         <p className="text-brand-white/25 text-[10px] tracking-[0.2em] uppercase">
           Payment via PayPal · Cash App · Zelle · All Electronic Payments
         </p>
+      )}
+
+      {/* Error message */}
+      {status === "error" && (
+        <p className="text-red text-xs tracking-wide">{errorMsg}</p>
       )}
 
       {/* Submit */}

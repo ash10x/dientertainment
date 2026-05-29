@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const serviceDropdown = [
   { label: "Digital Marketing", href: "/services/digital-marketing" },
@@ -15,6 +16,25 @@ const serviceDropdown = [
 export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    function checkAuth() {
+      fetch("/api/admin/auth/me", { cache: "no-store" })
+        .then((r) => r.json())
+        .then((data) => setIsAdmin(!!data.user))
+        .catch(() => setIsAdmin(false));
+    }
+
+    checkAuth();
+
+    // pageshow fires on both fresh page load AND bfcache restores (browser back/forward
+    // from a full-page navigation), ensuring the button re-appears correctly in all cases.
+    window.addEventListener("pageshow", checkAuth);
+    return () => window.removeEventListener("pageshow", checkAuth);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const close = () => setMobileOpen(false);
 
@@ -98,6 +118,15 @@ export default function Nav() {
           >
             Contact
           </a>
+          {isAdmin && (
+            <a
+              href="/admin"
+              className="flex items-center gap-1.5 border border-red/30 bg-red/8 hover:bg-red/15 hover:border-red/50 text-red text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 transition-all duration-200"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-red shrink-0" />
+              Back Office
+            </a>
+          )}
         </div>
 
         {/* Desktop CTA */}
@@ -205,6 +234,19 @@ export default function Nav() {
           >
             Contact
           </a>
+
+          {isAdmin && (
+            <a
+              href="/admin"
+              onClick={close}
+              className="flex items-center gap-2 py-3 border-b border-white/6 transition-colors duration-200"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-red shrink-0" />
+              <span className="text-[11px] tracking-[0.25em] uppercase text-red">
+                Back Office
+              </span>
+            </a>
+          )}
 
           <a
             href="/contact"

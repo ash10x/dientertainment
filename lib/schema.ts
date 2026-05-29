@@ -69,6 +69,15 @@ export const packages = pgTable("packages", {
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
+export const activityLogs = pgTable("activity_logs", {
+  id: serial("id").primaryKey(),
+  type: text("type").notNull(),
+  description: text("description").notNull(),
+  meta: text("meta"),
+  ip: text("ip"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const adminUsers = pgTable("admin_users", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
