@@ -68,3 +68,12 @@ export const packages = pgTable("packages", {
   highlight: boolean("highlight").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),
 });
+
+export const adminUsers = pgTable("admin_users", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  name: text("name").notNull(),
+  role: text("role").notNull().default("admin"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
