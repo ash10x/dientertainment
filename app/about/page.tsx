@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
   title: "About — diEntertainment",
@@ -64,6 +65,7 @@ const services = [
 
 export default function AboutPage() {
   return (
+    <>
     <main className="bg-brand-black pt-16">
 
       {/* ─── HERO ─── */}
@@ -355,5 +357,7 @@ export default function AboutPage() {
         </div>
       </section>
     </main>
+    <Footer />
+    </>
   );
 }

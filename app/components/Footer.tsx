@@ -1,12 +1,21 @@
-const footerLinks: Record<string, string[]> = {
+import Link from "next/link";
+
+const footerLinks: Record<string, { label: string; href: string }[]> = {
   Services: [
-    "Digital Marketing",
-    "News & Media",
-    "Photo Production",
-    "Video Production",
+    { label: "Digital Marketing", href: "/services/digital-marketing" },
+    { label: "News & Media", href: "/services/news-media" },
+    { label: "Photo Production", href: "/services/photo-production" },
+    { label: "Video Production", href: "/services/video-production" },
   ],
-  Company: ["About", "Work", "Careers", "Contact"],
-  Legal: ["Privacy Policy", "Terms of Service"],
+  Company: [
+    { label: "About", href: "/about" },
+    { label: "Work", href: "/work" },
+    { label: "Contact", href: "/contact" },
+  ],
+  Legal: [
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Terms of Service", href: "/terms-of-service" },
+  ],
 };
 
 const socials = [
@@ -56,13 +65,13 @@ export default function Footer() {
               </div>
               <ul className="space-y-3">
                 {items.map((item) => (
-                  <li key={item}>
-                    <a
-                      href="#"
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
                       className="text-[#F5F5F5]/55 hover:text-[#F5F5F5] text-sm transition-colors duration-200"
                     >
-                      {item}
-                    </a>
+                      {item.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
