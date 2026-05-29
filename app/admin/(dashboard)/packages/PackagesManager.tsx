@@ -94,7 +94,7 @@ export default function PackagesManager({ initialPackages }: { initialPackages: 
 
   return (
     <>
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-white">Packages</h1>
@@ -111,7 +111,8 @@ export default function PackagesManager({ initialPackages }: { initialPackages: 
         </div>
 
         <div className="bg-[#111] border border-white/8 rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-155">
             <thead>
               <tr className="border-b border-white/8">
                 {["Name", "Service", "Price", "Deposit", "Highlight", "Order", ""].map((h) => (
@@ -142,12 +143,13 @@ export default function PackagesManager({ initialPackages }: { initialPackages: 
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? "Edit Package" : "New Package"}>
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Service</label>
               <select value={form.serviceSlug} onChange={(e) => set("serviceSlug", e.target.value)} className={inputCls}>
@@ -159,7 +161,7 @@ export default function PackagesManager({ initialPackages }: { initialPackages: 
               <input type="text" value={form.name} onChange={(e) => set("name", e.target.value)} className={inputCls} placeholder="Starter Pack" />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Price</label>
               <input type="text" value={form.price} onChange={(e) => set("price", e.target.value)} className={inputCls} placeholder="$500" />
@@ -169,7 +171,7 @@ export default function PackagesManager({ initialPackages }: { initialPackages: 
               <input type="text" value={form.deposit ?? ""} onChange={(e) => set("deposit", e.target.value || null)} className={inputCls} placeholder="$250" />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Duration (optional)</label>
               <input type="text" value={form.duration ?? ""} onChange={(e) => set("duration", e.target.value || null)} className={inputCls} placeholder="1 day shoot" />

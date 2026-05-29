@@ -13,7 +13,11 @@ const links = [
   { href: "/admin/users", label: "Users", icon: "◯" },
 ];
 
-export default function AdminSidebar() {
+interface AdminSidebarProps {
+  onClose?: () => void;
+}
+
+export default function AdminSidebar({ onClose }: AdminSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -23,11 +27,22 @@ export default function AdminSidebar() {
   }
 
   return (
-    <aside className="w-60 min-h-screen bg-[#0d0d0d] border-r border-white/8 flex flex-col">
-      <div className="px-6 py-6 border-b border-white/8">
-        <span className="font-bebas text-xl tracking-widest text-[#E50019]">di</span>
-        <span className="font-bebas text-xl tracking-widest text-white">ENTERTAINMENT</span>
-        <p className="text-[10px] text-white/30 uppercase tracking-widest mt-0.5">Back Office</p>
+    <aside className="w-60 h-full min-h-screen bg-[#0d0d0d] border-r border-white/8 flex flex-col">
+      <div className="px-6 py-6 border-b border-white/8 flex items-center justify-between">
+        <div>
+          <span className="font-bebas text-xl tracking-widest text-[#E50019]">di</span>
+          <span className="font-bebas text-xl tracking-widest text-white">ENTERTAINMENT</span>
+          <p className="text-[10px] text-white/30 uppercase tracking-widest mt-0.5">Back Office</p>
+        </div>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="md:hidden w-7 h-7 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/8 rounded-md transition-colors text-lg"
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
+        )}
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-0.5">

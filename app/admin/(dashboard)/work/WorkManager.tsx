@@ -76,7 +76,7 @@ export default function WorkManager({ initialProjects }: WorkManagerProps) {
 
   return (
     <>
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-white">Work Projects</h1>
@@ -88,7 +88,8 @@ export default function WorkManager({ initialProjects }: WorkManagerProps) {
         </div>
 
         <div className="bg-[#111] border border-white/8 rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-155">
             <thead>
               <tr className="border-b border-white/8">
                 {["Title", "Client", "Category", "Year", "Slug", "Order", ""].map((h) => (
@@ -117,16 +118,17 @@ export default function WorkManager({ initialProjects }: WorkManagerProps) {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? "Edit Project" : "New Project"}>
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Title"><Input value={form.title} onChange={(v) => set("title", v)} placeholder="Brand Campaign" /></Field>
             <Field label="Client"><Input value={form.client} onChange={(v) => set("client", v)} placeholder="Client Name" /></Field>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Slug"><Input value={form.slug} onChange={(v) => set("slug", v)} placeholder="brand-campaign" mono /></Field>
             <Field label="Year"><Input value={form.year} onChange={(v) => set("year", v)} placeholder="2025" /></Field>
           </div>
@@ -136,11 +138,11 @@ export default function WorkManager({ initialProjects }: WorkManagerProps) {
             </select>
           </Field>
           <Field label="Outcome"><Input value={form.outcome} onChange={(v) => set("outcome", v)} placeholder="2M+ views in 30 days" /></Field>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Background Color"><Input value={form.bg} onChange={(v) => set("bg", v)} placeholder="#1a1a1a" mono /></Field>
             <Field label="Accent Color"><Input value={form.accentColor} onChange={(v) => set("accentColor", v)} placeholder="#E50019" mono /></Field>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Sort Order"><input type="number" value={form.sortOrder} onChange={(e) => set("sortOrder", Number(e.target.value))} className={inputCls} /></Field>
             <Field label="Light Text">
               <div className="flex items-center gap-2 mt-2">

@@ -54,7 +54,7 @@ export default function StatsManager({ initialStats }: { initialStats: Stat[] })
 
   return (
     <>
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-white">Site Stats</h1>
@@ -72,7 +72,8 @@ export default function StatsManager({ initialStats }: { initialStats: Stat[] })
                 <div className="px-4 py-3 border-b border-white/8 bg-white/3">
                   <span className="text-xs text-white/50 uppercase tracking-widest font-medium">{page}</span>
                 </div>
-                <table className="w-full text-sm">
+                <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-80">
                   <thead>
                     <tr className="border-b border-white/5">
                       {["Value", "Label", "Order", ""].map((h) => (
@@ -96,6 +97,7 @@ export default function StatsManager({ initialStats }: { initialStats: Stat[] })
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
             );
           })}
@@ -113,7 +115,7 @@ export default function StatsManager({ initialStats }: { initialStats: Stat[] })
               {PAGES.map((p) => <option key={p} value={p}>{p}</option>)}
             </select>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Value</label>
               <input type="text" value={form.statValue} onChange={(e) => set("statValue", e.target.value)} className={inputCls} placeholder="500+" />

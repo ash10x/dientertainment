@@ -54,7 +54,7 @@ export default function UsersManager({ initialUsers }: { initialUsers: User[] })
 
   return (
     <>
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-white">Admin Users</h1>
@@ -64,7 +64,8 @@ export default function UsersManager({ initialUsers }: { initialUsers: User[] })
         </div>
 
         <div className="bg-[#111] border border-white/8 rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-120">
             <thead>
               <tr className="border-b border-white/8">
                 {["Name", "Email", "Role", "Created", ""].map((h) => (
@@ -95,12 +96,13 @@ export default function UsersManager({ initialUsers }: { initialUsers: User[] })
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? "Edit User" : "New Admin User"}>
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Full Name</label>
               <input type="text" value={form.name} onChange={(e) => set("name", e.target.value)} className={inputCls} placeholder="Jane Doe" />
@@ -110,7 +112,7 @@ export default function UsersManager({ initialUsers }: { initialUsers: User[] })
               <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} className={inputCls} placeholder="jane@example.com" />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">
                 {editing ? "New Password (leave blank to keep)" : "Password"}

@@ -63,7 +63,7 @@ export default function TestimonialsManager({ initialTestimonials }: { initialTe
 
   return (
     <>
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-white">Testimonials</h1>
@@ -73,7 +73,8 @@ export default function TestimonialsManager({ initialTestimonials }: { initialTe
         </div>
 
         <div className="bg-[#111] border border-white/8 rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-120">
             <thead>
               <tr className="border-b border-white/8">
                 {["Name", "Role", "Service", "Featured", "Order", ""].map((h) => (
@@ -103,12 +104,13 @@ export default function TestimonialsManager({ initialTestimonials }: { initialTe
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? "Edit Testimonial" : "New Testimonial"}>
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Name</label>
               <input type="text" value={form.name} onChange={(e) => set("name", e.target.value)} className={inputCls} placeholder="John Smith" />
@@ -122,7 +124,7 @@ export default function TestimonialsManager({ initialTestimonials }: { initialTe
             <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Review</label>
             <textarea value={form.review} onChange={(e) => set("review", e.target.value)} rows={4} className={inputCls} placeholder="Their work was incredible..." />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Service</label>
               <select value={form.service} onChange={(e) => set("service", e.target.value)} className={inputCls}>

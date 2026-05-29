@@ -42,13 +42,13 @@ export default async function AdminDashboard() {
   const [counts, recent] = await Promise.all([getCounts(), getRecentSubmissions()]);
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
+    <div className="p-4 sm:p-8">
+      <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl font-bold text-white">Dashboard</h1>
         <p className="text-white/40 text-sm mt-1">Overview of all site content and submissions.</p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-8 sm:mb-10">
         {statCards.map(({ label, key, color }) => (
           <div key={key} className="bg-[#111] border border-white/8 rounded-xl p-5">
             <p className="text-xs text-white/40 uppercase tracking-widest mb-2">{label}</p>
@@ -66,7 +66,7 @@ export default async function AdminDashboard() {
         ) : (
           <div className="divide-y divide-white/5">
             {recent.map((s) => (
-              <div key={s.id} className="px-6 py-4 flex items-start justify-between gap-4">
+              <div key={s.id} className="px-4 sm:px-6 py-4 flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-white truncate">{s.fullName}</p>
                   <p className="text-xs text-white/40 mt-0.5">{s.email} · {s.service}</p>

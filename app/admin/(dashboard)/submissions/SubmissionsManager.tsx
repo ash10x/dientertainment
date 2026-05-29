@@ -39,14 +39,15 @@ export default function SubmissionsManager({ initialSubmissions }: { initialSubm
 
   return (
     <>
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-white">Submissions</h1>
           <p className="text-white/40 text-sm mt-1">{items.length} contact & order submission{items.length !== 1 ? "s" : ""}</p>
         </div>
 
         <div className="bg-[#111] border border-white/8 rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-140">
             <thead>
               <tr className="border-b border-white/8">
                 {["Name", "Email", "Service", "Package", "Date", ""].map((h) => (
@@ -73,13 +74,14 @@ export default function SubmissionsManager({ initialSubmissions }: { initialSubm
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
       <Modal open={!!selected} onClose={() => setSelected(null)} title="Submission Details">
         {selected && (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Detail label="Full Name" value={selected.fullName} />
               <Detail label="Email" value={selected.email} />
               <Detail label="Phone" value={selected.phone} />
