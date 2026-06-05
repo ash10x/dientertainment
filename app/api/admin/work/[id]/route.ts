@@ -6,11 +6,11 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   try {
     const { id } = await params;
     const body = await request.json();
-    const { slug, title, client, category, year, outcome, bg, accentColor, textLight, sortOrder } = body;
+    const { slug, title, client, category, year, outcome, bg, accentColor, textLight, sortOrder, previewUrl } = body;
 
     const [row] = await db
       .update(workProjects)
-      .set({ slug, title, client, category, year, outcome, bg, accentColor, textLight: !!textLight, sortOrder: sortOrder ?? 0 })
+      .set({ slug, title, client, category, year, outcome, bg, accentColor, textLight: !!textLight, sortOrder: sortOrder ?? 0, previewUrl: previewUrl || null })
       .where(eq(workProjects.id, Number(id)))
       .returning();
 

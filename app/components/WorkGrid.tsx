@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CardMedia } from "./CardMedia";
 
 export type Project = {
   id?: number;
@@ -13,10 +14,14 @@ export type Project = {
   bg: string;
   accentColor: string;
   textLight: boolean;
+  previewUrl?: string | null;
 };
 
 const categories = [
   { label: "All", value: "all" },
+  { label: "AI Branding", value: "AI Branding" },
+  { label: "AI Videos", value: "AI Videos" },
+  { label: "AI Commercials", value: "AI Commercials" },
   { label: "Digital Marketing", value: "Digital Marketing" },
   { label: "News & Media", value: "News & Media" },
   { label: "Photo Production", value: "Photo Production" },
@@ -60,90 +65,100 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
         {/* Grid */}
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((project) => (
-              <div
-                key={project.slug}
-                className="work-card relative overflow-hidden cursor-pointer group aspect-square"
-                style={{ backgroundColor: project.bg }}
-              >
-                {/* Bottom accent line */}
+            {filtered.map((project) => {
+              const hasPreview = !!project.previewUrl;
+              const lightText = project.textLight || hasPreview;
+
+              return (
                 <div
-                  className="absolute bottom-0 left-0 right-0 h-0.5 z-10"
-                  style={{ backgroundColor: project.accentColor }}
-                />
-
-                {/* Watermark number */}
-                <span
-                  className="font-display absolute top-4 right-5 leading-none pointer-events-none select-none"
-                  style={{
-                    fontSize: "clamp(64px, 9vw, 112px)",
-                    color: project.textLight
-                      ? "rgba(255,255,255,0.04)"
-                      : "rgba(0,0,0,0.05)",
-                  }}
+                  key={project.slug}
+                  className="work-card relative overflow-hidden cursor-pointer group aspect-square"
+                  style={{ backgroundColor: project.bg }}
                 >
-                  {project.slug}
-                </span>
+                  {/* Background media */}
+                  {hasPreview && (
+                    <>
+                      <CardMedia url={project.previewUrl!} />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/25 to-black/5 z-1" />
+                    </>
+                  )}
 
-                {/* Category pill — top left */}
-                <div className="absolute top-5 left-5 z-10">
-                  <span
-                    className="text-[9px] tracking-[0.2em] uppercase border px-2.5 py-1 block"
-                    style={{
-                      color: project.textLight
-                        ? "rgba(255,255,255,0.45)"
-                        : "rgba(0,0,0,0.4)",
-                      borderColor: project.textLight
-                        ? "rgba(255,255,255,0.14)"
-                        : "rgba(0,0,0,0.14)",
-                    }}
-                  >
-                    {project.category}
-                  </span>
+                  {/* Bottom accent line */}
+                  <div
+                    className="absolute bottom-0 left-0 right-0 h-0.5 z-10"
+                    style={{ backgroundColor: project.accentColor }}
+                  />
+
+                  {/* Watermark number — hidden when preview shown */}
+                  {!hasPreview && (
+                    <span
+                      className="font-display absolute top-4 right-5 leading-none pointer-events-none select-none"
+                      style={{
+                        fontSize: "clamp(64px, 9vw, 112px)",
+                        color: project.textLight
+                          ? "rgba(255,255,255,0.04)"
+                          : "rgba(0,0,0,0.05)",
+                      }}
+                    >
+                      {project.slug}
+                    </span>
+                  )}
+
+                  {/* Category pill */}
+                  <div className="absolute top-5 left-5 z-10">
+                    <span
+                      className="text-[9px] tracking-[0.2em] uppercase border px-2.5 py-1 block"
+                      style={{
+                        color: lightText
+                          ? "rgba(255,255,255,0.45)"
+                          : "rgba(0,0,0,0.4)",
+                        borderColor: lightText
+                          ? "rgba(255,255,255,0.14)"
+                          : "rgba(0,0,0,0.14)",
+                      }}
+                    >
+                      {project.category}
+                    </span>
+                  </div>
+
+                  {/* Red hover overlay */}
+                  <div className="absolute inset-0 bg-red/0 group-hover:bg-red/12 transition-all duration-500 z-10" />
+
+                  {/* Bottom content */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-1.5 group-hover:translate-y-0 transition-transform duration-300 z-20">
+                    <p
+                      className="text-[9px] tracking-[0.18em] uppercase mb-2.5 italic"
+                      style={{
+                        color: lightText
+                          ? "rgba(255,255,255,0.32)"
+                          : "rgba(0,0,0,0.3)",
+                      }}
+                    >
+                      {project.outcome}
+                    </p>
+                    <h3
+                      className="font-display uppercase leading-none mb-1.5"
+                      style={{
+                        fontSize: "clamp(18px, 2.2vw, 26px)",
+                        color: lightText ? "#F5F5F5" : "#0A0A0A",
+                      }}
+                    >
+                      {project.title}
+                    </h3>
+                    <p
+                      className="text-[9px] tracking-[0.2em] uppercase"
+                      style={{
+                        color: lightText
+                          ? "rgba(255,255,255,0.28)"
+                          : "rgba(0,0,0,0.28)",
+                      }}
+                    >
+                      {project.client} · {project.year}
+                    </p>
+                  </div>
                 </div>
-
-                {/* Red hover overlay */}
-                <div className="absolute inset-0 bg-red/0 group-hover:bg-red/12 transition-all duration-500" />
-
-                {/* Bottom content */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-1.5 group-hover:translate-y-0 transition-transform duration-300">
-                  {/* Outcome */}
-                  <p
-                    className="text-[9px] tracking-[0.18em] uppercase mb-2.5 italic"
-                    style={{
-                      color: project.textLight
-                        ? "rgba(255,255,255,0.32)"
-                        : "rgba(0,0,0,0.3)",
-                    }}
-                  >
-                    {project.outcome}
-                  </p>
-
-                  {/* Title */}
-                  <h3
-                    className="font-display uppercase leading-none mb-1.5"
-                    style={{
-                      fontSize: "clamp(18px, 2.2vw, 26px)",
-                      color: project.textLight ? "#F5F5F5" : "#0A0A0A",
-                    }}
-                  >
-                    {project.title}
-                  </h3>
-
-                  {/* Client + year */}
-                  <p
-                    className="text-[9px] tracking-[0.2em] uppercase"
-                    style={{
-                      color: project.textLight
-                        ? "rgba(255,255,255,0.28)"
-                        : "rgba(0,0,0,0.28)",
-                    }}
-                  >
-                    {project.client} · {project.year}
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="flex items-center justify-center py-24">

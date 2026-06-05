@@ -14,7 +14,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { slug, title, client, category, year, outcome, bg, accentColor, textLight, sortOrder } = body;
+    const { slug, title, client, category, year, outcome, bg, accentColor, textLight, sortOrder, previewUrl } = body;
 
     if (!slug || !title || !client || !category || !year || !outcome || !bg || !accentColor) {
       return Response.json({ error: "Missing required fields." }, { status: 400 });
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 
     const [row] = await db
       .insert(workProjects)
-      .values({ slug, title, client, category, year, outcome, bg, accentColor, textLight: !!textLight, sortOrder: sortOrder ?? 0 })
+      .values({ slug, title, client, category, year, outcome, bg, accentColor, textLight: !!textLight, sortOrder: sortOrder ?? 0, previewUrl: previewUrl || null })
       .returning();
 
     return Response.json(row, { status: 201 });

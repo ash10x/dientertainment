@@ -19,6 +19,7 @@ export const workProjects = pgTable("work_projects", {
   accentColor: text("accent_color").notNull(),
   textLight: boolean("text_light").notNull().default(true),
   sortOrder: integer("sort_order").notNull().default(0),
+  previewUrl: text("preview_url"),
 });
 
 export const testimonials = pgTable("testimonials", {

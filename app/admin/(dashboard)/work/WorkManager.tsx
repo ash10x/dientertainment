@@ -16,6 +16,7 @@ type Project = {
   accentColor: string;
   textLight: boolean;
   sortOrder: number;
+  previewUrl: string | null;
 };
 
 const CATEGORIES = [
@@ -25,7 +26,7 @@ const CATEGORIES = [
 
 const empty: Omit<Project, "id"> = {
   slug: "", title: "", client: "", category: CATEGORIES[0], year: "",
-  outcome: "", bg: "#1a1a1a", accentColor: "#E50019", textLight: true, sortOrder: 0,
+  outcome: "", bg: "#1a1a1a", accentColor: "#E50019", textLight: true, sortOrder: 0, previewUrl: null,
 };
 
 interface WorkManagerProps { initialProjects: Project[] }
@@ -138,6 +139,9 @@ export default function WorkManager({ initialProjects }: WorkManagerProps) {
             </select>
           </Field>
           <Field label="Outcome"><Input value={form.outcome} onChange={(v) => set("outcome", v)} placeholder="2M+ views in 30 days" /></Field>
+          <Field label="Preview URL (image or video)">
+            <Input value={form.previewUrl ?? ""} onChange={(v) => set("previewUrl", v || null)} placeholder="https://... (.jpg, .png, .mp4, .webm)" />
+          </Field>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Background Color"><Input value={form.bg} onChange={(v) => set("bg", v)} placeholder="#1a1a1a" mono /></Field>
             <Field label="Accent Color"><Input value={form.accentColor} onChange={(v) => set("accentColor", v)} placeholder="#E50019" mono /></Field>
