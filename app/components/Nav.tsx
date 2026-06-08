@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const serviceDropdown = [
   { label: "Digital Marketing", href: "/services/digital-marketing" },
@@ -33,7 +34,7 @@ export default function Nav() {
     // from a full-page navigation), ensuring the button re-appears correctly in all cases.
     window.addEventListener("pageshow", checkAuth);
     return () => window.removeEventListener("pageshow", checkAuth);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const close = () => setMobileOpen(false);
@@ -47,12 +48,13 @@ export default function Nav() {
           className="flex items-baseline gap-0 shrink-0"
           onClick={close}
         >
-          <span className="font-display text-[1.6rem] leading-none text-red">
-            di
-          </span>
-          <span className="font-display text-[1.6rem] leading-none text-brand-white tracking-widest">
-            ENTERTAINMENT
-          </span>
+          <Image
+            src="/logo1.svg"
+            alt="Red Pill Logo"
+            width={24}
+            height={24}
+            className="w-12 h-12"
+          />
         </a>
 
         {/* Desktop nav */}
