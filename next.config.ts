@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["@neondatabase/serverless", "drizzle-orm"],
+  serverExternalPackages: ["@neondatabase/serverless"],
 };
 
 export default nextConfig;
