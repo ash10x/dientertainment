@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   title: "diEntertainment — Elevate Your Brand",
   description:
     "News, media, and digital marketing for brands that refuse to be ignored. High-impact content, photo & video production, and brand strategy.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

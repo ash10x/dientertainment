@@ -49,11 +49,11 @@ export default function Nav() {
           onClick={close}
         >
           <Image
-            src="/logo1.svg"
-            alt="Red Pill Logo"
+            src="/icon.svg"
+            alt="Logo"
             width={24}
             height={24}
-            className="w-12 h-12"
+            className="w-10 h-10"
           />
         </a>
 
