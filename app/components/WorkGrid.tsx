@@ -34,10 +34,12 @@ const categories = [
 export default function WorkGrid({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState("all");
 
+  const normalize = (s: string) => s.toLowerCase().replace(/[\s_-]+/g, "");
+
   const filtered =
     active === "all"
       ? projects
-      : projects.filter((p) => p.category === active);
+      : projects.filter((p) => normalize(p.category) === normalize(active));
 
   return (
     <section className="bg-brand-black py-14 pb-28">

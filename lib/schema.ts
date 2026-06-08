@@ -79,6 +79,11 @@ export const activityLogs = pgTable("activity_logs", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const siteSettings = pgTable("site_settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+});
+
 export const adminUsers = pgTable("admin_users", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),

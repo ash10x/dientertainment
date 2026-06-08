@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import WorkGrid from "../components/WorkGrid";
 import { getWorkProjects, getStatsByPage } from "@/lib/queries";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Work — diEntertainment",
   description:

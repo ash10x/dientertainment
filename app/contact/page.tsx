@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ContactForm from "../components/ContactForm";
+import { getSettings } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Contact — diEntertainment",
@@ -7,26 +8,31 @@ export const metadata: Metadata = {
     "Start a project with diEntertainment. Tell us about your brand and we'll get back within 24 hours.",
 };
 
-const contactDetails = [
-  { label: "Email", value: "hello@dientertainment.com", href: "mailto:hello@dientertainment.com" },
-  { label: "Phone", value: "+1 (234) 567-8900", href: "tel:+12345678900" },
-];
-
-const socials = [
-  { label: "Instagram", href: "#" },
-  { label: "Twitter / X", href: "#" },
-  { label: "LinkedIn", href: "#" },
-  { label: "YouTube", href: "#" },
+const socialOrder = [
+  { key: "social_instagram", label: "Instagram" },
+  { key: "social_twitter", label: "Twitter / X" },
+  { key: "social_linkedin", label: "LinkedIn" },
+  { key: "social_youtube", label: "YouTube" },
+  { key: "social_tiktok", label: "TikTok" },
 ];
 
 export default async function ContactPage(props: {
   searchParams: Promise<{ service?: string; package?: string; price?: string; deposit?: string }>;
 }) {
-  const searchParams = await props.searchParams;
+  const [searchParams, settings] = await Promise.all([props.searchParams, getSettings()]);
   const initialService = searchParams.service ?? "";
   const initialPackage = searchParams.package ?? "";
   const initialPrice = searchParams.price ?? "";
   const initialDeposit = searchParams.deposit ?? "";
+
+  const contactDetails = [
+    ...(settings.email ? [{ label: "Email", value: settings.email, href: `mailto:${settings.email}` }] : []),
+    ...(settings.phone ? [{ label: "Phone", value: settings.phone_display || settings.phone, href: `tel:${settings.phone}` }] : []),
+  ];
+
+  const socials = socialOrder
+    .filter((s) => settings[s.key] && settings[s.key] !== "#")
+    .map((s) => ({ label: s.label, href: settings[s.key] }));
 
   return (
     <main className="bg-brand-black pt-16">

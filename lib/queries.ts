@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { workProjects, testimonials, siteStats, packages } from "./schema";
+import { workProjects, testimonials, siteStats, packages, siteSettings } from "./schema";
 import { eq, asc } from "drizzle-orm";
 
 export type PackageRow = typeof packages.$inferSelect;
@@ -41,6 +41,26 @@ export async function getStatsByPage(page: string) {
     .from(siteStats)
     .where(eq(siteStats.page, page))
     .orderBy(asc(siteStats.sortOrder));
+}
+
+const SETTING_DEFAULTS: Record<string, string> = {
+  phone: "+12345678900",
+  phone_display: "+1 (234) 567-8900",
+  email: "hello@dientertainment.com",
+  social_instagram: "#",
+  social_twitter: "#",
+  social_linkedin: "#",
+  social_youtube: "#",
+  social_tiktok: "#",
+};
+
+export async function getSettings(): Promise<Record<string, string>> {
+  try {
+    const rows = await db.select().from(siteSettings);
+    return { ...SETTING_DEFAULTS, ...Object.fromEntries(rows.map((r) => [r.key, r.value])) };
+  } catch {
+    return SETTING_DEFAULTS;
+  }
 }
 
 export async function getPackagesByService(serviceSlug: string) {

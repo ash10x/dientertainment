@@ -1,4 +1,18 @@
-export default function ContactCTA() {
+import { getSettings } from "@/lib/queries";
+
+const socialOrder = [
+  { key: "social_instagram", label: "Instagram" },
+  { key: "social_twitter", label: "Twitter / X" },
+  { key: "social_linkedin", label: "LinkedIn" },
+  { key: "social_youtube", label: "YouTube" },
+  { key: "social_tiktok", label: "TikTok" },
+];
+
+export default async function ContactCTA() {
+  const settings = await getSettings();
+
+  const activeSocials = socialOrder.filter((s) => settings[s.key] && settings[s.key] !== "#");
+
   return (
     <section
       id="contact"
@@ -49,31 +63,37 @@ export default function ContactCTA() {
             >
               Start a Project <span className="text-sm">→</span>
             </a>
-            <a
-              href="tel:+12345678900"
-              className="border border-white/35 text-white text-[11px] tracking-[0.22em] uppercase px-9 py-4 hover:border-white hover:bg-white/10 transition-all duration-300"
-            >
-              Call Us
-            </a>
+            {settings.phone && (
+              <a
+                href={`tel:${settings.phone}`}
+                className="border border-white/35 text-white text-[11px] tracking-[0.22em] uppercase px-9 py-4 hover:border-white hover:bg-white/10 transition-all duration-300"
+              >
+                Call Us
+              </a>
+            )}
           </div>
 
           {/* Divider + social proof */}
-          <div className="mt-16 pt-10 border-t border-white/20 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-            <span className="text-white/50 text-[10px] tracking-[0.25em] uppercase">
-              Follow us
-            </span>
-            <div className="flex items-center gap-6">
-              {["Instagram", "Twitter / X", "LinkedIn", "YouTube"].map((s) => (
-                <a
-                  key={s}
-                  href="#"
-                  className="text-white/50 hover:text-white text-[10px] tracking-[0.2em] uppercase transition-colors duration-200"
-                >
-                  {s}
-                </a>
-              ))}
+          {activeSocials.length > 0 && (
+            <div className="mt-16 pt-10 border-t border-white/20 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+              <span className="text-white/50 text-[10px] tracking-[0.25em] uppercase">
+                Follow us
+              </span>
+              <div className="flex items-center gap-6">
+                {activeSocials.map((s) => (
+                  <a
+                    key={s.key}
+                    href={settings[s.key]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white/50 hover:text-white text-[10px] tracking-[0.2em] uppercase transition-colors duration-200"
+                  >
+                    {s.label}
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

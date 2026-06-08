@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getSettings } from "@/lib/queries";
 
 const footerLinks: Record<string, { label: string; href: string }[]> = {
   Services: [
@@ -18,14 +19,19 @@ const footerLinks: Record<string, { label: string; href: string }[]> = {
   ],
 };
 
-const socials = [
-  { label: "IG", name: "Instagram" },
-  { label: "TW", name: "Twitter / X" },
-  { label: "LI", name: "LinkedIn" },
-  { label: "YT", name: "YouTube" },
+const socialLabels = [
+  { key: "social_instagram", label: "IG", name: "Instagram" },
+  { key: "social_twitter", label: "TW", name: "Twitter / X" },
+  { key: "social_linkedin", label: "LI", name: "LinkedIn" },
+  { key: "social_youtube", label: "YT", name: "YouTube" },
+  { key: "social_tiktok", label: "TT", name: "TikTok" },
 ];
 
-export default function Footer() {
+export default async function Footer() {
+  const settings = await getSettings();
+
+  const activeSocials = socialLabels.filter((s) => settings[s.key] && settings[s.key] !== "#");
+
   return (
     <footer className="bg-[#0A0A0A] border-t border-white/[0.05] pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -43,18 +49,22 @@ export default function Footer() {
             </p>
 
             {/* Social icons */}
-            <div className="flex items-center gap-5 mt-8">
-              {socials.map((s) => (
-                <a
-                  key={s.name}
-                  href="#"
-                  aria-label={s.name}
-                  className="text-[#F5F5F5]/25 hover:text-[#E50019] text-[10px] tracking-[0.2em] uppercase transition-colors duration-200"
-                >
-                  {s.label}
-                </a>
-              ))}
-            </div>
+            {activeSocials.length > 0 && (
+              <div className="flex items-center gap-5 mt-8">
+                {activeSocials.map((s) => (
+                  <a
+                    key={s.name}
+                    href={settings[s.key]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.name}
+                    className="text-[#F5F5F5]/25 hover:text-[#E50019] text-[10px] tracking-[0.2em] uppercase transition-colors duration-200"
+                  >
+                    {s.label}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Link columns */}

@@ -13,6 +13,7 @@ const links = [
   { href: "/admin/submissions", label: "Submissions", icon: "◻" },
   { href: "/admin/activity", label: "Activity Log", icon: "◑" },
   { href: "/admin/users", label: "Users", icon: "◯" },
+  { href: "/admin/settings", label: "Settings", icon: "⚙" },
 ];
 
 interface AdminUser {

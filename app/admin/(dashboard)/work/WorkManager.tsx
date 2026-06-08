@@ -20,8 +20,9 @@ type Project = {
 };
 
 const CATEGORIES = [
-  "ai-video-creation", "ai-image-generation", "photo-production",
-  "video-production", "digital-marketing", "news-media", "script-writing",
+  "AI Branding", "AI Videos", "AI Commercials", "AI Video Creation",
+  "AI Image Generation", "Digital Marketing", "News & Media",
+  "Photo Production", "Video Production", "Script Writing",
 ];
 
 const empty: Omit<Project, "id"> = {
