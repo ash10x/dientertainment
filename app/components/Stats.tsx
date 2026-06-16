@@ -14,7 +14,7 @@ export default function Stats({ stats }: { stats: Stat[] }) {
         <span className="text-brand-black/30 text-[9px] tracking-[0.36em] uppercase">By the numbers</span>
       </div>
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className={`grid gap-px bg-brand-black/8 ${
+        <div data-reveal className={`grid gap-px bg-brand-black/8 ${
           stats.length === 4
             ? "grid-cols-2 lg:grid-cols-4"
             : stats.length === 3

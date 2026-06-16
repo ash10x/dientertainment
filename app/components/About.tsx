@@ -15,7 +15,7 @@ export default function About() {
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-28 items-center">
           {/* Left */}
-          <div>
+          <div data-reveal>
             <div className="flex items-center gap-3 mb-8">
               <div className="w-6 h-px bg-red" />
               <span className="text-red text-[10px] tracking-[0.38em] uppercase">
@@ -56,7 +56,7 @@ export default function About() {
           </div>
 
           {/* Right */}
-          <div className="space-y-7">
+          <div data-reveal data-delay="150" className="space-y-7">
             <p className="text-brand-white/75 text-lg leading-relaxed">
               At diEntertainment, we believe every brand has a story worth
               telling — and every story deserves to be told powerfully.

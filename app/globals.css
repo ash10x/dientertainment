@@ -425,6 +425,26 @@ body {
   animation-delay: 5s;
 }
 
+/* ─── Scroll margin for fixed nav (80px ≈ nav h-17 + buffer) ────────────── */
+[id] {
+  scroll-margin-top: 80px;
+}
+
+/* ─── Scroll reveal ──────────────────────────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+[data-reveal][data-delay="100"] { transition-delay: 100ms; }
+[data-reveal][data-delay="200"] { transition-delay: 200ms; }
+[data-reveal][data-delay="300"] { transition-delay: 300ms; }
+
 /* ─── Keyboard focus rings ───────────────────────────────────────────────── */
 :focus-visible {
   outline: 2px solid #E50019;
@@ -439,6 +459,7 @@ body {
     transition-duration: 0.01ms !important;
   }
   .marquee-track { animation: none; }
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
 }
 
 /* ─── Marquee edge fade ──────────────────────────────────────────────────── */

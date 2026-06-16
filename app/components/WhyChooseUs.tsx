@@ -66,7 +66,7 @@ export default async function WhyChooseUs() {
           </div>
 
           {/* Pillars grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5">
+          <div data-reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5">
             {pillars.map((p, i) => (
               <div
                 key={p.number}
