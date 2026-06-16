@@ -73,15 +73,18 @@ export default function Packages({
               </div>
 
               <div className="mb-8 pb-8 border-b border-white/7">
-                <span
-                  className="font-display text-brand-white leading-none"
-                  style={{ fontSize: "clamp(40px, 5vw, 60px)" }}
-                >
-                  {pkg.price}
-                </span>
+                <div className="flex items-baseline gap-2">
+                  <span
+                    className="font-display text-brand-white leading-none"
+                    style={{ fontSize: "clamp(40px, 5vw, 60px)" }}
+                  >
+                    {pkg.price}
+                  </span>
+                  <span className="text-brand-white/30 text-[10px] tracking-[0.2em] uppercase">USD</span>
+                </div>
                 {pkg.deposit && (
                   <p className="text-brand-white/35 text-xs mt-1.5 tracking-wide">
-                    Deposit: {pkg.deposit}
+                    Deposit: {pkg.deposit} <span className="text-brand-white/20 text-[9px] uppercase tracking-widest">USD</span>
                   </p>
                 )}
                 {pkg.duration && (

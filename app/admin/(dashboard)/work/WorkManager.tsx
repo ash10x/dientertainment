@@ -24,11 +24,16 @@ const empty: Omit<Project, "id"> = {
   outcome: "", bg: "#1a1a1a", accentColor: "#E50019", textLight: true, sortOrder: 0, previewUrl: null,
 };
 
-interface WorkManagerProps { initialProjects: Project[] }
+interface WorkManagerProps {
+  initialProjects: Project[];
+  services: { slug: string; title: string }[];
+}
 
-export default function WorkManager({ initialProjects }: WorkManagerProps) {
+export default function WorkManager({ initialProjects, services }: WorkManagerProps) {
   const [projects, setProjects] = useState(initialProjects);
   const existingCategories = Array.from(new Set(projects.map((p) => p.category).filter(Boolean))).sort();
+  const serviceTitles = services.map((s) => s.title);
+  const categoryOptions = Array.from(new Set([...serviceTitles, ...existingCategories])).sort();
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Project | null>(null);
   const [form, setForm] = useState<Omit<Project, "id">>(empty);
@@ -140,7 +145,7 @@ export default function WorkManager({ initialProjects }: WorkManagerProps) {
                 className={inputCls}
               />
               <datalist id="category-suggestions">
-                {existingCategories.map((c) => <option key={c} value={c} />)}
+                {categoryOptions.map((c) => <option key={c} value={c} />)}
               </datalist>
             </>
           </Field>
