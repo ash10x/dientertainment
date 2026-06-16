@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import ConditionalNav from "./components/ConditionalNav";
+import CinematicBackground from "./components/CinematicBackground";
+import CustomCursor from "./components/CustomCursor";
+import ScrollProgress from "./components/ScrollProgress";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +39,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${bebasNeue.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#0A0A0A] text-[#F5F5F5]">
+        <ScrollProgress />
+        <CinematicBackground />
+        <CustomCursor />
         <ConditionalNav />
         {children}
       </body>

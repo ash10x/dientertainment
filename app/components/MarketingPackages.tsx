@@ -79,11 +79,12 @@ export default function MarketingPackages({ packages }: { packages: PackageRow[]
                 </div>
                 <a
                   href={`/contact?service=digital-marketing&package=${encodeURIComponent(pkg.name)}&price=${encodeURIComponent(pkg.price)}`}
-                  className={`flex items-center justify-center gap-2 text-[11px] tracking-[0.2em] uppercase px-4 py-3 transition-colors duration-200 ${
+                  className={`flex items-center justify-center gap-2 text-[11px] tracking-[0.22em] uppercase px-4 py-3.5 rounded-xs transition-all duration-250 hover:-translate-y-px ${
                     pkg.highlight
-                      ? "bg-red text-brand-white hover:bg-[#FF0022]"
-                      : "border border-white/15 text-brand-white/70 hover:border-white/40 hover:text-brand-white"
+                      ? "bg-red text-brand-white hover:bg-[#FF001F] hover:shadow-[0_6px_20px_rgba(229,0,25,0.35)]"
+                      : "border border-white/14 text-brand-white/65 hover:border-white/38 hover:text-brand-white"
                   }`}
+                  style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
                 >
                   Get Started <span className="text-sm">→</span>
                 </a>

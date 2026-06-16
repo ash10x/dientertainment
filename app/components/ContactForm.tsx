@@ -306,7 +306,8 @@ export default function ContactForm({
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="flex items-center gap-3 bg-red text-brand-white text-[11px] tracking-[0.22em] uppercase px-10 py-4 hover:bg-[#FF0022] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300"
+        className="flex items-center gap-3 bg-red text-brand-white text-[11px] tracking-[0.22em] uppercase px-10 py-4 rounded-xs hover:bg-[#FF001F] hover:-translate-y-px hover:shadow-[0_6px_20px_rgba(229,0,25,0.35)] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300"
+        style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
       >
         {status === "submitting" ? (
           <>

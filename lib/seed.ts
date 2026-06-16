@@ -60,6 +60,10 @@ async function main() {
     { page: "why-choose-us", statValue: "10+", statLabel: "Years in Industry", sortOrder: 2 },
     { page: "why-choose-us", statValue: "500+", statLabel: "Projects Delivered", sortOrder: 3 },
     { page: "why-choose-us", statValue: "3×", statLabel: "Avg. Conversion Lift", sortOrder: 4 },
+    { page: "about", statValue: "2016", statLabel: "Founded", sortOrder: 1 },
+    { page: "about", statValue: "8+", statLabel: "Years Active", sortOrder: 2 },
+    { page: "about", statValue: "150+", statLabel: "Brands Elevated", sortOrder: 3 },
+    { page: "about", statValue: "10M+", statLabel: "Audience Reached", sortOrder: 4 },
   ]);
 
   // ─── Packages ────────────────────────────────────────────────────────────────

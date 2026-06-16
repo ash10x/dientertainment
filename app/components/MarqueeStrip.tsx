@@ -21,14 +21,18 @@ export default function MarqueeStrip() {
   const doubled = [...items, ...items];
 
   return (
-    <div className="bg-[#E50019] py-4 overflow-hidden select-none">
+    <div className="relative bg-red py-[14px] overflow-hidden select-none">
+      {/* Subtle inner shadow top/bottom */}
+      <div className="absolute inset-x-0 top-0 h-px bg-white/20" />
+      <div className="absolute inset-x-0 bottom-0 h-px bg-black/20" />
+
       <div className="marquee-track">
         {doubled.map((item, i) => (
           <div key={i} className="flex items-center shrink-0">
-            <span className="font-display text-[#F5F5F5] text-xl tracking-[0.18em] uppercase px-6 whitespace-nowrap">
+            <span className="font-display text-brand-white text-xl lg:text-2xl tracking-[0.16em] uppercase px-6 whitespace-nowrap">
               {item}
             </span>
-            <span className="text-[#F5F5F5]/35 text-[8px]">◆</span>
+            <span className="text-white/30 text-[7px]">◆</span>
           </div>
         ))}
       </div>

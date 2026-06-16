@@ -50,10 +50,10 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
             <button
               key={cat.value}
               onClick={() => setActive(cat.value)}
-              className={`text-[10px] tracking-[0.2em] uppercase px-4 py-2 border transition-all duration-200 cursor-pointer ${
+              className={`text-[10px] tracking-[0.2em] uppercase px-4 py-2 border rounded-xs transition-all duration-200 cursor-pointer ${
                 active === cat.value
                   ? "bg-red border-red text-brand-white"
-                  : "border-white/12 text-brand-white/40 hover:border-white/30 hover:text-brand-white/70"
+                  : "border-white/12 text-brand-white/38 hover:border-white/28 hover:text-brand-white/70"
               }`}
             >
               {cat.label}
@@ -74,7 +74,7 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
               return (
                 <div
                   key={project.slug}
-                  className="work-card relative overflow-hidden cursor-pointer group aspect-square"
+                  className="work-card relative overflow-hidden cursor-pointer group aspect-square rounded-xs"
                   style={{ backgroundColor: project.bg }}
                 >
                   {/* Background media */}

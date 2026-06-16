@@ -35,7 +35,7 @@ export default async function ContactPage(props: {
     .map((s) => ({ label: s.label, href: settings[s.key] }));
 
   return (
-    <main className="bg-brand-black pt-16">
+    <main className="bg-brand-black pt-17">
       {/* ─── Hero headline ─── */}
       <section className="border-b border-white/5 py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">

@@ -17,7 +17,7 @@ export default async function WorkPage() {
   ]);
 
   return (
-    <main className="bg-brand-black pt-16">
+    <main className="bg-brand-black pt-17">
       {/* ─── Hero ─── */}
       <section className="border-b border-white/5 py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -45,7 +45,7 @@ export default async function WorkPage() {
             </div>
 
             {/* Right — stats */}
-            <div className="flex lg:flex-col gap-8 lg:gap-0 lg:divide-y lg:divide-white/[0.06] lg:border lg:border-white/[0.06] lg:min-w-[160px]">
+            <div className="flex lg:flex-col gap-8 lg:gap-0 lg:divide-y lg:divide-white/6 lg:border lg:border-white/6 lg:min-w-40">
               {stats.map((s) => (
                 <div key={s.statLabel} className="lg:px-8 lg:py-6 text-center">
                   <div
@@ -71,7 +71,7 @@ export default async function WorkPage() {
       <section className="bg-red py-20 lg:py-24 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-white/20" />
         <span
-          className="font-display absolute inset-0 flex items-center justify-center leading-none text-white/[0.05] pointer-events-none select-none uppercase"
+          className="font-display absolute inset-0 flex items-center justify-center leading-none text-white/5 pointer-events-none select-none uppercase"
           style={{ fontSize: "clamp(140px, 24vw, 360px)" }}
           aria-hidden="true"
         >
