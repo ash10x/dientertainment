@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { PackageRow } from "@/lib/queries";
 
 export default function Packages({
@@ -31,17 +32,27 @@ export default function Packages({
           {packages.map((pkg) => (
             <div
               key={pkg.id}
-              className="relative flex flex-col bg-brand-black p-8 lg:p-10 group hover:bg-surface-1 transition-colors duration-300"
+              className="relative flex flex-col bg-brand-black p-8 lg:p-10 group transition-all duration-300"
               style={
                 pkg.highlight
-                  ? { borderTop: "2px solid #E50019" }
+                  ? {
+                      borderTop: "2px solid #E50019",
+                      boxShadow: "inset 0 1px 0 rgba(229,0,25,0.12)",
+                    }
                   : { borderTop: "2px solid transparent" }
               }
             >
+              {/* Hover glow — stronger on highlight card */}
+              <div
+                className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none ${
+                  pkg.highlight ? "bg-red/4" : "bg-white/2"
+                }`}
+              />
               {pkg.highlight && (
-                <span className="absolute top-0 right-8 -translate-y-full pb-2 text-[9px] tracking-[0.3em] uppercase text-red">
-                  Most Popular
-                </span>
+                <div className="absolute top-0 right-8 -translate-y-full flex items-center gap-1.5 pb-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red animate-pulse" />
+                  <span className="text-[9px] tracking-[0.3em] uppercase text-red">Most Popular</span>
+                </div>
               )}
 
               <div className="mb-6">
@@ -112,17 +123,17 @@ export default function Packages({
                 </div>
               )}
 
-              <a
+              <Link
                 href={`/contact?service=${encodeURIComponent(service)}&package=${encodeURIComponent(pkg.name)}&price=${encodeURIComponent(pkg.price)}${pkg.deposit ? `&deposit=${encodeURIComponent(pkg.deposit)}` : ""}`}
-                className={`flex items-center justify-center gap-2 text-[11px] tracking-[0.22em] uppercase px-6 py-4 rounded-xs transition-all duration-250 hover:-translate-y-px ${
+                className={`relative flex items-center justify-center gap-2 text-[11px] tracking-[0.22em] uppercase px-6 py-4 rounded-xs transition-all duration-300 hover:-translate-y-px ${
                   pkg.highlight
-                    ? "bg-red text-brand-white hover:bg-[#FF001F] hover:shadow-[0_6px_20px_rgba(229,0,25,0.35)]"
+                    ? "bg-red text-brand-white hover:bg-[#FF001F] hover:shadow-[0_8px_28px_rgba(229,0,25,0.4)]"
                     : "border border-white/14 text-brand-white/65 hover:border-white/38 hover:text-brand-white"
                 }`}
                 style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
               >
                 Get Started <span className="text-sm">→</span>
-              </a>
+              </Link>
             </div>
           ))}
         </div>

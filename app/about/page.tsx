@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Footer from "../components/Footer";
 import { getStatsByPage, getActiveServices, getPageHero } from "@/lib/queries";
 
@@ -201,14 +202,14 @@ export default async function AboutPage() {
                 </p>
 
                 <div className="pt-4">
-                  <a
+                  <Link
                     href="/contact"
                     className="inline-flex items-center gap-2 text-red text-[11px] tracking-[0.28em] uppercase hover:gap-4 transition-all duration-300 group"
                     style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
                   >
                     Work With Us
                     <span className="text-sm group-hover:translate-x-1 transition-transform duration-300">→</span>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -299,7 +300,7 @@ export default async function AboutPage() {
 
               <div className="grid grid-cols-1 gap-px bg-white/5">
                 {services.map((s, i) => (
-                  <a
+                  <Link
                     key={s.label}
                     href={s.href}
                     className="bg-brand-black px-8 py-5 flex items-center justify-between group hover:bg-white/2 transition-colors duration-200"
@@ -316,7 +317,7 @@ export default async function AboutPage() {
                       </span>
                     </div>
                     <span className="text-red/0 group-hover:text-red/55 text-sm transition-colors duration-200">→</span>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -350,20 +351,20 @@ export default async function AboutPage() {
               next.
             </h2>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <a
+              <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 bg-brand-black text-brand-white text-[11px] tracking-[0.22em] uppercase px-10 py-4 rounded-xs hover:bg-[#1A1A1A] transition-all duration-300 hover:-translate-y-px"
                 style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
               >
                 Start a Project <span>→</span>
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/work"
                 className="inline-flex items-center gap-2 border border-white/32 text-brand-white text-[11px] tracking-[0.22em] uppercase px-10 py-4 rounded-xs hover:border-white hover:bg-white/8 transition-all duration-300 hover:-translate-y-px"
                 style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
               >
                 View Our Work
-              </a>
+              </Link>
             </div>
           </div>
         </section>

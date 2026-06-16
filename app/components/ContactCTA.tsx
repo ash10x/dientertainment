@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getSettings } from "@/lib/queries";
 
 const socialOrder = [
@@ -68,13 +69,13 @@ export default async function ContactCTA() {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <a
+            <Link
               href="/contact"
               className="inline-flex items-center gap-2 bg-brand-black text-brand-white text-[11px] tracking-[0.22em] uppercase px-9 py-4 rounded-xs hover:bg-[#1A1A1A] transition-all duration-300 hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
               style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
             >
               Start a Project <span className="text-sm">→</span>
-            </a>
+            </Link>
             {settings.phone && (
               <a
                 href={`tel:${settings.phone}`}

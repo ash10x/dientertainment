@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getStatsByPage } from "@/lib/queries";
 
 const pillars = [
@@ -232,12 +233,9 @@ export default async function WhyChooseUs() {
             <p className="text-brand-white/28 text-sm leading-relaxed max-w-md">
               Real numbers from real campaigns. Every result is owned by a brand that trusted diEntertainment with their marketing.
             </p>
-            <a
-              href="/testimonials"
-              className="btn-secondary shrink-0"
-            >
+            <Link href="/testimonials" className="btn-secondary shrink-0">
               View All Testimonials <span className="text-sm">→</span>
-            </a>
+            </Link>
           </div>
         </div>
       </section>

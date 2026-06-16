@@ -425,6 +425,40 @@ body {
   animation-delay: 5s;
 }
 
+/* ─── Keyboard focus rings ───────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #E50019;
+  outline-offset: 3px;
+}
+
+/* ─── Reduced motion — disable all animations ───────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .marquee-track { animation: none; }
+}
+
+/* ─── Marquee edge fade ──────────────────────────────────────────────────── */
+.marquee-fade {
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
 /* ─── Custom cursor (desktop / pointer devices only) ────────────────────── */
 @media (hover: hover) and (pointer: fine) {
   * { cursor: none !important; }

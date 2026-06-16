@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const pillars = [
   { label: "Founded", value: "2016" },
   { label: "Reach", value: "Global" },
@@ -73,14 +75,14 @@ export default function About() {
             </p>
 
             <div className="pt-4">
-              <a
+              <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 text-red text-[11px] tracking-[0.28em] uppercase hover:gap-4 transition-all duration-300 group"
                 style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
               >
                 Start a Conversation
                 <span className="text-sm group-hover:translate-x-1 transition-transform duration-300">→</span>
-              </a>
+              </Link>
             </div>
 
             {/* Visual accent block */}

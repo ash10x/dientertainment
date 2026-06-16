@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getActiveServices, getPackagesByService } from "@/lib/queries";
 import Packages from "@/app/components/Packages";
@@ -79,6 +80,7 @@ export default async function ServicePage({
               All Services
             </a>
 
+
             <div className="flex items-center gap-4 mb-8">
               <div className="w-6 h-px bg-red" />
               <span className="text-red text-[10px] tracking-[0.38em] uppercase">
@@ -97,9 +99,9 @@ export default async function ServicePage({
               <p className="text-brand-white/45 text-lg max-w-md leading-relaxed">
                 {service.description}
               </p>
-              <a href={`/contact?service=${slug}`} className="btn-primary shrink-0">
+              <Link href={`/contact?service=${slug}`} className="btn-primary shrink-0">
                 Start a Project <span>→</span>
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -168,12 +170,12 @@ export default async function ServicePage({
               your brand?
             </h2>
             <div className="flex flex-col sm:flex-row items-start gap-3">
-              <a
+              <Link
                 href={`/contact?service=${slug}`}
                 className="inline-flex items-center gap-2 bg-brand-black text-brand-white text-[11px] tracking-[0.22em] uppercase px-9 py-4 rounded-xs hover:bg-[#1A1A1A] transition-all duration-300 hover:-translate-y-px"
               >
                 Start a Project <span>→</span>
-              </a>
+              </Link>
               <a
                 href="/#services"
                 className="inline-flex items-center gap-2 border border-white/30 text-brand-white text-[11px] tracking-[0.22em] uppercase px-9 py-4 rounded-xs hover:border-white hover:bg-white/8 transition-all duration-300 hover:-translate-y-px"

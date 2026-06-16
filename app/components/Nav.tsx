@@ -82,19 +82,22 @@ export default function Nav() {
           {[
             { label: "Home", href: "/" },
             { label: "Work", href: "/work" },
-          ].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`nav-link text-[11px] tracking-[0.24em] uppercase transition-colors duration-200 ${
-                pathname === item.href
-                  ? "text-brand-white"
-                  : "text-brand-white/55 hover:text-brand-white"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          ].map((item) => {
+            const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`nav-link text-[11px] tracking-[0.24em] uppercase transition-colors duration-200 ${
+                  isActive
+                    ? "text-brand-white"
+                    : "text-brand-white/55 hover:text-brand-white"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
 
           {/* Services dropdown — CSS-only hover */}
           <div className="relative group/svc">
@@ -146,19 +149,22 @@ export default function Nav() {
             { label: "About", href: "/about" },
             { label: "Testimonials", href: "/testimonials" },
             { label: "Contact", href: "/contact" },
-          ].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`nav-link text-[11px] tracking-[0.24em] uppercase transition-colors duration-200 ${
-                pathname === item.href
-                  ? "text-brand-white"
-                  : "text-brand-white/55 hover:text-brand-white"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          ].map((item) => {
+            const isActive = pathname.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`nav-link text-[11px] tracking-[0.24em] uppercase transition-colors duration-200 ${
+                  isActive
+                    ? "text-brand-white"
+                    : "text-brand-white/55 hover:text-brand-white"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
 
           {isAdmin && (
             <Link

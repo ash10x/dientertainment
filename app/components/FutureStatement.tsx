@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function FutureStatement() {
   return (
     <section className="relative bg-brand-black py-28 lg:py-40 overflow-hidden border-t border-white/5">
@@ -66,9 +68,9 @@ export default function FutureStatement() {
 
         {/* CTA row */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-14">
-          <a href="/contact" className="btn-primary">
+          <Link href="/contact" className="btn-primary">
             Start Today <span>→</span>
-          </a>
+          </Link>
           <a href="/#services" className="btn-secondary">
             Explore Services
           </a>

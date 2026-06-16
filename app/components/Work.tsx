@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getWorkProjects } from "@/lib/queries";
 import { CardMedia } from "./CardMedia";
 
@@ -99,13 +100,13 @@ export default async function Work() {
               <span className="text-outline">speaks louder.</span>
             </h2>
           </div>
-          <a
+          <Link
             href="/work"
             className="hidden md:flex items-center gap-2 text-[11px] tracking-[0.22em] uppercase text-brand-white/35 hover:text-brand-white transition-colors duration-200 shrink-0 pb-2 group"
           >
             All Projects
             <span className="group-hover:translate-x-1 transition-transform duration-200 text-sm">→</span>
-          </a>
+          </Link>
         </div>
 
         {/* Grid: feature + two stacked + wide bottom */}
@@ -250,12 +251,9 @@ export default async function Work() {
           <p className="text-brand-white/28 text-[10px] tracking-[0.25em] uppercase">
             Showing {previewCount} of {totalCount}+ projects
           </p>
-          <a
-            href="/work"
-            className="btn-secondary"
-          >
+          <Link href="/work" className="btn-secondary">
             View All Work <span className="text-sm">→</span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

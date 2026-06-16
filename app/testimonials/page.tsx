@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getTestimonials, getFeaturedTestimonial, getStatsByPage } from "@/lib/queries";
 
 export const metadata: Metadata = {
@@ -116,16 +117,16 @@ export default async function TestimonialsPage() {
 
                   {/* Client */}
                   <div className="pt-5 border-t border-white/5 flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-white/5 border border-white/8 flex items-center justify-center shrink-0">
-                      <span className="text-brand-white/18 text-[10px] font-display uppercase">
+                    <div className="w-9 h-9 rounded-full bg-red/10 border border-red/20 flex items-center justify-center shrink-0">
+                      <span className="text-red text-[11px] font-display uppercase">
                         {r.name.charAt(0)}
                       </span>
                     </div>
                     <div>
-                      <div className="text-brand-white/78 text-sm font-medium leading-tight">
+                      <div className="text-brand-white/85 text-sm font-medium leading-tight">
                         {r.name}
                       </div>
-                      <div className="text-brand-white/28 text-[10px] tracking-widest">
+                      <div className="text-brand-white/35 text-[10px] tracking-widest">
                         {r.role}
                       </div>
                     </div>
@@ -246,13 +247,13 @@ export default async function TestimonialsPage() {
             next.
           </h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a
+            <Link
               href="/contact"
               className="inline-flex items-center gap-2 bg-brand-black text-brand-white text-[11px] tracking-[0.22em] uppercase px-10 py-4 rounded-xs hover:bg-[#1A1A1A] transition-all duration-300 hover:-translate-y-px"
               style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
             >
               Start a Project <span>→</span>
-            </a>
+            </Link>
             <a
               href="/#services"
               className="inline-flex items-center gap-2 border border-white/32 text-brand-white text-[11px] tracking-[0.22em] uppercase px-10 py-4 rounded-xs hover:border-white hover:bg-white/8 transition-all duration-300 hover:-translate-y-px"
