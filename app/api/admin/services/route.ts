@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { services } from "@/lib/schema";
 import { asc } from "drizzle-orm";
 import { logActivity } from "@/lib/logger";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -35,6 +36,7 @@ export async function POST(request: Request) {
       .returning();
 
     await logActivity("service", `Service created: "${title}"`, { id: row.id, slug });
+    revalidatePath("/", "layout");
     return Response.json(row, { status: 201 });
   } catch {
     return Response.json({ error: "Failed to create service." }, { status: 500 });

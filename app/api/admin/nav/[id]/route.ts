@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { navItems } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 import { logActivity } from "@/lib/logger";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -15,6 +16,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       .returning();
     if (!row) return Response.json({ error: "Not found." }, { status: 404 });
     await logActivity("nav", `Nav item updated: "${row.label}" (${row.type})`, { id: row.id });
+    revalidatePath("/", "layout");
     return Response.json(row);
   } catch (e: unknown) {
     return Response.json({ error: e instanceof Error ? e.message : "Failed to update." }, { status: 500 });
@@ -26,6 +28,7 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
     const { id } = await params;
     const [deleted] = await db.delete(navItems).where(eq(navItems.id, Number(id))).returning();
     await logActivity("nav", `Nav item deleted: "${deleted?.label ?? id}"`, { id: Number(id) });
+    revalidatePath("/", "layout");
     return Response.json({ ok: true });
   } catch (e: unknown) {
     return Response.json({ error: e instanceof Error ? e.message : "Failed to delete." }, { status: 500 });

@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { navItems } from "@/lib/schema";
 import { asc } from "drizzle-orm";
 import { logActivity } from "@/lib/logger";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
       })
       .returning();
     await logActivity("nav", `Nav item created: "${label}" (${type ?? "link"}) → ${href}`, { id: row.id });
+    revalidatePath("/", "layout");
     return Response.json(row, { status: 201 });
   } catch (e: unknown) {
     return Response.json({ error: e instanceof Error ? e.message : "Failed to create." }, { status: 500 });

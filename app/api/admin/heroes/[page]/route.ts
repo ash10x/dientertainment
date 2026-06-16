@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { pageHeroes } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 import { logActivity } from "@/lib/logger";
+import { revalidatePath } from "next/cache";
 
 const ALLOWED = ["home", "about", "work", "contact"];
 
@@ -31,6 +32,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ page
       .returning();
 
     await logActivity("hero", `Hero updated: "${page}" page — "${row.heading}"`, { page });
+    revalidatePath("/", "layout");
     return Response.json(row);
   } catch {
     return Response.json({ error: "Failed to save hero." }, { status: 500 });
@@ -44,6 +46,7 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ page: s
   try {
     await db.delete(pageHeroes).where(eq(pageHeroes.page, page));
     await logActivity("hero", `Hero reset to default: "${page}" page`, { page });
+    revalidatePath("/", "layout");
     return Response.json({ success: true });
   } catch {
     return Response.json({ error: "Failed to reset hero." }, { status: 500 });

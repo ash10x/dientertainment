@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { siteStats } from "@/lib/schema";
 import { asc } from "drizzle-orm";
 import { logActivity } from "@/lib/logger";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
       .returning();
 
     await logActivity("stat", `Stat created: "${statValue} ${statLabel}" on page "${page}"`, { id: row.id, page });
+    revalidatePath("/", "layout");
     return Response.json(row, { status: 201 });
   } catch {
     return Response.json({ error: "Failed to create stat." }, { status: 500 });

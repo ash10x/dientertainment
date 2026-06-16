@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { siteSettings } from "@/lib/schema";
 import { sql } from "drizzle-orm";
 import { logActivity } from "@/lib/logger";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -33,6 +34,7 @@ export async function PUT(request: Request) {
       .onConflictDoUpdate({ target: siteSettings.key, set: { value: sql`excluded.value` } });
 
     await logActivity("setting", `Site settings updated: ${entries.map((e) => e.key).join(", ")}`, { keys: entries.map((e) => e.key) });
+    revalidatePath("/", "layout");
     return Response.json({ ok: true });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Failed to save settings.";

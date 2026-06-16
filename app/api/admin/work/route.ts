@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { workProjects } from "@/lib/schema";
 import { asc } from "drizzle-orm";
 import { logActivity } from "@/lib/logger";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
       .returning();
 
     await logActivity("work", `Work project created: "${title}" (${client})`, { id: row.id, slug, category });
+    revalidatePath("/", "layout");
     return Response.json(row, { status: 201 });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Failed to create project.";
