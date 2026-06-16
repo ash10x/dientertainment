@@ -124,11 +124,8 @@ export default function NavManager({ initialItems }: { initialItems: NavItem[] }
         </div>
 
         {/* Live preview note */}
-        <div className="mb-6 flex items-start gap-2.5 bg-white/3 border border-white/8 rounded-lg px-4 py-3">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-[#E50019] mt-0.5 shrink-0" aria-hidden="true">
-            <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.3" />
-            <path d="M7 6v4M7 4.5v.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-          </svg>
+        <div className="mb-6 flex items-start gap-3 bg-white/3 border border-white/8 rounded-lg px-4 py-3">
+          <span className="text-[#E50019] text-xs font-bold mt-px shrink-0 select-none">i</span>
           <p className="text-white/40 text-xs leading-relaxed">
             Changes take effect immediately on the live site. The <strong className="text-white/60">Services Dropdown</strong> type uses items from the Services table as its sub-links — no href needed.
           </p>
@@ -158,8 +155,8 @@ export default function NavManager({ initialItems }: { initialItems: NavItem[] }
               <table className="w-full text-sm min-w-130">
                 <thead>
                   <tr className="border-b border-white/8">
-                    {["Order", "Label", "Href", "Type", "Visible", ""].map((h) => (
-                      <th key={h} className="px-4 py-3 text-left text-xs text-white/40 uppercase tracking-widest font-medium">{h}</th>
+                    {["Order", "Label", "Href", "Type", "Visible", "Actions"].map((h, i) => (
+                      <th key={i} className={`px-4 py-3 text-xs text-white/40 uppercase tracking-widest font-medium ${h === "Actions" ? "text-right" : "text-left"}`}>{h === "Actions" ? "" : h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -170,12 +167,12 @@ export default function NavManager({ initialItems }: { initialItems: NavItem[] }
                       <td className="px-4 py-3 font-medium text-white">{item.label}</td>
                       <td className="px-4 py-3 text-white/40 text-xs font-mono">{item.href}</td>
                       <td className="px-4 py-3">
-                        <span className={`text-[9px] tracking-widest uppercase border px-2 py-0.5 rounded-full ${
+                        <span className={`text-[10px] tracking-[0.12em] uppercase font-medium border px-2.5 py-0.5 rounded-full ${
                           item.type === "cta"
-                            ? "border-[#E50019]/30 text-[#E50019]/70 bg-[#E50019]/8"
+                            ? "border-[#E50019]/40 text-[#E50019] bg-[#E50019]/12"
                             : item.type === "services-dropdown"
-                            ? "border-blue-500/30 text-blue-400/70 bg-blue-500/8"
-                            : "border-white/12 text-white/35"
+                            ? "border-sky-400/35 text-sky-400 bg-sky-400/10"
+                            : "border-white/15 text-white/50"
                         }`}>
                           {item.type === "services-dropdown" ? "Services ▾" : item.type}
                         </span>
@@ -183,14 +180,16 @@ export default function NavManager({ initialItems }: { initialItems: NavItem[] }
                       <td className="px-4 py-3">
                         <button
                           onClick={() => toggleVisible(item)}
-                          className={`w-10 h-5 rounded-full relative transition-colors duration-200 cursor-pointer ${
+                          className={`w-11 h-6 rounded-full relative transition-colors duration-200 cursor-pointer flex-shrink-0 ${
                             item.visible ? "bg-[#E50019]" : "bg-white/15"
                           }`}
                           aria-label={item.visible ? "Hide item" : "Show item"}
+                          aria-checked={item.visible}
+                          role="switch"
                         >
                           <span
-                            className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-200 ${
-                              item.visible ? "translate-x-5" : "translate-x-0.5"
+                            className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.4)] transition-transform duration-200 ${
+                              item.visible ? "translate-x-6" : "translate-x-1"
                             }`}
                           />
                         </button>
