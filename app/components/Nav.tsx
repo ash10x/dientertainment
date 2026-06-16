@@ -3,22 +3,16 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
-const serviceDropdown = [
-  { label: "Digital Marketing", href: "/services/digital-marketing" },
-  { label: "News & Media", href: "/services/news-media" },
-  { label: "Photo Production", href: "/services/photo-production" },
-  { label: "Video Production", href: "/services/video-production" },
-  { label: "AI Video Creation", href: "/services/ai-video-creation" },
-  { label: "AI Image Generation", href: "/services/ai-image-generation" },
-  { label: "Script Writing", href: "/services/script-writing" },
-];
+type ServiceLink = { label: string; href: string };
 
 export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [serviceDropdown, setServiceDropdown] = useState<ServiceLink[]>([]);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -30,6 +24,14 @@ export default function Nav() {
     }
     checkAuth();
     window.addEventListener("pageshow", checkAuth);
+
+    fetch("/api/services")
+      .then((r) => r.json())
+      .then((data: { slug: string; title: string }[]) =>
+        setServiceDropdown(data.map((s) => ({ label: s.title, href: `/services/${s.slug}` })))
+      )
+      .catch(() => {});
+
     return () => window.removeEventListener("pageshow", checkAuth);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -55,9 +57,9 @@ export default function Nav() {
           : undefined,
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 h-[68px] flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 h-17 flex items-center justify-between">
         {/* Logo */}
-        <a
+        <Link
           href="/"
           className="flex items-center gap-2 shrink-0 group"
           onClick={close}
@@ -73,7 +75,7 @@ export default function Nav() {
             <span className="text-red">di</span>
             <span className="text-brand-white">Entertainment</span>
           </span>
-        </a>
+        </Link>
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-7">
@@ -81,7 +83,7 @@ export default function Nav() {
             { label: "Home", href: "/" },
             { label: "Work", href: "/work" },
           ].map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               className={`nav-link text-[11px] tracking-[0.24em] uppercase transition-colors duration-200 ${
@@ -91,7 +93,7 @@ export default function Nav() {
               }`}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
 
           {/* Services dropdown — CSS-only hover */}
@@ -125,7 +127,7 @@ export default function Nav() {
                 style={{ borderTop: "1.5px solid #E50019" }}
               >
                 {serviceDropdown.map((item) => (
-                  <a
+                  <Link
                     key={item.href}
                     href={item.href}
                     className="flex items-center justify-between px-5 py-3.5 text-[10px] tracking-[0.18em] uppercase text-brand-white/50 hover:text-brand-white hover:bg-white/4 border-b border-white/5 last:border-b-0 transition-all duration-150 group/item"
@@ -134,7 +136,7 @@ export default function Nav() {
                     <span className="text-red text-xs opacity-0 -translate-x-1.5 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200">
                       →
                     </span>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -145,7 +147,7 @@ export default function Nav() {
             { label: "Testimonials", href: "/testimonials" },
             { label: "Contact", href: "/contact" },
           ].map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               className={`nav-link text-[11px] tracking-[0.24em] uppercase transition-colors duration-200 ${
@@ -155,29 +157,29 @@ export default function Nav() {
               }`}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
 
           {isAdmin && (
-            <a
+            <Link
               href="/admin"
               className="flex items-center gap-1.5 border border-red/25 bg-red/7 hover:bg-red/14 hover:border-red/45 text-red text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-xs transition-all duration-200"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-red shrink-0 animate-pulse" />
               Back Office
-            </a>
+            </Link>
           )}
         </div>
 
         {/* Desktop CTA */}
-        <a
+        <Link
           href="/contact"
           className="hidden md:flex items-center gap-2 bg-red text-brand-white text-[11px] tracking-[0.2em] uppercase px-6 py-[11px] rounded-xs hover:bg-[#FF001F] transition-all duration-250 shrink-0 hover:shadow-[0_6px_20px_rgba(229,0,25,0.35)] hover:-translate-y-px"
           style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
         >
           Get Started
           <span className="text-sm">→</span>
-        </a>
+        </Link>
 
         {/* Mobile hamburger */}
         <button
@@ -221,20 +223,20 @@ export default function Nav() {
         style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
       >
         <div className="px-6 py-6 flex flex-col gap-0.5">
-          <a
+          <Link
             href="/"
             onClick={close}
             className="text-[11px] tracking-[0.24em] uppercase text-brand-white/55 hover:text-brand-white py-3.5 border-b border-white/6 transition-colors duration-200"
           >
             Home
-          </a>
-          <a
+          </Link>
+          <Link
             href="/work"
             onClick={close}
             className="text-[11px] tracking-[0.24em] uppercase text-brand-white/55 hover:text-brand-white py-3.5 border-b border-white/6 transition-colors duration-200"
           >
             Work
-          </a>
+          </Link>
 
           {/* Mobile services accordion */}
           <div>
@@ -264,7 +266,7 @@ export default function Nav() {
               style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
             >
               {serviceDropdown.map((item) => (
-                <a
+                <Link
                   key={item.href}
                   href={item.href}
                   onClick={close}
@@ -272,7 +274,7 @@ export default function Nav() {
                 >
                   <span className="text-red text-xs">→</span>
                   {item.label}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -282,18 +284,18 @@ export default function Nav() {
             { label: "Testimonials", href: "/testimonials" },
             { label: "Contact", href: "/contact" },
           ].map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               onClick={close}
               className="text-[11px] tracking-[0.24em] uppercase text-brand-white/55 hover:text-brand-white py-3.5 border-b border-white/6 transition-colors duration-200"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
 
           {isAdmin && (
-            <a
+            <Link
               href="/admin"
               onClick={close}
               className="flex items-center gap-2 py-3.5 border-b border-white/6 transition-colors duration-200"
@@ -302,17 +304,17 @@ export default function Nav() {
               <span className="text-[11px] tracking-[0.24em] uppercase text-red">
                 Back Office
               </span>
-            </a>
+            </Link>
           )}
 
-          <a
+          <Link
             href="/contact"
             onClick={close}
             className="mt-5 flex items-center justify-center gap-2 bg-red text-brand-white text-[11px] tracking-[0.2em] uppercase px-6 py-4 rounded-xs hover:bg-[#FF001F] transition-colors duration-200"
           >
             Get Started
             <span className="text-sm">→</span>
-          </a>
+          </Link>
         </div>
       </div>
     </nav>

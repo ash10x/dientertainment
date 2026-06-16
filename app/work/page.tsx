@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import WorkGrid from "../components/WorkGrid";
-import { getWorkProjects, getStatsByPage } from "@/lib/queries";
+import { getWorkProjects, getStatsByPage, getPageHero } from "@/lib/queries";
 
 export const dynamic = "force-dynamic";
 
@@ -11,10 +11,12 @@ export const metadata: Metadata = {
 };
 
 export default async function WorkPage() {
-  const [projects, stats] = await Promise.all([
+  const [projects, stats, hero] = await Promise.all([
     getWorkProjects(),
     getStatsByPage("work"),
+    getPageHero("work"),
   ]);
+  const headingLines = hero.heading.split("\n");
 
   return (
     <main className="bg-brand-black pt-17">
@@ -27,25 +29,29 @@ export default async function WorkPage() {
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-6 h-px bg-red" />
                 <span className="text-red text-[10px] tracking-[0.35em] uppercase">
-                  Portfolio
+                  {hero.eyebrow}
                 </span>
               </div>
               <h1
                 className="font-display uppercase leading-[0.88]"
                 style={{ fontSize: "clamp(64px, 10vw, 152px)" }}
               >
-                <span className="text-brand-white">Selected</span>
-                <br />
-                <span className="text-outline">Projects.</span>
+                {headingLines.map((line, i) => (
+                  <span key={i} className="text-brand-white block">{line}</span>
+                ))}
+                {hero.headingAccent && (
+                  <span className="text-outline block">{hero.headingAccent}</span>
+                )}
               </h1>
-              <p className="text-brand-white/40 text-sm leading-relaxed mt-8 max-w-sm">
-                A selection of brand stories we&apos;ve helped tell — across
-                digital marketing, media, and production.
-              </p>
+              {hero.body && (
+                <p className="text-brand-white/40 text-sm leading-relaxed mt-8 max-w-sm">
+                  {hero.body}
+                </p>
+              )}
             </div>
 
             {/* Right — stats */}
-            <div className="flex lg:flex-col gap-8 lg:gap-0 lg:divide-y lg:divide-white/6 lg:border lg:border-white/6 lg:min-w-40">
+            <div className="flex flex-wrap lg:flex-col gap-6 lg:gap-0 lg:divide-y lg:divide-white/6 lg:border lg:border-white/6 lg:min-w-40">
               {stats.map((s) => (
                 <div key={s.statLabel} className="lg:px-8 lg:py-6 text-center">
                   <div

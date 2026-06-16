@@ -9,6 +9,8 @@ const links = [
   { href: "/admin/work", label: "Work Projects", icon: "◈" },
   { href: "/admin/testimonials", label: "Testimonials", icon: "◉" },
   { href: "/admin/stats", label: "Site Stats", icon: "◎" },
+  { href: "/admin/heroes", label: "Page Heroes", icon: "◭" },
+  { href: "/admin/services", label: "Services", icon: "◧" },
   { href: "/admin/packages", label: "Packages", icon: "◫" },
   { href: "/admin/submissions", label: "Submissions", icon: "◻" },
   { href: "/admin/activity", label: "Activity Log", icon: "◑" },

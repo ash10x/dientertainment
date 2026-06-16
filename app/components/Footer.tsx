@@ -1,27 +1,17 @@
 import Link from "next/link";
-import { getSettings } from "@/lib/queries";
+import { getSettings, getActiveServices } from "@/lib/queries";
 
-const footerLinks: Record<string, { label: string; href: string }[]> = {
-  Services: [
-    { label: "Digital Marketing", href: "/services/digital-marketing" },
-    { label: "News & Media", href: "/services/news-media" },
-    { label: "Photo Production", href: "/services/photo-production" },
-    { label: "Video Production", href: "/services/video-production" },
-    { label: "AI Video Creation", href: "/services/ai-video-creation" },
-    { label: "AI Image Generation", href: "/services/ai-image-generation" },
-    { label: "Script Writing", href: "/services/script-writing" },
-  ],
-  Company: [
-    { label: "About", href: "/about" },
-    { label: "Work", href: "/work" },
-    { label: "Testimonials", href: "/testimonials" },
-    { label: "Contact", href: "/contact" },
-  ],
-  Legal: [
-    { label: "Privacy Policy", href: "/privacy-policy" },
-    { label: "Terms of Service", href: "/terms-of-service" },
-  ],
-};
+const companyLinks = [
+  { label: "About", href: "/about" },
+  { label: "Work", href: "/work" },
+  { label: "Testimonials", href: "/testimonials" },
+  { label: "Contact", href: "/contact" },
+];
+
+const legalLinks = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Service", href: "/terms-of-service" },
+];
 
 const socialLabels = [
   { key: "social_instagram", label: "Instagram" },
@@ -32,10 +22,19 @@ const socialLabels = [
 ];
 
 export default async function Footer() {
-  const settings = await getSettings();
+  const [settings, dbServices] = await Promise.all([getSettings(), getActiveServices()]);
   const activeSocials = socialLabels.filter(
     (s) => settings[s.key] && settings[s.key] !== "#"
   );
+  const serviceLinks = dbServices.map((s) => ({
+    label: s.title,
+    href: `/services/${s.slug}`,
+  }));
+  const footerColumns: { title: string; links: { label: string; href: string }[] }[] = [
+    ...(serviceLinks.length > 0 ? [{ title: "Services", links: serviceLinks }] : []),
+    { title: "Company", links: companyLinks },
+    { title: "Legal", links: legalLinks },
+  ];
 
   return (
     <footer className="bg-brand-black border-t border-white/5 pt-16 pb-8">
@@ -93,13 +92,13 @@ export default async function Footer() {
           </div>
 
           {/* Link columns */}
-          {Object.entries(footerLinks).map(([category, items]) => (
-            <div key={category}>
+          {footerColumns.map(({ title, links }) => (
+            <div key={title}>
               <div className="text-brand-white/22 text-[9px] tracking-[0.32em] uppercase mb-5">
-                {category}
+                {title}
               </div>
               <ul className="space-y-3">
-                {items.map((item) => (
+                {links.map((item) => (
                   <li key={item.label}>
                     <Link
                       href={item.href}

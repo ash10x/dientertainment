@@ -254,7 +254,7 @@ export default async function TestimonialsPage() {
               Start a Project <span>→</span>
             </a>
             <a
-              href="/services/ai-video-creation"
+              href="/#services"
               className="inline-flex items-center gap-2 border border-white/32 text-brand-white text-[11px] tracking-[0.22em] uppercase px-10 py-4 rounded-xs hover:border-white hover:bg-white/8 transition-all duration-300 hover:-translate-y-px"
               style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
             >

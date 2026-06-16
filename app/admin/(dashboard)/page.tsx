@@ -1,15 +1,16 @@
 import { db } from "@/lib/db";
-import { workProjects, testimonials, siteStats, packages, contactSubmissions, adminUsers } from "@/lib/schema";
+import { workProjects, testimonials, siteStats, packages, contactSubmissions, adminUsers, services } from "@/lib/schema";
 import { sql } from "drizzle-orm";
 
 async function getCounts() {
-  const [projects, testim, stats, pkgs, submissions, users] = await Promise.all([
+  const [projects, testim, stats, pkgs, submissions, users, svcs] = await Promise.all([
     db.select({ count: sql<number>`count(*)` }).from(workProjects),
     db.select({ count: sql<number>`count(*)` }).from(testimonials),
     db.select({ count: sql<number>`count(*)` }).from(siteStats),
     db.select({ count: sql<number>`count(*)` }).from(packages),
     db.select({ count: sql<number>`count(*)` }).from(contactSubmissions),
     db.select({ count: sql<number>`count(*)` }).from(adminUsers),
+    db.select({ count: sql<number>`count(*)` }).from(services),
   ]);
   return {
     projects: Number(projects[0].count),
@@ -18,6 +19,7 @@ async function getCounts() {
     packages: Number(pkgs[0].count),
     submissions: Number(submissions[0].count),
     users: Number(users[0].count),
+    services: Number(svcs[0].count),
   };
 }
 
@@ -33,6 +35,7 @@ const statCards = [
   { label: "Work Projects", key: "projects" as const, href: "/admin/work", color: "text-blue-400" },
   { label: "Testimonials", key: "testimonials" as const, href: "/admin/testimonials", color: "text-yellow-400" },
   { label: "Site Stats", key: "stats" as const, href: "/admin/stats", color: "text-purple-400" },
+  { label: "Services", key: "services" as const, href: "/admin/services", color: "text-cyan-400" },
   { label: "Packages", key: "packages" as const, href: "/admin/packages", color: "text-green-400" },
   { label: "Submissions", key: "submissions" as const, href: "/admin/submissions", color: "text-[#E50019]" },
   { label: "Admin Users", key: "users" as const, href: "/admin/users", color: "text-orange-400" },

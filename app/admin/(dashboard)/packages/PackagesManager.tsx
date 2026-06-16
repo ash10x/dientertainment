@@ -18,20 +18,21 @@ type Package = {
   sortOrder: number;
 };
 
-const SERVICES = [
-  "ai-video-creation", "ai-image-generation", "photo-production",
-  "video-production", "digital-marketing", "news-media", "script-writing",
-];
-
 const empty: Omit<Package, "id"> = {
-  serviceSlug: SERVICES[0], name: "", price: "", deposit: null, description: null,
+  serviceSlug: "", name: "", price: "", deposit: null, description: null,
   duration: null, includes: [], bestFor: null, highlight: false, sortOrder: 0,
 };
 
 function toLines(arr: string[] | null) { return arr ? arr.join("\n") : ""; }
 function fromLines(str: string) { return str.split("\n").map((s) => s.trim()).filter(Boolean); }
 
-export default function PackagesManager({ initialPackages }: { initialPackages: Package[] }) {
+export default function PackagesManager({
+  initialPackages,
+  services,
+}: {
+  initialPackages: Package[];
+  services: { slug: string; title: string }[];
+}) {
   const [items, setItems] = useState(initialPackages);
   const [filterService, setFilterService] = useState("all");
   const [modalOpen, setModalOpen] = useState(false);
@@ -89,7 +90,14 @@ export default function PackagesManager({ initialPackages }: { initialPackages: 
     else setToast({ message: "Delete failed.", type: "error" });
   }
 
-  const filtered = filterService === "all" ? items : items.filter((p) => p.serviceSlug === filterService);
+  const activeSlugs = new Set(services.map((s) => s.slug));
+  const orphaned = items.filter((p) => !activeSlugs.has(p.serviceSlug));
+  const filtered =
+    filterService === "all"
+      ? items
+      : filterService === "__orphaned__"
+      ? orphaned
+      : items.filter((p) => p.serviceSlug === filterService);
   const inputCls = "w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/25 focus:outline-none focus:border-[#E50019]/50 transition-colors";
 
   return (
@@ -105,9 +113,14 @@ export default function PackagesManager({ initialPackages }: { initialPackages: 
 
         <div className="flex gap-2 mb-4 flex-wrap">
           <button onClick={() => setFilterService("all")} className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${filterService === "all" ? "bg-[#E50019] border-[#E50019] text-white" : "border-white/15 text-white/50 hover:text-white"}`}>All</button>
-          {SERVICES.map((s) => (
-            <button key={s} onClick={() => setFilterService(s)} className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${filterService === s ? "bg-[#E50019] border-[#E50019] text-white" : "border-white/15 text-white/50 hover:text-white"}`}>{s}</button>
+          {services.map((s) => (
+            <button key={s.slug} onClick={() => setFilterService(s.slug)} className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${filterService === s.slug ? "bg-[#E50019] border-[#E50019] text-white" : "border-white/15 text-white/50 hover:text-white"}`}>{s.title}</button>
           ))}
+          {orphaned.length > 0 && (
+            <button onClick={() => setFilterService("__orphaned__")} className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${filterService === "__orphaned__" ? "bg-yellow-600 border-yellow-600 text-white" : "border-yellow-600/40 text-yellow-500/70 hover:text-yellow-400"}`}>
+              Unassigned ({orphaned.length})
+            </button>
+          )}
         </div>
 
         <div className="bg-[#111] border border-white/8 rounded-xl overflow-hidden">
@@ -126,7 +139,16 @@ export default function PackagesManager({ initialPackages }: { initialPackages: 
               ) : filtered.map((p) => (
                 <tr key={p.id} className="hover:bg-white/3 transition-colors">
                   <td className="px-4 py-3 font-medium text-white">{p.name}</td>
-                  <td className="px-4 py-3 text-white/60 text-xs">{p.serviceSlug}</td>
+                  <td className="px-4 py-3 text-xs">
+                    <span className={activeSlugs.has(p.serviceSlug) ? "text-white/60" : "text-yellow-500"}>
+                      {p.serviceSlug}
+                    </span>
+                    {!activeSlugs.has(p.serviceSlug) && (
+                      <span className="ml-2 text-[9px] tracking-widest uppercase bg-yellow-600/15 text-yellow-500 border border-yellow-600/25 px-1.5 py-0.5 rounded">
+                        unassigned
+                      </span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-white/60">{p.price}</td>
                   <td className="px-4 py-3 text-white/40">{p.deposit ?? "—"}</td>
                   <td className="px-4 py-3">
@@ -153,7 +175,13 @@ export default function PackagesManager({ initialPackages }: { initialPackages: 
             <div>
               <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Service</label>
               <select value={form.serviceSlug} onChange={(e) => set("serviceSlug", e.target.value)} className={inputCls}>
-                {SERVICES.map((s) => <option key={s} value={s}>{s}</option>)}
+                <option value="" disabled>Select a service...</option>
+                {form.serviceSlug && !activeSlugs.has(form.serviceSlug) && (
+                  <option value={form.serviceSlug} disabled>
+                    ⚠ {form.serviceSlug} (removed — reassign)
+                  </option>
+                )}
+                {services.map((s) => <option key={s.slug} value={s.slug}>{s.title}</option>)}
               </select>
             </div>
             <div>

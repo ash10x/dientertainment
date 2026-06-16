@@ -31,7 +31,7 @@ export default async function ContactCTA() {
 
       {/* Giant background watermark */}
       <span
-        className="font-display absolute inset-0 flex items-center justify-center leading-none text-white/5.5 pointer-events-none select-none uppercase"
+        className="font-display absolute inset-0 flex items-center justify-center leading-none text-white/5 pointer-events-none select-none uppercase"
         style={{ fontSize: "clamp(160px, 28vw, 420px)" }}
         aria-hidden="true"
       >

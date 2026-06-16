@@ -84,6 +84,17 @@ export const siteSettings = pgTable("site_settings", {
   value: text("value").notNull(),
 });
 
+export const services = pgTable("services", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
+  number: text("number").notNull(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  tags: text("tags").array().notNull(),
+  active: boolean("active").notNull().default(true),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
 export const adminUsers = pgTable("admin_users", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
@@ -91,4 +102,17 @@ export const adminUsers = pgTable("admin_users", {
   name: text("name").notNull(),
   role: text("role").notNull().default("admin"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const pageHeroes = pgTable("page_heroes", {
+  page: text("page").primaryKey(),
+  eyebrow: text("eyebrow").notNull().default(""),
+  heading: text("heading").notNull().default(""),
+  headingAccent: text("heading_accent"),
+  body: text("body"),
+  bodySecondary: text("body_secondary"),
+  ctaPrimaryLabel: text("cta_primary_label"),
+  ctaPrimaryHref: text("cta_primary_href"),
+  ctaSecondaryLabel: text("cta_secondary_label"),
+  ctaSecondaryHref: text("cta_secondary_href"),
 });

@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { workProjects, testimonials, siteStats, packages, siteSettings } from "./schema";
+import { workProjects, testimonials, siteStats, packages, siteSettings, services, pageHeroes } from "./schema";
 import { eq, asc } from "drizzle-orm";
 
 export type PackageRow = typeof packages.$inferSelect;
@@ -69,4 +69,93 @@ export async function getPackagesByService(serviceSlug: string) {
     .from(packages)
     .where(eq(packages.serviceSlug, serviceSlug))
     .orderBy(asc(packages.sortOrder));
+}
+
+export async function getActiveServices() {
+  try {
+    return await db
+      .select()
+      .from(services)
+      .where(eq(services.active, true))
+      .orderBy(asc(services.sortOrder));
+  } catch {
+    return [];
+  }
+}
+
+export async function getAllServices() {
+  return db.select().from(services).orderBy(asc(services.sortOrder));
+}
+
+export type HeroRow = typeof pageHeroes.$inferSelect;
+
+const HERO_PAGES = ["home", "about", "work", "contact"] as const;
+
+const HERO_DEFAULTS: Record<string, HeroRow> = {
+  home: {
+    page: "home",
+    eyebrow: "Digital Marketing · News & Media · AI Branding",
+    heading: "We Create AI Content\nThat Makes Brands\nLook",
+    headingAccent: "Million Dollar.",
+    body: "AI Videos. AI Commercials. AI Reels. AI Branding.",
+    bodySecondary: "Luxury marketing powered by artificial intelligence.",
+    ctaPrimaryLabel: "Start a Project",
+    ctaPrimaryHref: "#contact",
+    ctaSecondaryLabel: "View Our Work",
+    ctaSecondaryHref: "#work",
+  },
+  about: {
+    page: "about",
+    eyebrow: "Who We Are",
+    heading: "Built for\nbrands that",
+    headingAccent: "mean it.",
+    body: "diEntertainment is a full-service news, media, and AI-powered marketing agency. We help ambitious brands build a presence that commands attention, earns respect, and drives real results.",
+    bodySecondary: null,
+    ctaPrimaryLabel: null,
+    ctaPrimaryHref: null,
+    ctaSecondaryLabel: null,
+    ctaSecondaryHref: null,
+  },
+  work: {
+    page: "work",
+    eyebrow: "Portfolio",
+    heading: "Selected",
+    headingAccent: "Projects.",
+    body: "A selection of brand stories we've helped tell — across digital marketing, media, and production.",
+    bodySecondary: null,
+    ctaPrimaryLabel: null,
+    ctaPrimaryHref: null,
+    ctaSecondaryLabel: null,
+    ctaSecondaryHref: null,
+  },
+  contact: {
+    page: "contact",
+    eyebrow: "Get In Touch",
+    heading: "Let's build\nsomething",
+    headingAccent: "great.",
+    body: null,
+    bodySecondary: null,
+    ctaPrimaryLabel: null,
+    ctaPrimaryHref: null,
+    ctaSecondaryLabel: null,
+    ctaSecondaryHref: null,
+  },
+};
+
+export async function getPageHero(page: string): Promise<HeroRow> {
+  try {
+    const [row] = await db.select().from(pageHeroes).where(eq(pageHeroes.page, page));
+    return row ?? HERO_DEFAULTS[page] ?? HERO_DEFAULTS.home;
+  } catch {
+    return HERO_DEFAULTS[page] ?? HERO_DEFAULTS.home;
+  }
+}
+
+export async function getAllPageHeroes(): Promise<HeroRow[]> {
+  try {
+    const rows = await db.select().from(pageHeroes);
+    return HERO_PAGES.map((p) => rows.find((r) => r.page === p) ?? HERO_DEFAULTS[p]);
+  } catch {
+    return HERO_PAGES.map((p) => HERO_DEFAULTS[p]);
+  }
 }

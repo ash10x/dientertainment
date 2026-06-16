@@ -162,10 +162,10 @@ export default async function Work() {
                 )}
                 {!work.previewUrl && (
                   <span
-                    className="font-display absolute top-4 left-6 leading-none pointer-events-none select-none opacity-8"
+                    className="font-display absolute top-4 left-6 leading-none pointer-events-none select-none"
                     style={{
                       fontSize: "clamp(60px, 7vw, 100px)",
-                      color: work.textLight ? "#FFFFFF" : "#0A0A0A",
+                      color: work.textLight ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)",
                     }}
                   >
                     {work.slug}

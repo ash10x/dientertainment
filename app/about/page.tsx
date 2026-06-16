@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Footer from "../components/Footer";
-import { getStatsByPage } from "@/lib/queries";
+import { getStatsByPage, getActiveServices, getPageHero } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "About — diEntertainment",
@@ -54,22 +54,19 @@ const values = [
   },
 ];
 
-const services = [
-  { label: "Digital Marketing", href: "/services/digital-marketing" },
-  { label: "News & Media", href: "/services/news-media" },
-  { label: "Photo Production", href: "/services/photo-production" },
-  { label: "Video Production", href: "/services/video-production" },
-  { label: "AI Video Creation", href: "/services/ai-video-creation" },
-  { label: "AI Image Generation", href: "/services/ai-image-generation" },
-  { label: "Script Writing", href: "/services/script-writing" },
-];
-
 export default async function AboutPage() {
   let stats = fallbackStats;
   try {
     const dbStats = await getStatsByPage("about");
     if (dbStats.length > 0) stats = dbStats;
   } catch {}
+
+  const [dbServices, hero] = await Promise.all([
+    getActiveServices(),
+    getPageHero("about"),
+  ]);
+  const services = dbServices.map((s) => ({ label: s.title, href: `/services/${s.slug}` }));
+  const headingLines = hero.heading.split("\n");
 
   return (
     <>
@@ -96,7 +93,7 @@ export default async function AboutPage() {
             <div className="flex items-center gap-3 mb-10">
               <div className="w-6 h-px bg-red" />
               <span className="text-red text-[10px] tracking-[0.38em] uppercase">
-                Who We Are
+                {hero.eyebrow}
               </span>
             </div>
 
@@ -104,20 +101,21 @@ export default async function AboutPage() {
               className="font-display uppercase leading-[0.87] max-w-5xl"
               style={{ fontSize: "clamp(56px, 9vw, 140px)" }}
             >
-              <span className="text-brand-white">Built for</span>
-              <br />
-              <span className="text-brand-white">brands that</span>
-              <br />
-              <span className="text-red">mean it.</span>
+              {headingLines.map((line, i) => (
+                <span key={i} className="text-brand-white block">{line}</span>
+              ))}
+              {hero.headingAccent && (
+                <span className="text-red block">{hero.headingAccent}</span>
+              )}
             </h1>
 
-            <div className="mt-12 max-w-xl">
-              <p className="text-brand-white/58 text-lg leading-relaxed">
-                diEntertainment is a full-service news, media, and AI-powered marketing
-                agency. We help ambitious brands build a presence that commands attention,
-                earns respect, and drives real results.
-              </p>
-            </div>
+            {hero.body && (
+              <div className="mt-12 max-w-xl">
+                <p className="text-brand-white/58 text-lg leading-relaxed">
+                  {hero.body}
+                </p>
+              </div>
+            )}
           </div>
         </section>
 
@@ -280,7 +278,7 @@ export default async function AboutPage() {
                   className="font-display uppercase leading-[0.87] text-brand-white mb-8"
                   style={{ fontSize: "clamp(44px, 6vw, 92px)" }}
                 >
-                  Seven services.
+                  {services.length > 0 ? `${services.length} services.` : "Our services."}
                   <br />
                   <span className="text-red">One vision.</span>
                 </h2>

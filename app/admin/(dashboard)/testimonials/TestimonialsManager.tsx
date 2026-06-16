@@ -14,16 +14,17 @@ type Testimonial = {
   sortOrder: number;
 };
 
-const SERVICES = [
-  "AI Video Creation", "AI Image Generation", "Photo Production",
-  "Video Production", "Digital Marketing", "News & Media", "Script Writing",
-];
-
 const empty: Omit<Testimonial, "id"> = {
-  name: "", role: "", review: "", service: SERVICES[0], featured: false, sortOrder: 0,
+  name: "", role: "", review: "", service: "", featured: false, sortOrder: 0,
 };
 
-export default function TestimonialsManager({ initialTestimonials }: { initialTestimonials: Testimonial[] }) {
+export default function TestimonialsManager({
+  initialTestimonials,
+  services,
+}: {
+  initialTestimonials: Testimonial[];
+  services: string[];
+}) {
   const [items, setItems] = useState(initialTestimonials);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Testimonial | null>(null);
@@ -128,7 +129,8 @@ export default function TestimonialsManager({ initialTestimonials }: { initialTe
             <div>
               <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Service</label>
               <select value={form.service} onChange={(e) => set("service", e.target.value)} className={inputCls}>
-                {SERVICES.map((s) => <option key={s} value={s}>{s}</option>)}
+                <option value="" disabled>Select a service...</option>
+                {services.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
             <div>

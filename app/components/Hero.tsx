@@ -1,4 +1,23 @@
-export default function Hero() {
+import type { HeroRow } from "@/lib/queries";
+
+type HeroProps = {
+  hero: HeroRow;
+};
+
+export default function Hero({ hero }: HeroProps) {
+  const headingLines = hero.heading.split("\n");
+  const lastLine = headingLines[headingLines.length - 1];
+  const prevLines = headingLines.slice(0, -1);
+
+  const ctaPrimary =
+    hero.ctaPrimaryLabel && hero.ctaPrimaryHref
+      ? { label: hero.ctaPrimaryLabel, href: hero.ctaPrimaryHref }
+      : null;
+  const ctaSecondary =
+    hero.ctaSecondaryLabel && hero.ctaSecondaryHref
+      ? { label: hero.ctaSecondaryLabel, href: hero.ctaSecondaryHref }
+      : null;
+
   return (
     <section className="relative min-h-screen flex flex-col justify-center pt-17 bg-brand-black overflow-hidden">
       {/* Layered ambient glows */}
@@ -18,7 +37,7 @@ export default function Hero() {
         }}
       />
 
-      {/* Studio light streak — thin horizontal glow near top */}
+      {/* Studio light streak */}
       <div
         className="absolute top-32 left-0 right-0 h-px pointer-events-none"
         style={{
@@ -28,7 +47,7 @@ export default function Hero() {
         }}
       />
 
-      {/* Grid overlay — very subtle */}
+      {/* Grid overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -56,69 +75,70 @@ export default function Hero() {
         <div className="flex items-center gap-4 mb-10">
           <div className="w-8 h-px bg-red" />
           <span className="text-red text-[10px] tracking-[0.38em] uppercase">
-            Digital Marketing · News & Media · AI Branding
+            {hero.eyebrow}
           </span>
         </div>
 
         {/* Headline */}
         <h1 className="font-display uppercase leading-[0.86] tracking-tight mb-12 lg:mb-16">
-          <span
-            className="block text-brand-white"
-            style={{ fontSize: "clamp(40px, 6.5vw, 96px)" }}
-          >
-            We Create AI Content
-          </span>
-          <span
-            className="block text-brand-white"
-            style={{ fontSize: "clamp(40px, 6.5vw, 96px)" }}
-          >
-            That Makes Brands
-          </span>
+          {prevLines.map((line, i) => (
+            <span
+              key={i}
+              className="block text-brand-white"
+              style={{ fontSize: "clamp(40px, 6.5vw, 96px)" }}
+            >
+              {line}
+            </span>
+          ))}
           <span
             className="block"
             style={{ fontSize: "clamp(40px, 6.5vw, 96px)" }}
           >
-            <span className="text-brand-white">Look </span>
-            <span
-              className="text-red"
-              style={{
-                textShadow: "0 0 80px rgba(229,0,25,0.25)",
-              }}
-            >
-              Million Dollar.
-            </span>
+            <span className="text-brand-white">{lastLine}{hero.headingAccent ? " " : ""}</span>
+            {hero.headingAccent && (
+              <span
+                className="text-red"
+                style={{ textShadow: "0 0 80px rgba(229,0,25,0.25)" }}
+              >
+                {hero.headingAccent}
+              </span>
+            )}
           </span>
         </h1>
 
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
           <div className="space-y-2">
-            <p className="text-brand-white/70 text-base md:text-lg leading-relaxed">
-              AI Videos. AI Commercials. AI Reels. AI Branding.
-            </p>
-            <p className="text-brand-white/35 text-sm md:text-base leading-relaxed">
-              Luxury marketing powered by artificial intelligence.
-            </p>
+            {hero.body && (
+              <p className="text-brand-white/70 text-base md:text-lg leading-relaxed">
+                {hero.body}
+              </p>
+            )}
+            {hero.bodySecondary && (
+              <p className="text-brand-white/35 text-sm md:text-base leading-relaxed">
+                {hero.bodySecondary}
+              </p>
+            )}
           </div>
 
-          <div className="flex items-center gap-3 flex-wrap">
-            <a
-              href="#work"
-              className="btn-secondary"
-            >
-              View Our Work
-            </a>
-            <a
-              href="#contact"
-              className="btn-primary"
-            >
-              Start a Project <span>→</span>
-            </a>
-          </div>
+          {(ctaPrimary || ctaSecondary) && (
+            <div className="flex items-center gap-3 flex-wrap">
+              {ctaSecondary && (
+                <a href={ctaSecondary.href} className="btn-secondary">
+                  {ctaSecondary.label}
+                </a>
+              )}
+              {ctaPrimary && (
+                <a href={ctaPrimary.href} className="btn-primary">
+                  {ctaPrimary.label} <span>→</span>
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Stats teaser row */}
-        <div className="flex items-center gap-8 lg:gap-12 mt-16 lg:mt-20 pt-10 border-t border-white/6">
+        <div className="flex flex-wrap items-center gap-5 sm:gap-8 lg:gap-12 mt-14 lg:mt-20 pt-8 lg:pt-10 border-t border-white/6">
           {[
             { value: "150+", label: "Brands" },
             { value: "500+", label: "Campaigns" },

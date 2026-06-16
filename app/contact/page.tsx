@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import ContactForm from "../components/ContactForm";
-import { getSettings } from "@/lib/queries";
+import { getSettings, getActiveServices, getPageHero } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Contact — diEntertainment",
@@ -19,7 +19,11 @@ const socialOrder = [
 export default async function ContactPage(props: {
   searchParams: Promise<{ service?: string; package?: string; price?: string; deposit?: string }>;
 }) {
-  const [searchParams, settings] = await Promise.all([props.searchParams, getSettings()]);
+  const [searchParams, settings, dbServices, hero] = await Promise.all([props.searchParams, getSettings(), getActiveServices(), getPageHero("contact")]);
+  const serviceOptions = [
+    ...dbServices.map((s) => ({ value: s.slug, label: s.title })),
+    { value: "general", label: "General Inquiry" },
+  ];
   const initialService = searchParams.service ?? "";
   const initialPackage = searchParams.package ?? "";
   const initialPrice = searchParams.price ?? "";
@@ -42,17 +46,25 @@ export default async function ContactPage(props: {
           <div className="flex items-center gap-3 mb-8">
             <div className="w-6 h-px bg-red" />
             <span className="text-red text-[10px] tracking-[0.35em] uppercase">
-              Get In Touch
+              {hero.eyebrow}
             </span>
           </div>
           <h1
             className="font-display uppercase leading-[0.88] text-brand-white"
             style={{ fontSize: "clamp(56px, 9vw, 136px)" }}
           >
-            Let&apos;s build
-            <br />
-            something{" "}
-            <span className="text-red">great.</span>
+            {hero.heading.split("\n").map((line, i, arr) =>
+              i < arr.length - 1 ? (
+                <span key={i} className="block">{line}</span>
+              ) : (
+                <span key={i}>
+                  {line}
+                  {hero.headingAccent && (
+                    <>{" "}<span className="text-red">{hero.headingAccent}</span></>
+                  )}
+                </span>
+              )
+            )}
           </h1>
         </div>
       </section>
@@ -121,6 +133,7 @@ export default async function ContactPage(props: {
                 initialPackage={initialPackage}
                 initialPrice={initialPrice}
                 initialDeposit={initialDeposit}
+                serviceOptions={serviceOptions}
               />
             </div>
           </div>

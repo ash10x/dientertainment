@@ -7,6 +7,8 @@ export default function Packages({
   service?: string;
   packages: PackageRow[];
 }) {
+  if (packages.length === 0) return null;
+
   return (
     <section className="bg-brand-black py-24 lg:py-32 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -52,15 +54,30 @@ export default function Packages({
                 >
                   {pkg.name}
                 </h3>
+                {pkg.description && (
+                  <p className="text-brand-white/40 text-sm leading-relaxed mt-2">
+                    {pkg.description}
+                  </p>
+                )}
               </div>
 
               <div className="mb-8 pb-8 border-b border-white/7">
                 <span
                   className="font-display text-brand-white leading-none"
-                  style={{ fontSize: "clamp(44px, 5vw, 64px)" }}
+                  style={{ fontSize: "clamp(40px, 5vw, 60px)" }}
                 >
                   {pkg.price}
                 </span>
+                {pkg.deposit && (
+                  <p className="text-brand-white/35 text-xs mt-1.5 tracking-wide">
+                    Deposit: {pkg.deposit}
+                  </p>
+                )}
+                {pkg.duration && (
+                  <span className="inline-block mt-3 text-[9px] tracking-[0.25em] uppercase text-brand-white/30 border border-white/8 px-3 py-1">
+                    {pkg.duration}
+                  </span>
+                )}
               </div>
 
               <div className="mb-8 flex-1">
@@ -96,7 +113,7 @@ export default function Packages({
               )}
 
               <a
-                href={`/contact?service=${encodeURIComponent(service)}&package=${encodeURIComponent(pkg.name)}&price=${encodeURIComponent(pkg.price)}`}
+                href={`/contact?service=${encodeURIComponent(service)}&package=${encodeURIComponent(pkg.name)}&price=${encodeURIComponent(pkg.price)}${pkg.deposit ? `&deposit=${encodeURIComponent(pkg.deposit)}` : ""}`}
                 className={`flex items-center justify-center gap-2 text-[11px] tracking-[0.22em] uppercase px-6 py-4 rounded-xs transition-all duration-250 hover:-translate-y-px ${
                   pkg.highlight
                     ? "bg-red text-brand-white hover:bg-[#FF001F] hover:shadow-[0_6px_20px_rgba(229,0,25,0.35)]"

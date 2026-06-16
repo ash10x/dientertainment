@@ -2,16 +2,7 @@
 
 import { useState } from "react";
 
-const serviceOptions = [
-  { value: "digital-marketing", label: "Digital Marketing" },
-  { value: "news-media", label: "News & Media" },
-  { value: "photo-production", label: "Photo Production" },
-  { value: "video-production", label: "Video Production" },
-  { value: "ai-video-creation", label: "AI Video Creation" },
-  { value: "ai-image-generation", label: "AI Image Generation" },
-  { value: "script-writing", label: "Script Writing" },
-  { value: "general", label: "General Inquiry" },
-];
+type ServiceOption = { value: string; label: string };
 
 const budgetOptions = [
   { value: "under-500", label: "Under $500" },
@@ -32,11 +23,13 @@ export default function ContactForm({
   initialPackage = "",
   initialPrice = "",
   initialDeposit = "",
+  serviceOptions = [],
 }: {
   initialService?: string;
   initialPackage?: string;
   initialPrice?: string;
   initialDeposit?: string;
+  serviceOptions?: ServiceOption[];
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -134,11 +127,6 @@ export default function ContactForm({
             <div className="text-brand-white font-medium text-sm">
               {initialPackage}
             </div>
-            {initialDeposit && (
-              <div className="text-brand-white/40 text-[10px] tracking-widest mt-1">
-                Deposit required: <span className="text-red/80">{initialDeposit}</span>
-              </div>
-            )}
           </div>
           <div className="shrink-0 text-right">
             <div
@@ -161,10 +149,11 @@ export default function ContactForm({
       {/* Row 1 — Name + Email */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8">
         <div>
-          <label className={labelClass}>
+          <label htmlFor="cf-name" className={labelClass}>
             Full Name <span className="text-red">*</span>
           </label>
           <input
+            id="cf-name"
             type="text"
             required
             value={name}
@@ -174,10 +163,11 @@ export default function ContactForm({
           />
         </div>
         <div>
-          <label className={labelClass}>
+          <label htmlFor="cf-email" className={labelClass}>
             Email Address <span className="text-red">*</span>
           </label>
           <input
+            id="cf-email"
             type="email"
             required
             value={email}
@@ -189,10 +179,11 @@ export default function ContactForm({
 
         {/* Row 2 — Phone + Instagram */}
         <div>
-          <label className={labelClass}>
+          <label htmlFor="cf-phone" className={labelClass}>
             Phone Number <span className="text-red">*</span>
           </label>
           <input
+            id="cf-phone"
             type="tel"
             required
             value={phone}
@@ -202,8 +193,9 @@ export default function ContactForm({
           />
         </div>
         <div>
-          <label className={labelClass}>Instagram / Social Handle</label>
+          <label htmlFor="cf-instagram" className={labelClass}>Instagram / Social Handle</label>
           <input
+            id="cf-instagram"
             type="text"
             value={instagram}
             onChange={(e) => setInstagram(e.target.value)}
@@ -214,8 +206,9 @@ export default function ContactForm({
 
         {/* Row 3 — Company + Service */}
         <div>
-          <label className={labelClass}>Company / Brand Name</label>
+          <label htmlFor="cf-company" className={labelClass}>Company / Brand Name</label>
           <input
+            id="cf-company"
             type="text"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
@@ -224,11 +217,12 @@ export default function ContactForm({
           />
         </div>
         <div>
-          <label className={labelClass}>
+          <label htmlFor="cf-service" className={labelClass}>
             Service Interest <span className="text-red">*</span>
           </label>
           <div className="relative">
             <select
+              id="cf-service"
               required
               value={service}
               onChange={(e) => setService(e.target.value)}
@@ -250,9 +244,10 @@ export default function ContactForm({
       {/* Budget — hidden when a package is pre-selected */}
       {!hasPackage && (
         <div>
-          <label className={labelClass}>Budget Range</label>
+          <label htmlFor="cf-budget" className={labelClass}>Budget Range</label>
           <div className="relative">
             <select
+              id="cf-budget"
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
               className="w-full bg-brand-black border-b border-white/14 focus:border-red text-sm py-3 outline-none appearance-none transition-colors duration-200 cursor-pointer"
@@ -272,11 +267,12 @@ export default function ContactForm({
 
       {/* Message */}
       <div>
-        <label className={labelClass}>
+        <label htmlFor="cf-message" className={labelClass}>
           {hasPackage ? "Anything we should know?" : "Tell Us About Your Project"}{" "}
           <span className="text-red">*</span>
         </label>
         <textarea
+          id="cf-message"
           required
           rows={5}
           value={message}
@@ -289,13 +285,6 @@ export default function ContactForm({
           className={`${inputClass} resize-none`}
         />
       </div>
-
-      {/* Payment note for packages */}
-      {hasPackage && (
-        <p className="text-brand-white/25 text-[10px] tracking-[0.2em] uppercase">
-          Payment via PayPal · Cash App · Zelle · All Electronic Payments
-        </p>
-      )}
 
       {/* Error message */}
       {status === "error" && (

@@ -67,7 +67,7 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
         {/* Grid */}
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((project) => {
+            {filtered.map((project, idx) => {
               const hasPreview = !!project.previewUrl;
               const lightText = project.textLight || hasPreview;
 
@@ -102,7 +102,7 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
                           : "rgba(0,0,0,0.05)",
                       }}
                     >
-                      {project.slug}
+                      {String(idx + 1).padStart(2, "0")}
                     </span>
                   )}
 

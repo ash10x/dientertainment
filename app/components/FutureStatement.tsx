@@ -69,7 +69,7 @@ export default function FutureStatement() {
           <a href="/contact" className="btn-primary">
             Start Today <span>→</span>
           </a>
-          <a href="/services/ai-video-creation" className="btn-secondary">
+          <a href="/#services" className="btn-secondary">
             Explore Services
           </a>
         </div>

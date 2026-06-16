@@ -8,14 +8,17 @@ import About from "./components/About";
 import FutureStatement from "./components/FutureStatement";
 import ContactCTA from "./components/ContactCTA";
 import Footer from "./components/Footer";
-import { getStatsByPage } from "@/lib/queries";
+import { getStatsByPage, getPageHero } from "@/lib/queries";
 
 export default async function Home() {
-  const stats = await getStatsByPage("home");
+  const [stats, hero] = await Promise.all([
+    getStatsByPage("home"),
+    getPageHero("home"),
+  ]);
 
   return (
     <main className="bg-brand-black">
-      <Hero />
+      <Hero hero={hero} />
       <MarqueeStrip />
       <Services />
       <Stats stats={stats} />

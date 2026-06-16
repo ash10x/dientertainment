@@ -19,7 +19,7 @@ export default function Stats({ stats }: { stats: Stat[] }) {
           {stats.map((stat) => (
             <div
               key={stat.statLabel}
-              className="stat-item bg-brand-white px-6 py-16 lg:py-22 flex flex-col items-center text-center cursor-default group"
+              className="stat-item bg-brand-white px-4 py-10 sm:px-6 sm:py-14 lg:py-22 flex flex-col items-center text-center cursor-default group"
             >
               <span
                 className="font-display leading-none text-brand-black group-hover:text-red transition-colors duration-400"

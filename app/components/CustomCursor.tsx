@@ -29,16 +29,23 @@ export default function CustomCursor() {
     const expand  = () => ring.classList.add("cursor-ring--hover");
     const contract = () => ring.classList.remove("cursor-ring--hover");
 
+    const onOver = (e: MouseEvent) => {
+      if ((e.target as Element).closest("a, button")) expand();
+    };
+    const onOut = (e: MouseEvent) => {
+      if ((e.target as Element).closest("a, button")) contract();
+    };
+
     window.addEventListener("mousemove", move, { passive: true });
-    document.querySelectorAll("a, button").forEach((el) => {
-      el.addEventListener("mouseenter", expand);
-      el.addEventListener("mouseleave", contract);
-    });
+    document.addEventListener("mouseover", onOver);
+    document.addEventListener("mouseout", onOut);
 
     raf = requestAnimationFrame(tick);
 
     return () => {
       window.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseover", onOver);
+      document.removeEventListener("mouseout", onOut);
       cancelAnimationFrame(raf);
     };
   }, []);

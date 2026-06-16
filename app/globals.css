@@ -428,6 +428,8 @@ body {
 /* ─── Custom cursor (desktop / pointer devices only) ────────────────────── */
 @media (hover: hover) and (pointer: fine) {
   * { cursor: none !important; }
+  input, textarea, select { cursor: text !important; }
+  input[type="checkbox"], input[type="radio"], select { cursor: pointer !important; }
 
   .cursor-dot {
     position: fixed;
