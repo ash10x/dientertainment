@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { services } from "@/lib/schema";
 import { asc } from "drizzle-orm";
+import { logActivity } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
       })
       .returning();
 
+    await logActivity("service", `Service created: "${title}"`, { id: row.id, slug });
     return Response.json(row, { status: 201 });
   } catch {
     return Response.json({ error: "Failed to create service." }, { status: 500 });

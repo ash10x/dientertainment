@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { workProjects } from "@/lib/schema";
 import { asc } from "drizzle-orm";
+import { logActivity } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
       .values({ slug, title, client, category, year, outcome, bg, accentColor, textLight: !!textLight, sortOrder: sortOrder ?? 0, previewUrl: previewUrl || null })
       .returning();
 
+    await logActivity("work", `Work project created: "${title}" (${client})`, { id: row.id, slug, category });
     return Response.json(row, { status: 201 });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Failed to create project.";

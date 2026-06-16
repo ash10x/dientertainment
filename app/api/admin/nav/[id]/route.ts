@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { navItems } from "@/lib/schema";
 import { eq } from "drizzle-orm";
+import { logActivity } from "@/lib/logger";
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -13,6 +14,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       .where(eq(navItems.id, Number(id)))
       .returning();
     if (!row) return Response.json({ error: "Not found." }, { status: 404 });
+    await logActivity("nav", `Nav item updated: "${row.label}" (${row.type})`, { id: row.id });
     return Response.json(row);
   } catch (e: unknown) {
     return Response.json({ error: e instanceof Error ? e.message : "Failed to update." }, { status: 500 });
@@ -22,7 +24,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    await db.delete(navItems).where(eq(navItems.id, Number(id)));
+    const [deleted] = await db.delete(navItems).where(eq(navItems.id, Number(id))).returning();
+    await logActivity("nav", `Nav item deleted: "${deleted?.label ?? id}"`, { id: Number(id) });
     return Response.json({ ok: true });
   } catch (e: unknown) {
     return Response.json({ error: e instanceof Error ? e.message : "Failed to delete." }, { status: 500 });

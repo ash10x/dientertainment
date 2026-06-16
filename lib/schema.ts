@@ -76,6 +76,7 @@ export const activityLogs = pgTable("activity_logs", {
   description: text("description").notNull(),
   meta: text("meta"),
   ip: text("ip"),
+  read: boolean("read").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

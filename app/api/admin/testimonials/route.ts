@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { testimonials } from "@/lib/schema";
 import { asc } from "drizzle-orm";
+import { logActivity } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
       .values({ name, role, review, service, featured: !!featured, sortOrder: sortOrder ?? 0 })
       .returning();
 
+    await logActivity("testimonial", `Testimonial added: ${name} — "${service}"`, { id: row.id });
     return Response.json(row, { status: 201 });
   } catch {
     return Response.json({ error: "Failed to create testimonial." }, { status: 500 });
