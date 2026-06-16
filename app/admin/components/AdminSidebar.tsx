@@ -199,7 +199,8 @@ export default function AdminSidebar({ user, onClose }: AdminSidebarProps) {
                 style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
               >
                 <div className="space-y-0.5 pb-1">
-                  {group.links.map(({ href, label, icon, exact }) => {
+                  {group.links.map(({ href, label, icon, ...rest }) => {
+                    const exact = (rest as { exact?: boolean }).exact;
                     const active = isActive(href, exact);
                     return (
                       <Link
