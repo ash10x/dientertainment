@@ -6,8 +6,9 @@ import Toast from "../../components/Toast";
 
 type Stat = { id: number; page: string; statValue: string; statLabel: string; sortOrder: number };
 
-const PAGES = ["home", "work", "testimonials", "why-choose-us", "about", "services"];
-const empty: Omit<Stat, "id"> = { page: PAGES[0], statValue: "", statLabel: "", sortOrder: 0 };
+// Pages that actually consume stats via getStatsByPage()
+const KNOWN_PAGES = ["home", "work", "testimonials", "why-choose-us", "about"];
+const empty: Omit<Stat, "id"> = { page: KNOWN_PAGES[0], statValue: "", statLabel: "", sortOrder: 0 };
 
 export default function StatsManager({ initialStats }: { initialStats: Stat[] }) {
   const [items, setItems] = useState(initialStats);
@@ -21,7 +22,9 @@ export default function StatsManager({ initialStats }: { initialStats: Stat[] })
   function openEdit(s: Stat) { setEditing(s); setForm({ ...s }); setModalOpen(true); }
   function set(key: keyof typeof form, value: unknown) { setForm((f) => ({ ...f, [key]: value })); }
 
-  const grouped = PAGES.reduce<Record<string, Stat[]>>((acc, p) => {
+  // Derive group keys from actual DB data (so orphaned pages still show)
+  const allPages = Array.from(new Set([...KNOWN_PAGES, ...items.map((s) => s.page)])).sort();
+  const grouped = allPages.reduce<Record<string, Stat[]>>((acc, p) => {
     acc[p] = items.filter((s) => s.page === p);
     return acc;
   }, {});
@@ -58,13 +61,13 @@ export default function StatsManager({ initialStats }: { initialStats: Stat[] })
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-white">Site Stats</h1>
-            <p className="text-white/40 text-sm mt-1">{items.length} stat{items.length !== 1 ? "s" : ""} across {PAGES.length} pages</p>
+            <p className="text-white/40 text-sm mt-1">{items.length} stat{items.length !== 1 ? "s" : ""} across {allPages.filter(p => grouped[p]?.length > 0).length} pages</p>
           </div>
           <button onClick={openCreate} className="bg-[#E50019] hover:bg-[#FF0022] text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors">+ Add Stat</button>
         </div>
 
         <div className="space-y-4">
-          {PAGES.map((page) => {
+          {allPages.map((page) => {
             const pageStats = grouped[page];
             if (pageStats.length === 0) return null;
             return (
@@ -111,9 +114,18 @@ export default function StatsManager({ initialStats }: { initialStats: Stat[] })
         <div className="space-y-4">
           <div>
             <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Page</label>
-            <select value={form.page} onChange={(e) => set("page", e.target.value)} className={inputCls}>
-              {PAGES.map((p) => <option key={p} value={p}>{p}</option>)}
-            </select>
+            <input
+              type="text"
+              list="page-suggestions"
+              value={form.page}
+              onChange={(e) => set("page", e.target.value)}
+              placeholder="e.g. home"
+              className={inputCls}
+            />
+            <datalist id="page-suggestions">
+              {allPages.map((p) => <option key={p} value={p} />)}
+            </datalist>
+            <p className="text-[10px] text-white/25 mt-1">Active pages: {KNOWN_PAGES.join(", ")}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>

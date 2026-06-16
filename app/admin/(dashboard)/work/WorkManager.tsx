@@ -19,14 +19,8 @@ type Project = {
   previewUrl: string | null;
 };
 
-const CATEGORIES = [
-  "AI Branding", "AI Videos", "AI Commercials", "AI Video Creation",
-  "AI Image Generation", "Digital Marketing", "News & Media",
-  "Photo Production", "Video Production", "Script Writing",
-];
-
 const empty: Omit<Project, "id"> = {
-  slug: "", title: "", client: "", category: CATEGORIES[0], year: "",
+  slug: "", title: "", client: "", category: "", year: "",
   outcome: "", bg: "#1a1a1a", accentColor: "#E50019", textLight: true, sortOrder: 0, previewUrl: null,
 };
 
@@ -34,6 +28,7 @@ interface WorkManagerProps { initialProjects: Project[] }
 
 export default function WorkManager({ initialProjects }: WorkManagerProps) {
   const [projects, setProjects] = useState(initialProjects);
+  const existingCategories = Array.from(new Set(projects.map((p) => p.category).filter(Boolean))).sort();
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Project | null>(null);
   const [form, setForm] = useState<Omit<Project, "id">>(empty);
@@ -135,9 +130,19 @@ export default function WorkManager({ initialProjects }: WorkManagerProps) {
             <Field label="Year"><Input value={form.year} onChange={(v) => set("year", v)} placeholder="2025" /></Field>
           </div>
           <Field label="Category">
-            <select value={form.category} onChange={(e) => set("category", e.target.value)} className={inputCls}>
-              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
+            <>
+              <input
+                type="text"
+                list="category-suggestions"
+                value={form.category}
+                onChange={(e) => set("category", e.target.value)}
+                placeholder="e.g. AI Branding"
+                className={inputCls}
+              />
+              <datalist id="category-suggestions">
+                {existingCategories.map((c) => <option key={c} value={c} />)}
+              </datalist>
+            </>
           </Field>
           <Field label="Outcome"><Input value={form.outcome} onChange={(v) => set("outcome", v)} placeholder="2M+ views in 30 days" /></Field>
           <Field label="Preview URL (image or video)">
