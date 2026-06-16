@@ -104,6 +104,16 @@ export const adminUsers = pgTable("admin_users", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const navItems = pgTable("nav_items", {
+  id: serial("id").primaryKey(),
+  label: text("label").notNull(),
+  href: text("href").notNull(),
+  type: text("type").notNull().default("link"), // 'link' | 'cta' | 'services-dropdown'
+  visible: boolean("visible").notNull().default(true),
+  openInNewTab: boolean("open_in_new_tab").notNull().default(false),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
 export const pageHeroes = pgTable("page_heroes", {
   page: text("page").primaryKey(),
   eyebrow: text("eyebrow").notNull().default(""),
