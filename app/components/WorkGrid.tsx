@@ -18,21 +18,17 @@ export type Project = {
   previewUrl?: string | null;
 };
 
-const categories = [
-  { label: "All", value: "all" },
-  { label: "AI Branding", value: "AI Branding" },
-  { label: "AI Videos", value: "AI Videos" },
-  { label: "AI Commercials", value: "AI Commercials" },
-  { label: "Digital Marketing", value: "Digital Marketing" },
-  { label: "News & Media", value: "News & Media" },
-  { label: "Photo Production", value: "Photo Production" },
-  { label: "Video Production", value: "Video Production" },
-  { label: "AI Video Creation", value: "AI Video Creation" },
-  { label: "AI Image Generation", value: "AI Image Generation" },
-  { label: "Script Writing", value: "Script Writing" },
-];
-
-export default function WorkGrid({ projects }: { projects: Project[] }) {
+export default function WorkGrid({
+  projects,
+  categories = [],
+}: {
+  projects: Project[];
+  categories?: string[];
+}) {
+  const filterOptions = [
+    { label: "All", value: "all" },
+    ...categories.map((c) => ({ label: c, value: c })),
+  ];
   const [active, setActive] = useState("all");
   const [selected, setSelected] = useState<Project | null>(null);
 
@@ -64,7 +60,7 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           {/* Filter bar */}
           <div className="flex flex-wrap gap-2 mb-12">
-            {categories.map((cat) => (
+            {filterOptions.map((cat) => (
               <button
                 key={cat.value}
                 onClick={() => setActive(cat.value)}

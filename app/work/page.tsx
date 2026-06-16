@@ -19,6 +19,8 @@ export default async function WorkPage() {
   ]);
   const headingLines = hero.heading.split("\n");
 
+  const categories = Array.from(new Set(projects.map((p) => p.category))).sort();
+
   return (
     <main className="bg-brand-black pt-17">
       {/* ─── Hero ─── */}
@@ -72,7 +74,7 @@ export default async function WorkPage() {
       </section>
 
       {/* ─── Filterable grid ─── */}
-      <WorkGrid projects={projects} />
+      <WorkGrid projects={projects} categories={categories} />
 
       {/* ─── CTA ─── */}
       <section className="bg-red py-20 lg:py-24 relative overflow-hidden">
