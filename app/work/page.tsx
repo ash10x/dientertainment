@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import WorkGrid from "../components/WorkGrid";
 import { getWorkProjects, getStatsByPage, getPageHero } from "@/lib/queries";
 
@@ -99,12 +100,13 @@ export default async function WorkPage() {
             <br />
             next.
           </h2>
-          <a
+          <Link
             href="/contact"
-            className="inline-flex items-center gap-2 bg-brand-black text-brand-white text-[11px] tracking-[0.22em] uppercase px-10 py-4 hover:bg-[#1A1A1A] transition-colors duration-300"
+            className="inline-flex items-center gap-2 bg-brand-black text-brand-white text-[11px] tracking-[0.22em] uppercase px-10 py-4 rounded-xs hover:bg-[#1A1A1A] hover:-translate-y-px transition-all duration-300"
+            style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
           >
             Start a Project <span className="text-sm">→</span>
-          </a>
+          </Link>
         </div>
       </section>
     </main>

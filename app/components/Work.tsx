@@ -14,67 +14,17 @@ type WorkProject = {
   previewUrl: string | null;
 };
 
-const fallback: WorkProject[] = [
-  {
-    id: 0,
-    slug: "01",
-    title: "Alpha Tribe - Product Launch Campaign",
-    category: "AI Branding",
-    year: "2026",
-    bg: "#111111",
-    accentColor: "#E50019",
-    textLight: true,
-    previewUrl:
-      "https://res.cloudinary.com/dzwn2lwdz/video/upload/v1780661931/alphatribe1_b3uvmq.mp4",
-  },
-  {
-    id: 1,
-    slug: "02",
-    title: "The Aroma Circle - Premium Fragrance Series",
-    category: "AI Videos",
-    year: "2026",
-    bg: "#E50019",
-    accentColor: "#0A0A0A",
-    textLight: true,
-    previewUrl:
-      "https://res.cloudinary.com/dzwn2lwdz/video/upload/v1780661434/aromacircle1_tl9vbj.mp4",
-  },
-  {
-    id: 2,
-    slug: "03",
-    title: "ToYou Car Rentals",
-    category: "AI Commercials",
-    year: "2026",
-    bg: "#F5F5F5",
-    accentColor: "#E50019",
-    textLight: false,
-    previewUrl:
-      "https://res.cloudinary.com/dzwn2lwdz/video/upload/v1780662315/WhatsApp_Video_2026-06-05_at_6.59.02_AM_3_g934cl.mp4",
-  },
-  {
-    id: 3,
-    slug: "04",
-    title: "Industry News Editorial",
-    category: "News & Media",
-    year: "2024",
-    bg: "#0F0F0F",
-    accentColor: "#E50019",
-    textLight: true,
-    previewUrl: null,
-  },
-];
-
 export default async function Work() {
-  let works: WorkProject[] = fallback;
-  let totalCount = fallback.length;
+  let works: WorkProject[] = [];
+  let totalCount = 0;
 
   try {
     const rows = await getWorkProjects();
-    if (rows.length > 0) {
-      totalCount = rows.length;
-      works = rows.length >= 4 ? rows.slice(0, 4) : rows;
-    }
+    totalCount = rows.length;
+    works = rows.length >= 4 ? rows.slice(0, 4) : rows;
   } catch {}
+
+  if (works.length === 0) return null;
 
   const [w0, w1, w2, w3] = works;
   const previewCount = works.length;
