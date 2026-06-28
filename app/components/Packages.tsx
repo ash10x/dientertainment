@@ -127,7 +127,7 @@ export default function Packages({
               )}
 
               <Link
-                href={`/contact?service=${encodeURIComponent(service)}&package=${encodeURIComponent(pkg.name)}&price=${encodeURIComponent(pkg.price)}${pkg.deposit ? `&deposit=${encodeURIComponent(pkg.deposit)}` : ""}`}
+                href={`/packages/${pkg.id}`}
                 className={`relative flex items-center justify-center gap-2 text-[11px] tracking-[0.22em] uppercase px-6 py-4 rounded-xs transition-all duration-300 hover:-translate-y-px ${
                   pkg.highlight
                     ? "bg-red text-brand-white hover:bg-[#FF001F] hover:shadow-[0_8px_28px_rgba(229,0,25,0.4)]"
