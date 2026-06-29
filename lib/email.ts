@@ -109,6 +109,16 @@ export async function sendContactReply({
   });
 }
 
+export async function sendBookingConfirmation(_opts: {
+  to: string;
+  toName: string;
+  bookingRef: string;
+  packageName: string | null;
+  service: string;
+}): Promise<void> {
+  // Stub — full implementation in Task 9
+}
+
 export async function sendMeetingConfirmation(_opts: {
   to: string;
   toName: string;
