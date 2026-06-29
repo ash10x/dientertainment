@@ -98,6 +98,14 @@ const groups = [
   {
     label: "System",
     links: [
+      { href: "/admin/availability", label: "Availability", icon: (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="2" y="2" width="12" height="12" rx="1.2" stroke="currentColor" strokeWidth="1.3" />
+          <path d="M2 6h12" stroke="currentColor" strokeWidth="1.3" />
+          <path d="M5 1v2M11 1v2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+          <path d="M5 9.5h2M9 9.5h2M5 12h2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+        </svg>
+      )},
       { href: "/admin/nav", label: "Navigation", icon: (
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
