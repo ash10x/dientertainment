@@ -1,8 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import SchedulerStep from "@/app/components/SchedulerStep";
+import ConfirmationStep from "@/app/components/ConfirmationStep";
+import type { MeetingConfirmation } from "@/types/meeting";
 
 type ServiceOption = { value: string; label: string };
+
+type Step = "form" | "submitting" | "scheduling" | "confirmed" | "error";
 
 const budgetOptions = [
   { value: "under-500", label: "Under $500" },
@@ -39,7 +44,13 @@ export default function ContactForm({
   const [service, setService] = useState(initialService);
   const [budget, setBudget] = useState("");
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<"idle" | "submitting" | "sent" | "error">("idle");
+  const [step, setStep] = useState<Step>("form");
+  const [submissionId, setSubmissionId] = useState<number>(0);
+  const [bookingRef, setBookingRef] = useState("");
+  const [timezone] = useState(() => {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { return "America/New_York"; }
+  });
+  const [confirmation, setConfirmation] = useState<MeetingConfirmation | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
 
   const hasPackage = Boolean(initialPackage);
@@ -48,7 +59,7 @@ export default function ContactForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setStatus("submitting");
+    setStep("submitting");
     setErrorMsg("");
     try {
       const res = await fetch("/api/contact", {
@@ -69,49 +80,33 @@ export default function ContactForm({
         }),
       });
       if (res.ok) {
-        setStatus("sent");
+        const data = await res.json();
+        setSubmissionId(data.submissionId ?? 0);
+        setBookingRef(data.bookingRef ?? "");
+        setStep("scheduling");
       } else {
         const data = await res.json();
-        setErrorMsg(data.error ?? "Something went wrong. Please try again.");
-        setStatus("error");
+        setErrorMsg(data.error ?? "Something went wrong.");
+        setStep("error");
       }
     } catch {
       setErrorMsg("Network error. Please check your connection and try again.");
-      setStatus("error");
+      setStep("error");
     }
   }
 
-  if (status === "sent") {
+  if (step === "scheduling") {
     return (
-      <div className="flex flex-col py-16">
-        <div
-          className="font-display text-red leading-none mb-6"
-          style={{ fontSize: "clamp(56px, 6vw, 80px)" }}
-        >
-          ✓
-        </div>
-        <h3
-          className="font-display uppercase text-brand-white mb-4"
-          style={{ fontSize: "clamp(28px, 3vw, 40px)" }}
-        >
-          Message Received.
-        </h3>
-        <p className="text-brand-white/45 text-sm leading-relaxed max-w-sm">
-          {hasPackage
-            ? `We received your booking request for the ${initialPackage}. `
-            : selectedServiceLabel
-            ? `We received your inquiry about ${selectedServiceLabel}. `
-            : "We received your message. "}
-          Our team will review your brief and be in touch within 24 hours.
-        </p>
-        <a
-          href="/"
-          className="mt-8 inline-flex items-center gap-2 text-red text-[11px] tracking-[0.25em] uppercase hover:gap-4 transition-all duration-300"
-        >
-          Back to Home <span>→</span>
-        </a>
-      </div>
+      <SchedulerStep
+        submissionId={submissionId}
+        bookingRef={bookingRef}
+        clientName={name}
+        onConfirmed={(c) => { setConfirmation(c); setStep("confirmed"); }}
+      />
     );
+  }
+  if (step === "confirmed" && confirmation) {
+    return <ConfirmationStep confirmation={confirmation} timezone={timezone} />;
   }
 
   return (
@@ -286,19 +281,22 @@ export default function ContactForm({
         />
       </div>
 
+      {/* Honeypot (hidden) */}
+      <input type="text" name="website" tabIndex={-1} aria-hidden="true" style={{ position: "absolute", left: "-9999px" }} />
+
       {/* Error message */}
-      {status === "error" && (
+      {step === "error" && (
         <p className="text-red text-xs tracking-wide">{errorMsg}</p>
       )}
 
       {/* Submit */}
       <button
         type="submit"
-        disabled={status === "submitting"}
+        disabled={step === "submitting"}
         className="flex items-center gap-3 bg-red text-brand-white text-[11px] tracking-[0.22em] uppercase px-10 py-4 rounded-xs hover:bg-[#FF001F] hover:-translate-y-px hover:shadow-[0_6px_20px_rgba(229,0,25,0.35)] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300"
         style={{ transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)" }}
       >
-        {status === "submitting" ? (
+        {step === "submitting" ? (
           <>
             <span
               className="inline-block w-3 h-3 border border-white/40 border-t-white rounded-full animate-spin"
