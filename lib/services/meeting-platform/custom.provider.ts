@@ -3,7 +3,7 @@ import type { MeetingPlatformProvider, MeetingLink } from "./types";
 import { db } from "@/lib/db";
 import { siteSettings } from "@/lib/schema";
 import { eq } from "drizzle-orm";
-import { nanoid } from "nanoid";
+import { randomBytes } from "crypto";
 
 export class CustomMeetingPlatformProvider implements MeetingPlatformProvider {
   readonly name = "custom";
@@ -24,7 +24,7 @@ export class CustomMeetingPlatformProvider implements MeetingPlatformProvider {
 
     return {
       url,
-      id: nanoid(10),
+      id: randomBytes(8).toString("base64url").slice(0, 10),
       provider: "custom",
     };
   }
