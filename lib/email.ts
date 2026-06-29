@@ -109,27 +109,119 @@ export async function sendContactReply({
   });
 }
 
-export async function sendBookingConfirmation(_opts: {
+// ── Booking Confirmation ──────────────────────────────────────────────
+
+export interface BookingConfirmationData {
   to: string;
   toName: string;
   bookingRef: string;
   packageName: string | null;
   service: string;
-}): Promise<void> {
-  // Stub — full implementation in Task 9
 }
 
-export async function sendMeetingConfirmation(_opts: {
+export async function sendBookingConfirmation(data: BookingConfirmationData) {
+  const html = `
+    <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0d0d0d;color:#f5f5f5;padding:40px;border-radius:12px;">
+      <div style="margin-bottom:32px;">
+        <span style="font-size:24px;font-weight:700;letter-spacing:0.08em;color:#E50019;">di</span><span style="font-size:24px;font-weight:700;letter-spacing:0.08em;">ENTERTAINMENT</span>
+      </div>
+      <h2 style="color:#f5f5f5;font-size:28px;margin:0 0 8px;">Booking Received.</h2>
+      <p style="color:#999;font-size:14px;margin:0 0 32px;">Hi ${esc(data.toName)}, we have your request and will be in touch within 24 hours.</p>
+
+      <div style="background:#1a1a1a;border-radius:8px;padding:24px;margin-bottom:32px;border-left:3px solid #E50019;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <tr><td style="padding:6px 0;color:#666;width:140px;">Reference</td><td style="padding:6px 0;color:#E50019;font-weight:700;">${esc(data.bookingRef)}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Service</td><td style="padding:6px 0;">${esc(data.packageName ?? data.service)}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Status</td><td style="padding:6px 0;">Pending Scheduling</td></tr>
+        </table>
+      </div>
+
+      <p style="color:#999;font-size:13px;">Next step: after completing the booking form, you'll be guided to schedule your discovery call.</p>
+      <hr style="border:none;border-top:1px solid #222;margin:32px 0;" />
+      <p style="font-size:11px;color:#444;margin:0;">diEntertainment · Premium Digital Media Agency</p>
+    </div>
+  `;
+
+  await transporter.sendMail({
+    from: `"diEntertainment" <${process.env.SMTP_USER}>`,
+    to: data.to,
+    subject: `Booking Received — ${esc(data.bookingRef)}`,
+    html,
+  });
+}
+
+// ── Meeting Confirmation ──────────────────────────────────────────────
+
+export interface MeetingConfirmationEmailData {
   to: string;
   toName: string;
   bookingRef: string;
-  meetingDate: string;
-  meetingEndDate: string;
+  meetingDate: string;  // ISO UTC
+  meetingEndDate: string; // ISO UTC
   timezone: string;
-  meetingType: string;
+  meetingType: string;  // display label
   durationMinutes: number;
   meetingUrl: string | null;
   meetingId: number;
-}): Promise<void> {
-  // Stub — full implementation in Task 9
+}
+
+export async function sendMeetingConfirmation(data: MeetingConfirmationEmailData) {
+  const startDate = new Date(data.meetingDate);
+  const formattedDate = startDate.toLocaleDateString("en-US", {
+    timeZone: data.timezone,
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const formattedTime = startDate.toLocaleTimeString("en-US", {
+    timeZone: data.timezone,
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  const icsUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/api/meetings/${data.meetingId}/ics`;
+
+  const html = `
+    <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0d0d0d;color:#f5f5f5;padding:40px;border-radius:12px;">
+      <div style="margin-bottom:32px;">
+        <span style="font-size:24px;font-weight:700;letter-spacing:0.08em;color:#E50019;">di</span><span style="font-size:24px;font-weight:700;letter-spacing:0.08em;">ENTERTAINMENT</span>
+      </div>
+      <div style="margin-bottom:8px;font-size:28px;">✅</div>
+      <h2 style="color:#f5f5f5;font-size:28px;margin:0 0 8px;">Meeting Confirmed.</h2>
+      <p style="color:#999;font-size:14px;margin:0 0 32px;">Hi ${esc(data.toName)}, your ${esc(data.meetingType)} is scheduled.</p>
+
+      <div style="background:#1a1a1a;border-radius:8px;padding:24px;margin-bottom:24px;border-left:3px solid #E50019;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <tr><td style="padding:6px 0;color:#666;width:140px;">Reference</td><td style="padding:6px 0;color:#E50019;font-weight:700;">${esc(data.bookingRef)}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Meeting Type</td><td style="padding:6px 0;">${esc(data.meetingType)}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Date</td><td style="padding:6px 0;">${esc(formattedDate)}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Time</td><td style="padding:6px 0;">${esc(formattedTime)} (${esc(data.timezone)})</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Duration</td><td style="padding:6px 0;">${data.durationMinutes} minutes</td></tr>
+          ${data.meetingUrl ? `<tr><td style="padding:6px 0;color:#666;">Meeting Link</td><td style="padding:6px 0;"><a href="${esc(data.meetingUrl)}" style="color:#E50019;">${esc(data.meetingUrl)}</a></td></tr>` : ""}
+        </table>
+      </div>
+
+      <a href="${icsUrl}" style="display:inline-block;padding:12px 24px;background:#E50019;color:#fff;text-decoration:none;border-radius:6px;font-size:13px;font-weight:600;margin-bottom:24px;">Download Calendar Invite (.ics)</a>
+
+      <hr style="border:none;border-top:1px solid #222;margin:32px 0;" />
+      <p style="font-size:11px;color:#444;margin:0;">diEntertainment · Premium Digital Media Agency</p>
+    </div>
+  `;
+
+  await transporter.sendMail({
+    from: `"diEntertainment" <${process.env.SMTP_USER}>`,
+    to: data.to,
+    subject: `Meeting Confirmed — ${esc(data.bookingRef)}`,
+    html,
+  });
+
+  // Admin notification
+  await transporter.sendMail({
+    from: `"diEntertainment" <${process.env.SMTP_USER}>`,
+    to: process.env.SMTP_USER ?? "",
+    subject: `New Meeting Scheduled — ${esc(data.bookingRef)}`,
+    html: `<div style="font-family:sans-serif;padding:20px;"><h3>New Meeting: ${esc(data.bookingRef)}</h3><p>${esc(data.toName)} scheduled a ${esc(data.meetingType)} on ${esc(formattedDate)} at ${esc(formattedTime)}.</p></div>`,
+  });
 }
