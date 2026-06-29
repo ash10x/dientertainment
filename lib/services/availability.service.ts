@@ -69,8 +69,8 @@ export async function getAvailableSlots(
     .from(meetings)
     .where(
       and(
-        gte(meetings.meetingDate, startOfDay(dayStart)),
         lte(meetings.meetingDate, endOfDay(dayEnd)),
+        gte(meetings.meetingEndDate, startOfDay(dayStart)),
         eq(meetings.status, "scheduled")
       )
     );
