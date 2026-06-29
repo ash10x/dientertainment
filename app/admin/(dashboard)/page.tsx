@@ -1,9 +1,9 @@
 import { db } from "@/lib/db";
-import { workProjects, testimonials, siteStats, packages, contactSubmissions, adminUsers, services } from "@/lib/schema";
+import { workProjects, testimonials, siteStats, packages, contactSubmissions, adminUsers, services, meetings } from "@/lib/schema";
 import { sql } from "drizzle-orm";
 
 async function getCounts() {
-  const [projects, testim, stats, pkgs, submissions, users, svcs] = await Promise.all([
+  const [projects, testim, stats, pkgs, submissions, users, svcs, mtgs] = await Promise.all([
     db.select({ count: sql<number>`count(*)` }).from(workProjects),
     db.select({ count: sql<number>`count(*)` }).from(testimonials),
     db.select({ count: sql<number>`count(*)` }).from(siteStats),
@@ -11,6 +11,7 @@ async function getCounts() {
     db.select({ count: sql<number>`count(*)` }).from(contactSubmissions),
     db.select({ count: sql<number>`count(*)` }).from(adminUsers),
     db.select({ count: sql<number>`count(*)` }).from(services),
+    db.select({ count: sql<number>`count(*)` }).from(meetings),
   ]);
   return {
     projects: Number(projects[0].count),
@@ -20,6 +21,7 @@ async function getCounts() {
     submissions: Number(submissions[0].count),
     users: Number(users[0].count),
     services: Number(svcs[0].count),
+    meetings: Number(mtgs[0].count),
   };
 }
 
@@ -38,6 +40,7 @@ const statCards = [
   { label: "Services", key: "services" as const, href: "/admin/services", color: "text-cyan-400" },
   { label: "Packages", key: "packages" as const, href: "/admin/packages", color: "text-green-400" },
   { label: "Submissions", key: "submissions" as const, href: "/admin/submissions", color: "text-[#E50019]" },
+  { label: "Meetings", key: "meetings" as const, href: "/admin/meetings", color: "text-blue-400" },
   { label: "Admin Users", key: "users" as const, href: "/admin/users", color: "text-orange-400" },
 ];
 

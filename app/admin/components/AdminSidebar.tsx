@@ -63,6 +63,14 @@ const groups = [
           <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       )},
+      { href: "/admin/meetings", label: "Meetings", icon: (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="5" r="2" stroke="currentColor" strokeWidth="1.3" />
+          <circle cx="3" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.3" />
+          <circle cx="13" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.3" />
+          <path d="M1 14c0-2 .9-3 2-3.5M15 14c0-2-.9-3-2-3.5M5 14c0-2.5 1.3-4 3-4s3 1.5 3 4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+        </svg>
+      )},
       { href: "/admin/contact", label: "Contact", icon: (
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <rect x="1.5" y="3.5" width="13" height="9" rx="1.2" stroke="currentColor" strokeWidth="1.3" />
