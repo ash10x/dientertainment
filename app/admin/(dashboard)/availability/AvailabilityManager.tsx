@@ -47,13 +47,18 @@ export default function AvailabilityManager() {
 
   async function updateRule(rule: Rule) {
     setSaving(rule.id);
-    await fetch("/api/admin/availability", {
+    const res = await fetch("/api/admin/availability", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "update-rule", ...rule }),
     });
     setSaving(null);
-    showToast("Rule saved.");
+    if (res.ok) {
+      showToast("Rule saved.");
+    } else {
+      const err = await res.json().catch(() => ({})) as { error?: string };
+      showToast(err.error ?? "Failed to save rule.");
+    }
   }
 
   function patchRule(id: number, patch: Partial<Rule>) {
@@ -62,11 +67,16 @@ export default function AvailabilityManager() {
 
   async function addBlackout() {
     if (!newBlackoutDate) return;
-    await fetch("/api/admin/availability", {
+    const putRes = await fetch("/api/admin/availability", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "add-blackout", date: newBlackoutDate, reason: newBlackoutReason }),
     });
+    if (!putRes.ok) {
+      const err = await putRes.json().catch(() => ({})) as { error?: string };
+      showToast(err.error ?? "Failed to add blackout date.");
+      return;
+    }
     const res = await fetch("/api/admin/availability");
     const d = await res.json() as { blackouts?: Blackout[] };
     setBlackouts(d.blackouts ?? []);
@@ -76,13 +86,18 @@ export default function AvailabilityManager() {
   }
 
   async function removeBlackout(id: number) {
-    await fetch("/api/admin/availability", {
+    const res = await fetch("/api/admin/availability", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "remove-blackout", id }),
     });
-    setBlackouts((prev) => prev.filter((b) => b.id !== id));
-    showToast("Blackout date removed.");
+    if (res.ok) {
+      setBlackouts((prev) => prev.filter((b) => b.id !== id));
+      showToast("Blackout date removed.");
+    } else {
+      const err = await res.json().catch(() => ({})) as { error?: string };
+      showToast(err.error ?? "Failed to remove blackout date.");
+    }
   }
 
   if (loading) {

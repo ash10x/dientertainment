@@ -6,7 +6,7 @@ import { MEETING_TYPE_LABELS } from "@/types/meeting";
 import type { MeetingType } from "@/types/meeting";
 
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
@@ -14,6 +14,8 @@ export async function GET(
   if (isNaN(meetingId)) {
     return Response.json({ error: "Invalid meeting ID." }, { status: 400 });
   }
+
+  const ref = new URL(request.url).searchParams.get("ref");
 
   const [meeting] = await db
     .select()
@@ -23,6 +25,10 @@ export async function GET(
 
   if (!meeting) {
     return Response.json({ error: "Meeting not found." }, { status: 404 });
+  }
+
+  if (!ref || meeting.bookingRef !== ref) {
+    return Response.json({ error: "Unauthorized." }, { status: 403 });
   }
 
   const [submission] = await db

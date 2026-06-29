@@ -35,13 +35,18 @@ export async function PATCH(
   }
 
   const [exists] = await db
-    .select({ id: meetings.id })
+    .select({ id: meetings.id, bookingRef: meetings.bookingRef })
     .from(meetings)
     .where(eq(meetings.id, meetingId))
     .limit(1);
 
   if (!exists) {
     return Response.json({ error: "Meeting not found." }, { status: 404 });
+  }
+
+  const patchBookingRef = typeof body.bookingRef === "string" ? body.bookingRef : null;
+  if (!patchBookingRef || exists.bookingRef !== patchBookingRef) {
+    return Response.json({ error: "Unauthorized." }, { status: 403 });
   }
 
   await updateMeeting(meetingId, parsed.data);
@@ -69,6 +74,22 @@ export async function DELETE(
   }
 
   const body = await request.json().catch(() => ({}));
+
+  const [meeting] = await db
+    .select({ id: meetings.id, bookingRef: meetings.bookingRef })
+    .from(meetings)
+    .where(eq(meetings.id, meetingId))
+    .limit(1);
+
+  if (!meeting) {
+    return Response.json({ error: "Meeting not found." }, { status: 404 });
+  }
+
+  const deleteBookingRef = typeof body.bookingRef === "string" ? body.bookingRef : null;
+  if (!deleteBookingRef || meeting.bookingRef !== deleteBookingRef) {
+    return Response.json({ error: "Unauthorized." }, { status: 403 });
+  }
+
   const reason = typeof body.reason === "string" ? body.reason.trim() : undefined;
 
   await cancelMeeting(meetingId, reason);

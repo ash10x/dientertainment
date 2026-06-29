@@ -4,6 +4,7 @@ import { meetings, contactSubmissions, bookingStatusHistory } from "@/lib/schema
 import { eq } from "drizzle-orm";
 import { logActivity } from "@/lib/logger";
 import { updateMeetingSchema } from "@/lib/validators/meeting";
+import { cancelMeeting } from "@/lib/services/meeting.service";
 
 export async function PATCH(
   request: Request,
@@ -84,10 +85,7 @@ export async function DELETE(
     return Response.json({ error: "Meeting not found." }, { status: 404 });
   }
 
-  await db
-    .update(meetings)
-    .set({ status: "cancelled", updatedAt: new Date() })
-    .where(eq(meetings.id, meetingId));
+  await cancelMeeting(meetingId, "Admin deleted meeting");
 
   return Response.json({ success: true });
 }

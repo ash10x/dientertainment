@@ -1,9 +1,19 @@
 // app/api/availability/route.ts
 import { getAvailableSlots } from "@/lib/services/availability.service";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const VALID_DURATIONS = new Set([15, 30, 45, 60]);
 
 export async function GET(request: Request) {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  const { allowed, retryAfter } = checkRateLimit(ip);
+  if (!allowed) {
+    return Response.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(retryAfter) } }
+    );
+  }
+
   const url = new URL(request.url);
   const date = url.searchParams.get("date") ?? "";
   const durationStr = url.searchParams.get("duration") ?? "30";

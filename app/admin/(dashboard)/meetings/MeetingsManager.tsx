@@ -98,6 +98,9 @@ export default function MeetingsManager() {
         setEditId(null);
         showToast("Meeting updated.");
         fetchMeetings();
+      } else {
+        const errData = await res.json().catch(() => ({})) as { error?: string };
+        showToast(errData.error ?? "Failed to save changes. Please try again.");
       }
     } finally {
       setSaving(false);
