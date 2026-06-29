@@ -20,6 +20,7 @@ function generateBookingRef(): string {
   return `DI-${datePart}-${rand}`;
 }
 
+// NOTE: NeonDB HTTP driver does not support transactions; multi-write atomicity not available in serverless.
 export async function createMeeting(
   input: CreateMeetingInput
 ): Promise<MeetingConfirmation> {
@@ -45,7 +46,7 @@ export async function createMeeting(
       durationMinutes: input.durationMinutes,
       meetingType: input.meetingType,
       status: "scheduled",
-      meetingUrl: link.url || null,
+      meetingUrl: link.url ?? null,
       meetingPlatformId: link.id,
       meetingProvider: link.provider as MeetingProvider,
     })
@@ -76,7 +77,9 @@ export async function createMeeting(
   };
 }
 
-export async function getMeetingById(id: number) {
+export async function getMeetingById(
+  id: number
+): Promise<typeof meetings.$inferSelect | null> {
   const [row] = await db
     .select()
     .from(meetings)
@@ -95,6 +98,7 @@ export async function updateMeeting(
     .where(eq(meetings.id, id));
 }
 
+// NOTE: NeonDB HTTP driver does not support transactions; multi-write atomicity not available in serverless.
 export async function cancelMeeting(
   id: number,
   reason?: string
