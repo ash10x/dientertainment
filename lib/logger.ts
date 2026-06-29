@@ -4,6 +4,7 @@ import { activityLogs } from "./schema";
 export type LogType =
   | "contact"
   | "booking"
+  | "meeting"
   | "work"
   | "service"
   | "package"

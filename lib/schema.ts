@@ -54,18 +54,30 @@ export const contactSubmissions = pgTable("contact_submissions", {
   packageDeposit: text("package_deposit"),
   message: text("message").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  submissionRef: text("submission_ref").unique(),       // DI-YYYYMMDD-XXXXXX
+  bookingStatus: text("booking_status").default("pending-scheduling"),
+  timezone: text("timezone"),
+  referralSource: text("referral_source"),
 });
 
 export const packages = pgTable("packages", {
   id: serial("id").primaryKey(),
   serviceSlug: text("service_slug").notNull(),
   name: text("name").notNull(),
+  tagline: text("tagline"),
   price: text("price").notNull(),
   deposit: text("deposit"),
   description: text("description"),
   duration: text("duration"),
   includes: text("includes").array().notNull(),
+  deliverables: text("deliverables").array(),
+  addOns: text("add_ons").array(),
+  processSteps: text("process_steps").array(),
   bestFor: text("best_for").array(),
+  heroVideoUrl: text("hero_video_url"),
+  demoVideoUrls: text("demo_video_urls").array(),
+  aiTeamRoles: text("ai_team_roles").array(),
+  outcomeStats: text("outcome_stats").array(),
   highlight: boolean("highlight").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),
 });
@@ -126,4 +138,57 @@ export const pageHeroes = pgTable("page_heroes", {
   ctaPrimaryHref: text("cta_primary_href"),
   ctaSecondaryLabel: text("cta_secondary_label"),
   ctaSecondaryHref: text("cta_secondary_href"),
+});
+
+// ── NEW: Scheduling System Tables ──────────────────────────────────────
+
+export const meetings = pgTable("meetings", {
+  id: serial("id").primaryKey(),
+  submissionId: integer("submission_id")
+    .notNull()
+    .references(() => contactSubmissions.id),
+  bookingRef: text("booking_ref").notNull().unique(),
+  meetingDate: timestamp("meeting_date", { withTimezone: true }).notNull(),
+  meetingEndDate: timestamp("meeting_end_date", { withTimezone: true }).notNull(),
+  timezone: text("timezone").notNull().default("America/New_York"),
+  durationMinutes: integer("duration_minutes").notNull().default(30),
+  meetingType: text("meeting_type").notNull(),
+  status: text("status").notNull().default("scheduled"),
+  meetingUrl: text("meeting_url"),
+  meetingPlatformId: text("meeting_platform_id"),
+  meetingProvider: text("meeting_provider").notNull().default("custom"),
+  assignedTo: text("assigned_to"),
+  notes: text("notes"),
+  cancelReason: text("cancel_reason"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// Mon–Fri working hours (dayOfWeek: 0=Sun, 1=Mon … 6=Sat)
+export const availabilityRules = pgTable("availability_rules", {
+  id: serial("id").primaryKey(),
+  dayOfWeek: integer("day_of_week").notNull(),
+  startTime: text("start_time").notNull().default("09:00"),
+  endTime: text("end_time").notNull().default("17:00"),
+  breakStart: text("break_start").default("12:00"),
+  breakEnd: text("break_end").default("13:00"),
+  isActive: boolean("is_active").notNull().default(true),
+});
+
+export const blackoutDates = pgTable("blackout_dates", {
+  id: serial("id").primaryKey(),
+  date: text("date").notNull(), // "YYYY-MM-DD"
+  reason: text("reason"),
+});
+
+export const bookingStatusHistory = pgTable("booking_status_history", {
+  id: serial("id").primaryKey(),
+  submissionId: integer("submission_id")
+    .notNull()
+    .references(() => contactSubmissions.id),
+  fromStatus: text("from_status"),
+  toStatus: text("to_status").notNull(),
+  changedBy: text("changed_by"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
