@@ -65,15 +65,29 @@ export default function SchedulerStep({
     setSlotsLoading(true);
     setError("");
 
+    const controller = new AbortController();
+
     fetch(
-      `/api/availability?date=${selectedDate}&duration=${duration}&timezone=${encodeURIComponent(timezone)}`
+      `/api/availability?date=${selectedDate}&duration=${duration}&timezone=${encodeURIComponent(timezone)}`,
+      { signal: controller.signal }
     )
       .then((r) => r.json())
       .then((data: { slots?: AvailableSlot[]; error?: string }) => {
-        setSlots(data.slots ?? []);
+        if (data.error) {
+          setError(data.error);
+          setSlots([]);
+        } else {
+          setSlots(data.slots ?? []);
+        }
       })
-      .catch(() => setSlots([]))
+      .catch((err) => {
+        if ((err as Error).name !== "AbortError") {
+          setSlots([]);
+        }
+      })
       .finally(() => setSlotsLoading(false));
+
+    return () => controller.abort();
   }, [selectedDate, duration, timezone]);
 
   async function handleSchedule() {
@@ -134,6 +148,7 @@ export default function SchedulerStep({
               key={type}
               type="button"
               onClick={() => setMeetingType(type)}
+              aria-pressed={meetingType === type}
               className={[
                 "px-3 py-2.5 text-[10px] tracking-wide rounded border text-left transition-all duration-150",
                 meetingType === type
@@ -156,6 +171,7 @@ export default function SchedulerStep({
               key={d}
               type="button"
               onClick={() => setDuration(d)}
+              aria-pressed={duration === d}
               className={[
                 "px-4 py-2 text-xs rounded border transition-all duration-150",
                 duration === d
