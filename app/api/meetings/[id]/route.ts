@@ -11,9 +11,12 @@ export async function PATCH(
 ) {
   const ip =
     request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
-  const { allowed } = checkRateLimit(ip);
+  const { allowed, retryAfter } = checkRateLimit(ip);
   if (!allowed) {
-    return Response.json({ error: "Too many requests." }, { status: 429 });
+    return Response.json(
+      { error: "Too many requests." },
+      { status: 429, headers: { "Retry-After": String(retryAfter) } }
+    );
   }
 
   const { id } = await params;
@@ -49,6 +52,16 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  const { allowed, retryAfter } = checkRateLimit(ip);
+  if (!allowed) {
+    return Response.json(
+      { error: "Too many requests." },
+      { status: 429, headers: { "Retry-After": String(retryAfter) } }
+    );
+  }
+
   const { id } = await params;
   const meetingId = parseInt(id, 10);
   if (isNaN(meetingId)) {
