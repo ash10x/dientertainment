@@ -35,7 +35,8 @@ export async function GET(request: Request) {
 
   const [{ total }] = await db
     .select({ total: sql<number>`count(*)` })
-    .from(meetings);
+    .from(meetings)
+    .where(conditions.length > 0 ? and(...conditions) : undefined);
 
   // Stats
   const [stats] = await db
