@@ -3,7 +3,7 @@ import type { CalendarProvider, CalendarEvent } from "./types";
 import { db } from "@/lib/db";
 import { meetings } from "@/lib/schema";
 import { and, gte, lte } from "drizzle-orm";
-import { nanoid } from "nanoid";
+import { randomBytes } from "crypto";
 
 export class InternalCalendarProvider implements CalendarProvider {
   readonly name = "internal";
@@ -33,7 +33,7 @@ export class InternalCalendarProvider implements CalendarProvider {
   async createEvent(event: Omit<CalendarEvent, "id">): Promise<CalendarEvent> {
     // The internal provider doesn't need to create external events —
     // the meetings table IS the calendar. Return a synthetic event object.
-    return { ...event, id: nanoid() };
+    return { ...event, id: randomBytes(8).toString("base64url").slice(0, 10) };
   }
 
   async deleteEvent(_eventId: string): Promise<void> {
