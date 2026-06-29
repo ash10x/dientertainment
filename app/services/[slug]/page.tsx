@@ -5,7 +5,8 @@ import { getActiveServices, getPackagesByService } from "@/lib/queries";
 import Packages from "@/app/components/Packages";
 import Footer from "@/app/components/Footer";
 
-export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+export const revalidate = 3600;
 
 export async function generateMetadata({
   params,
@@ -19,6 +20,11 @@ export async function generateMetadata({
   return {
     title: `${service.title} — diEntertainment`,
     description: service.description,
+    openGraph: {
+      title: `${service.title} — diEntertainment`,
+      description: service.description,
+      url: `/services/${slug}`,
+    },
   };
 }
 

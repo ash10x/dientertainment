@@ -20,12 +20,32 @@ const bebasNeue = Bebas_Neue({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dientertainment.com";
+
 export const metadata: Metadata = {
-  title: "diEntertainment — Elevate Your Brand",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "diEntertainment — Elevate Your Brand",
+    template: "%s | diEntertainment",
+  },
   description:
     "News, media, and digital marketing for brands that refuse to be ignored. High-impact content, photo & video production, and brand strategy.",
   icons: {
     icon: "/icon.svg",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "diEntertainment",
+    title: "diEntertainment — Elevate Your Brand",
+    description:
+      "News, media, and digital marketing for brands that refuse to be ignored.",
+    url: siteUrl,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "diEntertainment — Elevate Your Brand",
+    description:
+      "News, media, and digital marketing for brands that refuse to be ignored.",
   },
 };
 

@@ -482,35 +482,42 @@ body {
 
 /* ─── Custom cursor (desktop / pointer devices only) ────────────────────── */
 @media (hover: hover) and (pointer: fine) {
-  * { cursor: none !important; }
-  input, textarea, select { cursor: text !important; }
-  input[type="checkbox"], input[type="radio"], select { cursor: pointer !important; }
+  /* cursor-enabled is added to <body> by CustomCursor only on public pages */
+  .cursor-enabled * { cursor: none !important; }
+  .cursor-enabled input,
+  .cursor-enabled textarea,
+  .cursor-enabled select { cursor: text !important; }
+  .cursor-enabled input[type="checkbox"],
+  .cursor-enabled input[type="radio"],
+  .cursor-enabled select { cursor: pointer !important; }
 
   .cursor-dot {
     position: fixed;
+    left: 0;
+    top: 0;
     width: 5px;
     height: 5px;
     background: #E50019;
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
-    transform: translate(-50%, -50%);
-    will-change: left, top;
+    will-change: transform;
   }
 
   .cursor-ring {
     position: fixed;
+    left: 0;
+    top: 0;
     width: 34px;
     height: 34px;
     border: 1px solid rgba(229, 0, 25, 0.48);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9998;
-    transform: translate(-50%, -50%);
     transition: width 0.20s cubic-bezier(0.4,0,0.2,1),
                 height 0.20s cubic-bezier(0.4,0,0.2,1),
                 border-color 0.20s cubic-bezier(0.4,0,0.2,1);
-    will-change: left, top;
+    will-change: transform;
   }
 
   .cursor-ring--hover {

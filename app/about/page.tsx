@@ -7,6 +7,12 @@ export const metadata: Metadata = {
   title: "About — diEntertainment",
   description:
     "Built at the intersection of storytelling, strategy, and AI. Learn who we are, what drives us, and why the brands that work with us don't go anywhere else.",
+  openGraph: {
+    title: "About — diEntertainment",
+    description:
+      "Built at the intersection of storytelling, strategy, and AI. Learn who we are, what drives us, and why the brands that work with us don't go anywhere else.",
+    url: "/about",
+  },
 };
 
 const fallbackStats = [

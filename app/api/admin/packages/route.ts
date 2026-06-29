@@ -16,7 +16,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { serviceSlug, name, price, deposit, description, duration, includes, bestFor, highlight, sortOrder } = body;
+    const { serviceSlug, name, tagline, price, deposit, description, duration, includes, deliverables, addOns, processSteps, bestFor, heroVideoUrl, demoVideoUrls, aiTeamRoles, outcomeStats, highlight, sortOrder } = body;
 
     if (!serviceSlug || !name || !price || !includes) {
       return Response.json({ error: "Missing required fields." }, { status: 400 });
@@ -27,12 +27,20 @@ export async function POST(request: Request) {
       .values({
         serviceSlug,
         name,
+        tagline: tagline || null,
         price,
         deposit: deposit || null,
         description: description || null,
         duration: duration || null,
         includes: Array.isArray(includes) ? includes : [],
-        bestFor: Array.isArray(bestFor) ? bestFor : null,
+        deliverables: Array.isArray(deliverables) && deliverables.length > 0 ? deliverables : null,
+        addOns: Array.isArray(addOns) && addOns.length > 0 ? addOns : null,
+        processSteps: Array.isArray(processSteps) && processSteps.length > 0 ? processSteps : null,
+        bestFor: Array.isArray(bestFor) && bestFor.length > 0 ? bestFor : null,
+        heroVideoUrl: heroVideoUrl || null,
+        demoVideoUrls: Array.isArray(demoVideoUrls) && demoVideoUrls.length > 0 ? demoVideoUrls : null,
+        aiTeamRoles: Array.isArray(aiTeamRoles) && aiTeamRoles.length > 0 ? aiTeamRoles : null,
+        outcomeStats: Array.isArray(outcomeStats) && outcomeStats.length > 0 ? outcomeStats : null,
         highlight: !!highlight,
         sortOrder: sortOrder ?? 0,
       })

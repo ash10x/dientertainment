@@ -4,26 +4,26 @@ import { eq, asc } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import type { Package } from "@/types/package";
 
-function computeAnnualPrice(price: string): string {
-  const num = parseFloat(price.replace(/[^0-9.]/g, ""));
-  if (isNaN(num) || num === 0) return price;
-  return `$${Math.floor(num * 10).toLocaleString()}`;
-}
-
 function toPackage(row: typeof packages.$inferSelect): Package {
   return {
     id: row.id,
     slug: String(row.id),
     name: row.name,
-    tagline: row.description,
-    description: row.description,
-    monthlyPrice: row.price,
-    annualPrice: computeAnnualPrice(row.price),
-    features: row.includes,
-    category: row.serviceSlug,
+    tagline: row.tagline ?? null,
+    description: row.description ?? null,
+    price: row.price,
     deposit: row.deposit ?? null,
     duration: row.duration ?? null,
+    features: row.includes,
+    deliverables: row.deliverables ?? null,
+    addOns: row.addOns ?? null,
+    processSteps: row.processSteps ?? null,
     bestFor: row.bestFor ?? null,
+    heroVideoUrl: row.heroVideoUrl ?? null,
+    demoVideoUrls: row.demoVideoUrls ?? null,
+    aiTeamRoles: row.aiTeamRoles ?? null,
+    outcomeStats: row.outcomeStats ?? null,
+    category: row.serviceSlug,
     highlight: row.highlight,
     sortOrder: row.sortOrder,
   };

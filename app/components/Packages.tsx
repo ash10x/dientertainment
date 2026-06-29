@@ -110,14 +110,14 @@ export default function Packages({
 
               {pkg.bestFor && pkg.bestFor.length > 0 && (
                 <div className="mb-8">
-                  <span className="text-brand-white/22 text-[9px] tracking-[0.32em] uppercase block mb-3">
+                  <span className="text-brand-white/50 text-[9px] tracking-[0.32em] uppercase block mb-3">
                     Best For
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {pkg.bestFor.map((tag) => (
                       <span
                         key={tag}
-                        className="text-[9px] tracking-[0.15em] uppercase text-brand-white/32 border border-white/7 px-3 py-1.5 rounded-xs"
+                        className="text-[9px] tracking-[0.15em] uppercase text-brand-white/65 border border-white/18 px-3 py-1.5 rounded-xs"
                       >
                         {tag}
                       </span>

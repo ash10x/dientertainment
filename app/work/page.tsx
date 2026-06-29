@@ -3,12 +3,18 @@ import Link from "next/link";
 import WorkGrid from "../components/WorkGrid";
 import { getWorkProjects, getStatsByPage, getPageHero } from "@/lib/queries";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Work — diEntertainment",
   description:
     "Selected projects across digital marketing, news & media, photo and video production.",
+  openGraph: {
+    title: "Work — diEntertainment",
+    description:
+      "Selected projects across digital marketing, news & media, photo and video production.",
+    url: "/work",
+  },
 };
 
 export default async function WorkPage() {

@@ -8,19 +8,29 @@ type Package = {
   id: number;
   serviceSlug: string;
   name: string;
+  tagline: string | null;
   price: string;
   deposit: string | null;
   description: string | null;
   duration: string | null;
   includes: string[];
+  deliverables: string[] | null;
+  addOns: string[] | null;
+  processSteps: string[] | null;
   bestFor: string[] | null;
+  heroVideoUrl: string | null;
+  demoVideoUrls: string[] | null;
+  aiTeamRoles: string[] | null;
+  outcomeStats: string[] | null;
   highlight: boolean;
   sortOrder: number;
 };
 
 const empty: Omit<Package, "id"> = {
-  serviceSlug: "", name: "", price: "", deposit: null, description: null,
-  duration: null, includes: [], bestFor: null, highlight: false, sortOrder: 0,
+  serviceSlug: "", name: "", tagline: null, price: "", deposit: null, description: null,
+  duration: null, includes: [], deliverables: null, addOns: null, processSteps: null,
+  bestFor: null, heroVideoUrl: null, demoVideoUrls: null, aiTeamRoles: null,
+  outcomeStats: null, highlight: false, sortOrder: 0,
 };
 
 function toLines(arr: string[] | null) { return arr ? arr.join("\n") : ""; }
@@ -39,7 +49,13 @@ export default function PackagesManager({
   const [editing, setEditing] = useState<Package | null>(null);
   const [form, setForm] = useState<Omit<Package, "id">>(empty);
   const [includesText, setIncludesText] = useState("");
+  const [deliverablesText, setDeliverablesText] = useState("");
+  const [addOnsText, setAddOnsText] = useState("");
+  const [processStepsText, setProcessStepsText] = useState("");
   const [bestForText, setBestForText] = useState("");
+  const [demoVideoUrlsText, setDemoVideoUrlsText] = useState("");
+  const [aiTeamRolesText, setAiTeamRolesText] = useState("");
+  const [outcomeStatsText, setOutcomeStatsText] = useState("");
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
@@ -47,7 +63,13 @@ export default function PackagesManager({
     setEditing(null);
     setForm(empty);
     setIncludesText("");
+    setDeliverablesText("");
+    setAddOnsText("");
+    setProcessStepsText("");
     setBestForText("");
+    setDemoVideoUrlsText("");
+    setAiTeamRolesText("");
+    setOutcomeStatsText("");
     setModalOpen(true);
   }
 
@@ -55,7 +77,13 @@ export default function PackagesManager({
     setEditing(p);
     setForm({ ...p });
     setIncludesText(toLines(p.includes));
+    setDeliverablesText(toLines(p.deliverables));
+    setAddOnsText(toLines(p.addOns));
+    setProcessStepsText(toLines(p.processSteps));
     setBestForText(toLines(p.bestFor));
+    setDemoVideoUrlsText(toLines(p.demoVideoUrls));
+    setAiTeamRolesText(toLines(p.aiTeamRoles));
+    setOutcomeStatsText(toLines(p.outcomeStats));
     setModalOpen(true);
   }
 
@@ -67,7 +95,13 @@ export default function PackagesManager({
       const payload = {
         ...form,
         includes: fromLines(includesText),
+        deliverables: fromLines(deliverablesText),
+        addOns: fromLines(addOnsText),
+        processSteps: fromLines(processStepsText),
         bestFor: fromLines(bestForText),
+        demoVideoUrls: fromLines(demoVideoUrlsText),
+        aiTeamRoles: fromLines(aiTeamRolesText),
+        outcomeStats: fromLines(outcomeStatsText),
       };
       const url = editing ? `/api/admin/packages/${editing.id}` : "/api/admin/packages";
       const res = await fetch(url, { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
@@ -210,16 +244,51 @@ export default function PackagesManager({
             </div>
           </div>
           <div>
+            <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Tagline (optional)</label>
+            <input type="text" value={form.tagline ?? ""} onChange={(e) => set("tagline", e.target.value || null)} className={inputCls} placeholder="A one-line hook for this package..." />
+          </div>
+          <div>
             <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Description (optional)</label>
             <textarea value={form.description ?? ""} onChange={(e) => set("description", e.target.value || null)} rows={2} className={inputCls} placeholder="Package overview..." />
           </div>
           <div>
-            <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Includes (one per line)</label>
+            <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">What&apos;s Included (one per line)</label>
             <textarea value={includesText} onChange={(e) => setIncludesText(e.target.value)} rows={4} className={inputCls} placeholder={"5 edited photos\n2 hour session\nOnline gallery"} />
+          </div>
+          <div>
+            <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Deliverables (one per line, optional)</label>
+            <textarea value={deliverablesText} onChange={(e) => setDeliverablesText(e.target.value)} rows={3} className={inputCls} placeholder={"Final video files (MP4/MOV)\nRaw footage archive\nEditorial report"} />
+          </div>
+          <div>
+            <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Process Steps / Timeline (one per line, optional)</label>
+            <textarea value={processStepsText} onChange={(e) => setProcessStepsText(e.target.value)} rows={4} className={inputCls} placeholder={"Week 1–2: Strategy & onboarding\nWeek 3–8: Content production\nWeek 9–12: Review, delivery & wrap"} />
+          </div>
+          <div>
+            <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Add-Ons / Upgrades (one per line, optional)</label>
+            <textarea value={addOnsText} onChange={(e) => setAddOnsText(e.target.value)} rows={3} className={inputCls} placeholder={"Rush delivery (+$500)\nExtra revision round (+$250)"} />
           </div>
           <div>
             <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Best For (one per line, optional)</label>
             <textarea value={bestForText} onChange={(e) => setBestForText(e.target.value)} rows={3} className={inputCls} placeholder={"Startups\nSolo creators"} />
+          </div>
+          <div className="border-t border-white/8 pt-4">
+            <p className="text-xs text-white/25 uppercase tracking-widest mb-4">Premium Marketing Sections</p>
+          </div>
+          <div>
+            <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Hero Video URL (optional)</label>
+            <input type="text" value={form.heroVideoUrl ?? ""} onChange={(e) => set("heroVideoUrl", e.target.value || null)} className={inputCls} placeholder="https://youtube.com/watch?v=... or direct MP4 URL" />
+          </div>
+          <div>
+            <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Demo Video URLs (one per line, optional)</label>
+            <textarea value={demoVideoUrlsText} onChange={(e) => setDemoVideoUrlsText(e.target.value)} rows={3} className={inputCls} placeholder={"https://youtube.com/watch?v=abc\nhttps://youtube.com/watch?v=xyz"} />
+          </div>
+          <div>
+            <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">AI Team Roles (one per line, optional)</label>
+            <textarea value={aiTeamRolesText} onChange={(e) => setAiTeamRolesText(e.target.value)} rows={4} className={inputCls} placeholder={"DI AI\nCustomer Success\nSales Ambassador\nLifestyle Influencer"} />
+          </div>
+          <div>
+            <label className="block text-xs text-white/40 uppercase tracking-widest mb-1.5">Outcome Stats (one per line — VALUE|Label format, optional)</label>
+            <textarea value={outcomeStatsText} onChange={(e) => setOutcomeStatsText(e.target.value)} rows={5} className={inputCls} placeholder={"10M+|Potential Brand Impressions\n320|Strategic Posts\n30|AI Videos\n50|Premium AI Images\n2|Exclusive AI Ambassadors"} />
           </div>
           <div className="flex items-center gap-2">
             <input type="checkbox" id="highlight" checked={form.highlight} onChange={(e) => set("highlight", e.target.checked)} className="w-4 h-4 accent-[#E50019]" />

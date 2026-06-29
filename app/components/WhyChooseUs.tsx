@@ -166,9 +166,7 @@ export default async function WhyChooseUs() {
             ))}
           </div>
 
-          <p className="text-brand-white/15 text-[10px] tracking-[0.22em] uppercase mt-6 text-center">
-            Replace placeholder slots with real client before &amp; after images
-          </p>
+
         </div>
       </section>
 
@@ -208,26 +206,6 @@ export default async function WhyChooseUs() {
               ))}
             </div>
           )}
-
-          {/* Result screenshot placeholders */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {["Campaign analytics", "Client revenue growth", "Social reach metrics"].map((caption) => (
-              <div
-                key={caption}
-                className="aspect-4/3 bg-surface-1 border border-white/6 flex flex-col items-center justify-center gap-3 hover:border-red/18 transition-colors duration-300 rounded-xs"
-              >
-                <div className="w-10 h-10 border border-white/8 flex items-center justify-center rounded-xs">
-                  <span className="text-brand-white/15 text-xl">+</span>
-                </div>
-                <span className="text-brand-white/18 text-[10px] tracking-[0.22em] uppercase text-center px-6">
-                  {caption}
-                </span>
-                <span className="text-red/22 text-[9px] tracking-[0.22em] uppercase">
-                  Add screenshot
-                </span>
-              </div>
-            ))}
-          </div>
 
           <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pt-10 border-t border-white/5">
             <p className="text-brand-white/28 text-sm leading-relaxed max-w-md">

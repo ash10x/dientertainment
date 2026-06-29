@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
 
 const getSecret = () =>
   new TextEncoder().encode(
@@ -32,4 +33,11 @@ export async function hashPassword(password: string) {
 
 export async function comparePassword(password: string, hash: string) {
   return bcrypt.compare(password, hash);
+}
+
+export async function verifyAdminRequest(): Promise<{ userId: number; email: string; role: string } | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("admin-token")?.value;
+  if (!token) return null;
+  return verifyToken(token);
 }

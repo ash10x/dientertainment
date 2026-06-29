@@ -91,6 +91,7 @@ export default function NavManager({ initialItems }: { initialItems: NavItem[] }
   }
 
   async function toggleVisible(item: NavItem) {
+    setItems((prev) => prev.map((i) => (i.id === item.id ? { ...i, visible: !i.visible } : i)));
     const updated = { ...item, visible: !item.visible };
     const res = await fetch(`/api/admin/nav/${item.id}`, {
       method: "PUT",
@@ -100,6 +101,9 @@ export default function NavManager({ initialItems }: { initialItems: NavItem[] }
     if (res.ok) {
       const data = await res.json();
       setItems((prev) => prev.map((i) => (i.id === item.id ? data : i)));
+    } else {
+      setItems((prev) => prev.map((i) => (i.id === item.id ? item : i)));
+      setToast({ message: "Failed to update visibility.", type: "error" });
     }
   }
 
@@ -188,7 +192,7 @@ export default function NavManager({ initialItems }: { initialItems: NavItem[] }
                           role="switch"
                         >
                           <span
-                            className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.4)] transition-transform duration-200 ${
+                            className={`absolute top-1 left-0 w-4 h-4 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.4)] transition-transform duration-200 ${
                               item.visible ? "translate-x-6" : "translate-x-1"
                             }`}
                           />

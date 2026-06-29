@@ -3,6 +3,7 @@ import { siteSettings } from "@/lib/schema";
 import { sql } from "drizzle-orm";
 import { logActivity } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
+import { verifyAdminRequest } from "@/lib/auth";
 
 export async function GET() {
   try {
@@ -14,6 +15,9 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
+  if (!await verifyAdminRequest()) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
   try {
     const body = await request.json();
     if (typeof body !== "object" || Array.isArray(body)) {

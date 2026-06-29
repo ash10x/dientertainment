@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { adminUsers } from "@/lib/schema";
 import { asc } from "drizzle-orm";
-import { hashPassword } from "@/lib/auth";
+import { hashPassword, verifyAdminRequest } from "@/lib/auth";
 import { logActivity } from "@/lib/logger";
 
 export async function GET() {
@@ -17,6 +17,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (!await verifyAdminRequest()) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
   try {
     const body = await request.json();
     const { name, email, password, role } = body;

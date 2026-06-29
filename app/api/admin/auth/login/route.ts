@@ -28,7 +28,7 @@ export async function POST(request: Request) {
         status: 200,
         headers: {
           "Content-Type": "application/json",
-          "Set-Cookie": `admin-token=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict`,
+          "Set-Cookie": `admin-token=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict${process.env.NODE_ENV === "production" ? "; Secure" : ""}`,
         },
       }
     );

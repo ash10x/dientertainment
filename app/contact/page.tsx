@@ -6,6 +6,12 @@ export const metadata: Metadata = {
   title: "Contact — diEntertainment",
   description:
     "Start a project with diEntertainment. Tell us about your brand and we'll get back within 24 hours.",
+  openGraph: {
+    title: "Contact — diEntertainment",
+    description:
+      "Start a project with diEntertainment. Tell us about your brand and we'll get back within 24 hours.",
+    url: "/contact",
+  },
 };
 
 const socialOrder = [
@@ -105,6 +111,9 @@ export default async function ContactPage(props: {
                       <a
                         key={s.label}
                         href={s.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${s.label} (opens in new tab)`}
                         className="text-brand-white/40 text-[10px] tracking-[0.2em] uppercase hover:text-red transition-colors duration-200"
                       >
                         {s.label}
